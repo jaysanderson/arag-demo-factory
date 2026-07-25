@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-25T03:42:16.619Z",
+  "generatedAt": "2026-07-25T04:57:41.843Z",
   "counts": {
-    "blueprints": 15,
+    "blueprints": 16,
     "capabilities": 15
   },
   "blueprints": [
@@ -289,6 +289,46 @@
         "remi"
       ],
       "tagline": "A grounded research portal over a body of trials, papers, and transcribed media."
+    },
+    {
+      "id": "helios-mission-control",
+      "name": "HELIOS — Deep-Space Mission Intelligence",
+      "vertical": "Aerospace / High-Stakes Operations / Showcase",
+      "provenanceDemo": "capstone-atlas-operations",
+      "matchTags": [
+        "space",
+        "mission control",
+        "aerospace",
+        "flight operations",
+        "showcase",
+        "boundary",
+        "everything",
+        "high-stakes",
+        "command center",
+        "operations intelligence",
+        "helios",
+        "deep space",
+        "the works",
+        "flagship"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "voice",
+        "find",
+        "facets",
+        "graph",
+        "related",
+        "workflows",
+        "remi",
+        "call-qa",
+        "doc-pipeline",
+        "assets",
+        "personas",
+        "personalize",
+        "visibility",
+        "mcp"
+      ],
+      "tagline": "Every mission decision, grounded in the ship's own documentation — because 80 million km from Earth, a hallucinated answer is fatal."
     },
     {
       "id": "insurance-claims-workbench",

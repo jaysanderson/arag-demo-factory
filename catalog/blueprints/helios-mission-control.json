@@ -1,0 +1,65 @@
+{
+  "id": "helios-mission-control",
+  "name": "HELIOS — Deep-Space Mission Intelligence",
+  "vertical": "Aerospace / High-Stakes Operations / Showcase",
+  "provenanceDemo": "capstone-atlas-operations",
+  "liveReference": "https://capstone-atlas-operations.fly.dev",
+  "persona": "HELIOS mission-intelligence, flight operations for the crewed vessel Aurelian (fictional deep-space program)",
+  "tagline": "Every mission decision, grounded in the ship's own documentation — because 80 million km from Earth, a hallucinated answer is fatal.",
+  "elevatorPitch": "This is the highest-stakes knowledge work there is: a Mars-transit flight team resolving a live anomaly, where every answer is cited to a procedure, a flight rule, or a past anomaly — never invented. If grounded AI can be trusted here, it can run your enterprise's knowledge without hallucinating.",
+  "matchTags": ["space", "mission control", "aerospace", "flight operations", "showcase", "boundary", "everything", "high-stakes", "command center", "operations intelligence", "helios", "deep space", "the works", "flagship"],
+  "capabilities": ["cited-ask", "voice", "find", "facets", "graph", "related", "workflows", "remi", "call-qa", "doc-pipeline", "assets", "personas", "personalize", "visibility", "mcp"],
+  "theme": {
+    "brandName": "HELIOS",
+    "primary": "#22d3ee",
+    "accent": "#f59e0b",
+    "mood": "cinematic mission-control, near-black, technical, high-stakes"
+  },
+  "corpus": {
+    "domain": "Flight operations for the fictional crewed deep-space vessel Aurelian on a Mars transit — the ship's whole operating knowledge",
+    "docTypes": [
+      "malfunction procedure",
+      "nominal procedure",
+      "subsystem specification",
+      "flight rule",
+      "anomaly report (past mission)",
+      "voice-loop transcript (CAPCOM / crew)",
+      "flight director log",
+      "hazard analysis",
+      "consumables & telemetry note"
+    ],
+    "targetCount": 48,
+    "recurringEntities": {
+      "subsystems": 8,
+      "components": 16,
+      "crew": 4,
+      "flightControllers": 6,
+      "anomalies": 12,
+      "procedures": 18,
+      "missionPhases": 5
+    },
+    "cornerstoneQueries": [
+      "What is the malfunction procedure for a pressure drop in ECLSS coolant loop B, and what are the go/no-go criteria?",
+      "Which past-mission anomalies involved the coolant loops, and how were they resolved?",
+      "What do the flight rules say about a comms blackout during a main-engine burn?",
+      "Walk the root cause of a cabin thermal rise: which subsystems and procedures are connected?"
+    ],
+    "refusalProbes": [
+      "What is the crew's personal medical and psychological history?",
+      "What is today's Earth stock-market close?"
+    ],
+    "notes": "This is the FLAGSHIP showcase blueprint — it lights up the full surface set (13). Multi-modal by design: voice-loop transcripts carry media_type=audio (call-qa + voice grounding); subsystem specs + schematics act as assets. Recurring subsystems/components/anomalies/procedures/crew form a dense knowledge graph and make the 'related past anomalies' and composite-RAG root-cause surfaces sing. Everything fictional; a synthetic space program. Narrative spine: a single unfolding coolant anomaly at T+248 days — see the talk track."
+  },
+  "demoScript": [
+    { "step": 1, "say": "T+248 days. A pressure drop on ECLSS coolant loop B. The flight director asks HELIOS out loud — and hears a grounded answer back, cited to the exact malfunction procedure.", "show": "Voice: 'malfunction procedure for coolant loop B pressure drop' → spoken cited answer" },
+    { "step": 2, "say": "Every answer carries a groundedness score. Here, that number is the difference between a crew that lives and one that doesn't — so we govern against it.", "show": "Quality: groundedness near 100%, refusal probes decline" },
+    { "step": 3, "say": "Has this happened before? HELIOS recalls similar past-mission anomalies by meaning and by the subsystems they share — not by tags.", "show": "Related: past coolant anomalies via semantic + graph" },
+    { "step": 4, "say": "The graph traces the cascade — which components, procedures and subsystems are connected to a cabin thermal rise.", "show": "Graph around the ECLSS coolant loop entity" },
+    { "step": 5, "say": "And it declines when it must. Ask it something the mission record can't support, and it refuses — out loud — instead of inventing.", "show": "A refusal probe → explicit ungrounded decline" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — HELIOS and the vessel Aurelian are fictional; a synthetic deep-space program built to showcase grounded, cited AI. Not a real mission, spacecraft, or agency."
+  }
+}
