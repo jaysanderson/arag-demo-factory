@@ -1,0 +1,30 @@
+{
+  "id": "content-operations",
+  "name": "Grounded Content Operations",
+  "vertical": "Marketing / Content / Comms",
+  "provenanceDemo": "contentforge-prgs",
+  "liveReference": "https://contentforge-prgs.fly.dev",
+  "persona": "Halcyon Media (fictional content team)",
+  "tagline": "An editorial workflow where every draft is grounded, groundedness-scored, and gated before it can publish.",
+  "elevatorPitch": "Content teams generate on-brand drafts grounded in approved truth, see a groundedness score on every one, and a publish gate stops anything ungrounded from going out — governance the CMO can sign off on.",
+  "matchTags": ["content", "content ops", "editorial", "marketing content", "publishing", "brand voice", "governance", "publish gate", "drafts", "comms"],
+  "capabilities": ["cited-ask", "remi", "find", "mcp"],
+  "theme": { "brandName": "Halcyon Media", "primary": "#0f766e", "accent": "#f43f5e", "mood": "editorial, calm, governed" },
+  "corpus": {
+    "domain": "A fictional content team's knowledge — brand voice guide, approved product truth, published articles, style rules, and knowledge-gap logs",
+    "docTypes": ["brand voice guide", "product truth sheet", "published article", "style rule", "knowledge-gap note"],
+    "targetCount": 38,
+    "recurringEntities": { "products": 8, "channels": 5, "authors": 6, "campaigns": 6 },
+    "cornerstoneQueries": [
+      "Draft an intro paragraph about our onboarding flow, in our brand voice, grounded in the product truth",
+      "What claims are we allowed to make about performance, and where is that documented?"
+    ],
+    "refusalProbes": ["What is our unannounced roadmap for next year?", "What are our internal margins?"],
+    "notes": "The publish-gate/groundedness angle is carried by `remi`; generation by `cited-ask`. The editorial 'inbox of drafts' is the primary framing."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Generate an on-brand draft grounded in approved truth.", "show": "Ask → drafted paragraph, cited" },
+    { "step": 2, "say": "Every draft carries a groundedness score; the gate blocks anything ungrounded.", "show": "Quality → groundedness score + publish gate" }
+  ],
+  "safety": { "syntheticOnly": true, "noRealBrands": true, "disclaimer": "Demonstration data — Halcyon Media is a fictional content team with synthetic material." }
+}

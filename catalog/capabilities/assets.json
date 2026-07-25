@@ -1,0 +1,12 @@
+{
+  "id": "assets",
+  "name": "Asset Library (Agentic DAM)",
+  "surface": "assets",
+  "tagline": "A governed asset library with semantic discovery and Ask-the-Archive.",
+  "aragEndpoints": ["/find", "/catalog", "/ask"],
+  "requires": ["find"],
+  "kbRequirements": { "resources": true, "vectors": true, "labelsets": true, "graph": false },
+  "portal": { "route": "/assets", "navLabel": "Assets", "component": "AssetsSurface", "icon": "image" },
+  "sells": "Find the right asset by meaning, not filename; ask the archive a question and get a cited answer over images, video and documents — DAM that understands its own library.",
+  "provenance": ["arag-dam-coke", "wildmere-lodge"]
+}

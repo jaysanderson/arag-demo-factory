@@ -1,0 +1,79 @@
+{
+  "id": "digital-asset-management",
+  "name": "Agentic Digital Asset Management",
+  "vertical": "Marketing / Brand / DAM",
+  "provenanceDemo": "arag-dam-coke",
+  "liveReference": "https://arag-dam-coke.fly.dev",
+  "persona": "Northwind & Vale (fictional consumer brand) brand-asset team",
+  "tagline": "A brand asset library that understands its own contents — semantic discovery and Ask-the-Archive over images, video and documents.",
+  "elevatorPitch": "Marketers stop hunting through folders — they describe the asset they need and the right one surfaces, then ask the archive a question and get a cited answer, with lifecycle and usage governance baked in.",
+  "matchTags": [
+    "dam",
+    "asset",
+    "brand",
+    "digital asset management",
+    "creative",
+    "marketing assets",
+    "media library",
+    "archive",
+    "asset library",
+    "governance"
+  ],
+  "capabilities": [
+    "assets",
+    "find",
+    "cited-ask",
+    "graph",
+    "related"
+  ],
+  "theme": {
+    "brandName": "Northwind & Vale",
+    "primary": "#7c3aed",
+    "accent": "#f59e0b",
+    "mood": "premium, gallery-like, brand-forward"
+  },
+  "corpus": {
+    "domain": "A fictional consumer brand's asset archive — campaign assets, product imagery, brand guidelines, usage rights, and creative briefs",
+    "docTypes": [
+      "campaign asset",
+      "brand guideline",
+      "product image record",
+      "usage-rights note",
+      "creative brief",
+      "collection"
+    ],
+    "targetCount": 40,
+    "recurringEntities": {
+      "campaigns": 10,
+      "collections": 8,
+      "markets": 6,
+      "assetTypes": 6
+    },
+    "cornerstoneQueries": [
+      "Find hero images we can use for a summer outdoor campaign in approved markets",
+      "What are the logo clear-space rules, and which assets follow them?"
+    ],
+    "refusalProbes": [
+      "What did we pay the agency for the winter campaign?",
+      "What is a competitor brand's asset budget?"
+    ],
+    "notes": "Reskin of the real DAM demo to a fictional brand (Hard Rule 2 — the shipped DAM demo used a real brand and is flagged; this blueprint fixes that). `assets` is the primary surface."
+  },
+  "demoScript": [
+    {
+      "step": 1,
+      "say": "Describe the asset — the library finds it by meaning, not filename.",
+      "show": "Assets: 'summer outdoor hero, approved markets' → the right assets"
+    },
+    {
+      "step": 2,
+      "say": "Ask the archive a governance question and get a cited answer.",
+      "show": "Ask the Archive → clear-space rules, cited"
+    }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Northwind & Vale is a fictional brand with synthetic assets. Not a real brand archive."
+  }
+}

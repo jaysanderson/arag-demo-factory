@@ -1,0 +1,12 @@
+{
+  "id": "voice",
+  "name": "Voice Assistant",
+  "surface": "voice",
+  "tagline": "Speak to the assistant and hear grounded, cited answers back.",
+  "aragEndpoints": ["/ask"],
+  "requires": ["cited-ask"],
+  "kbRequirements": { "resources": true, "vectors": true, "labelsets": false, "graph": false },
+  "portal": { "route": "/voice", "navLabel": "Voice", "component": "VoiceSurface", "icon": "mic" },
+  "sells": "Real-time spoken Q&A that stays grounded and cited — the same governance as text, hands-free. The demo that makes a room lean in.",
+  "provenance": ["arag-voice-bridge", "capstone-atlas-operations"]
+}

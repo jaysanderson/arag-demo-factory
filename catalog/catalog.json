@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-25T02:14:15.680Z",
+  "generatedAt": "2026-07-25T03:42:16.619Z",
   "counts": {
-    "blueprints": 11,
-    "capabilities": 12
+    "blueprints": 15,
+    "capabilities": 15
   },
   "blueprints": [
     {
@@ -107,6 +107,31 @@
       "tagline": "Ask a legacy codebase questions in plain English and get answers cited to file and line — the antidote to key-man risk."
     },
     {
+      "id": "content-operations",
+      "name": "Grounded Content Operations",
+      "vertical": "Marketing / Content / Comms",
+      "provenanceDemo": "contentforge-prgs",
+      "matchTags": [
+        "content",
+        "content ops",
+        "editorial",
+        "marketing content",
+        "publishing",
+        "brand voice",
+        "governance",
+        "publish gate",
+        "drafts",
+        "comms"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "remi",
+        "find",
+        "mcp"
+      ],
+      "tagline": "An editorial workflow where every draft is grounded, groundedness-scored, and gated before it can publish."
+    },
+    {
       "id": "cx-concierge",
       "name": "CX Concierge",
       "vertical": "Retail / Customer Experience",
@@ -134,9 +159,37 @@
         "find",
         "personalize",
         "graph",
-        "workflows"
+        "workflows",
+        "voice",
+        "related"
       ],
       "tagline": "A grounded shopping concierge with a personalised feed, a journey graph and abandoned-cart winback — all over one product knowledge base."
+    },
+    {
+      "id": "digital-asset-management",
+      "name": "Agentic Digital Asset Management",
+      "vertical": "Marketing / Brand / DAM",
+      "provenanceDemo": "arag-dam-coke",
+      "matchTags": [
+        "dam",
+        "asset",
+        "brand",
+        "digital asset management",
+        "creative",
+        "marketing assets",
+        "media library",
+        "archive",
+        "asset library",
+        "governance"
+      ],
+      "capabilities": [
+        "assets",
+        "find",
+        "cited-ask",
+        "graph",
+        "related"
+      ],
+      "tagline": "A brand asset library that understands its own contents — semantic discovery and Ask-the-Archive over images, video and documents."
     },
     {
       "id": "doc-intelligence",
@@ -202,7 +255,8 @@
         "find",
         "graph",
         "workflows",
-        "remi"
+        "remi",
+        "voice"
       ],
       "tagline": "Six grounded ops surfaces on one Knowledge Box — hybrid search, a two-voice concierge, schema-constrained workflows and composite-RAG incident RCA."
     },
@@ -298,9 +352,41 @@
         "find",
         "facets",
         "graph",
-        "personas"
+        "personas",
+        "related"
       ],
       "tagline": "A partner-grade research workbench over a firm's matters, precedent and know-how."
+    },
+    {
+      "id": "media-streaming",
+      "name": "Video Platform & Personalized Streaming",
+      "vertical": "Media / Streaming / Entertainment",
+      "provenanceDemo": "capstone-aurora-concierge",
+      "matchTags": [
+        "youtube",
+        "video",
+        "streaming",
+        "media",
+        "watch",
+        "vod",
+        "entertainment",
+        "creator",
+        "channel",
+        "personalized feed",
+        "recommendations",
+        "video platform",
+        "clone",
+        "content platform"
+      ],
+      "capabilities": [
+        "personalize",
+        "find",
+        "assets",
+        "cited-ask",
+        "graph",
+        "related"
+      ],
+      "tagline": "A YouTube-style video platform where search, the watch feed, and Q&A are all grounded in the actual content."
     },
     {
       "id": "personalization",
@@ -335,6 +421,32 @@
         "cited-ask"
       ],
       "tagline": "One ARAG engine replaces five point tools — grounded search, recommendations, AI chat and SEO, all from the catalogue."
+    },
+    {
+      "id": "regulator-intelligence",
+      "name": "Regulator & Governance Intelligence",
+      "vertical": "Government / Regulator / Integrity",
+      "provenanceDemo": "stewards-intel",
+      "matchTags": [
+        "regulator",
+        "government",
+        "governance",
+        "integrity",
+        "compliance",
+        "hearings",
+        "public sector",
+        "investigations",
+        "rules",
+        "case history",
+        "oversight"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "graph",
+        "personas"
+      ],
+      "tagline": "Decades of hearings, reports and rules, finally answering questions — with every answer cited to its source."
     },
     {
       "id": "sales-enablement",
@@ -372,6 +484,12 @@
     }
   ],
   "capabilities": [
+    {
+      "id": "assets",
+      "name": "Asset Library (Agentic DAM)",
+      "surface": "assets",
+      "tagline": "A governed asset library with semantic discovery and Ask-the-Archive."
+    },
     {
       "id": "call-qa",
       "name": "Call & Media Analytics",
@@ -427,6 +545,12 @@
       "tagline": "Different answers for different audiences over one KB."
     },
     {
+      "id": "related",
+      "name": "Related & Similar Titles",
+      "surface": "related",
+      "tagline": "\"More like this\" that understands content — semantic similarity plus shared-entity graph traversal."
+    },
+    {
       "id": "remi",
       "name": "Groundedness Dashboard",
       "surface": "remi",
@@ -437,6 +561,12 @@
       "name": "AI Visibility Index",
       "surface": "visibility",
       "tagline": "How your brand appears across AI models, and how to fix it."
+    },
+    {
+      "id": "voice",
+      "name": "Voice Assistant",
+      "surface": "voice",
+      "tagline": "Speak to the assistant and hear grounded, cited answers back."
     },
     {
       "id": "workflows",

@@ -1,0 +1,30 @@
+{
+  "id": "regulator-intelligence",
+  "name": "Regulator & Governance Intelligence",
+  "vertical": "Government / Regulator / Integrity",
+  "provenanceDemo": "stewards-intel",
+  "liveReference": "https://stewards-intel.fly.dev",
+  "persona": "A state integrity regulator (fictional governance body)",
+  "tagline": "Decades of hearings, reports and rules, finally answering questions — with every answer cited to its source.",
+  "elevatorPitch": "Investigators search decades of hearing recordings and reports by what was said, get answers cited back to the exact moment, and the integrity graph links people, entities and cases across documents that never mention each other.",
+  "matchTags": ["regulator", "government", "governance", "integrity", "compliance", "hearings", "public sector", "investigations", "rules", "case history", "oversight"],
+  "capabilities": ["cited-ask", "find", "graph", "personas"],
+  "theme": { "brandName": "Integrity Intelligence", "primary": "#0369a1", "accent": "#14b8a6", "mood": "authoritative, public-sector, trustworthy" },
+  "corpus": {
+    "domain": "A fictional integrity regulator's corpus — hearing transcripts, inquiry reports, rules and determinations, entity records, and veterinary/inspection notes",
+    "docTypes": ["hearing transcript", "inquiry report", "rule/determination", "entity record", "inspection note"],
+    "targetCount": 42,
+    "recurringEntities": { "cases": 12, "officials": 8, "entities": 14, "rules": 10 },
+    "cornerstoneQueries": [
+      "What determinations have we made about conflicts of interest in the last three seasons?",
+      "Trace how a single entity appears across otherwise-unrelated inquiries"
+    ],
+    "refusalProbes": ["What is an official's home address?", "What were the personal medical details of a witness?"],
+    "notes": "Regulatory/gov vertical from Racing WA Intelligence, generalised and made fictional. `graph` (integrity/entity network) and `personas` (staff workspace vs member hub) are central."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Search hearings by what was said; answers cite the recording and the moment.", "show": "Ask → cited determination, jump to source" },
+    { "step": 2, "say": "The integrity graph links entities across unrelated inquiries.", "show": "Graph around an entity" }
+  ],
+  "safety": { "syntheticOnly": true, "noRealBrands": true, "disclaimer": "Demonstration data — a fictional regulator with synthetic hearings and records. Not real determinations." }
+}

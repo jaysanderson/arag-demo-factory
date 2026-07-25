@@ -1,0 +1,96 @@
+{
+  "id": "media-streaming",
+  "name": "Video Platform & Personalized Streaming",
+  "vertical": "Media / Streaming / Entertainment",
+  "provenanceDemo": "capstone-aurora-concierge",
+  "liveReference": "https://capstone-aurora-concierge.fly.dev",
+  "persona": "Streamhaven (fictional video-streaming platform)",
+  "tagline": "A YouTube-style video platform where search, the watch feed, and Q&A are all grounded in the actual content.",
+  "elevatorPitch": "Viewers find the right video by describing what they want, get a personalized feed that reflects what they've watched, and ask questions answered with citations that jump to the exact moment in a video — recommendations and search that finally understand the content, not just its tags.",
+  "matchTags": [
+    "youtube",
+    "video",
+    "streaming",
+    "media",
+    "watch",
+    "vod",
+    "entertainment",
+    "creator",
+    "channel",
+    "personalized feed",
+    "recommendations",
+    "video platform",
+    "clone",
+    "content platform"
+  ],
+  "capabilities": [
+    "personalize",
+    "find",
+    "assets",
+    "cited-ask",
+    "graph",
+    "related"
+  ],
+  "theme": {
+    "brandName": "Streamhaven",
+    "primary": "#e11d48",
+    "accent": "#0ea5e9",
+    "mood": "bold, dark, media-native, cinematic"
+  },
+  "corpus": {
+    "domain": "A fictional video-streaming catalogue — video transcripts, creator/channel profiles, playlists, category pages, and watch-history signals",
+    "docTypes": [
+      "video transcript",
+      "creator profile",
+      "playlist",
+      "category page",
+      "series description",
+      "watch-history event"
+    ],
+    "targetCount": 45,
+    "recurringEntities": {
+      "creators": 12,
+      "series": 10,
+      "categories": 8,
+      "topics": 15,
+      "viewerPersonas": 4
+    },
+    "cornerstoneQueries": [
+      "Find beginner videos that explain sourdough starters without special equipment",
+      "Which creators cover trail-running gear, and what do they recommend for wet conditions?",
+      "Summarize what the 'Getting started' series says about lighting a home studio, with the moments it comes from"
+    ],
+    "refusalProbes": [
+      "What were this platform's quarterly ad-revenue figures?",
+      "What is a competitor's subscriber count?"
+    ],
+    "notes": "Media-native blueprint. `assets` renders the video library (transcripts carry media_type=video + duration so thumbnails and durations show); `personalize` drives a per-viewer watch feed and 'because you watched' rows; `cited-ask` answers over transcripts with citations that map to a moment; `graph` links creators, series and topics. This is the 'YouTube-style clone with personalization' composition — no such demo shipped before, so it is generated fresh from these pieces."
+  },
+  "demoScript": [
+    {
+      "step": 1,
+      "say": "Search by what you mean, not by tags — describe the video and the right one surfaces.",
+      "show": "Search: 'beginner sourdough, no special equipment' → the right video, not a keyword match"
+    },
+    {
+      "step": 2,
+      "say": "The feed is personalized to what this viewer has watched — grounded in the catalogue, not a black box.",
+      "show": "For You: 'because you watched…' rows re-rank as the persona changes"
+    },
+    {
+      "step": 3,
+      "say": "Ask a question and get an answer cited to the exact video it came from.",
+      "show": "Ask the archive → cited answer over a transcript"
+    },
+    {
+      "step": 4,
+      "say": "And the graph connects creators, series and topics across the whole catalogue.",
+      "show": "Graph around a creator entity"
+    }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Streamhaven is a fictional streaming platform with synthetic creators and content. Not a real service."
+  }
+}

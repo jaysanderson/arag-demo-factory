@@ -30,8 +30,8 @@ const CATALOG = path.join(ROOT, 'catalog');
 
 // Nav order for portal surfaces, regardless of which capabilities enable them.
 const SURFACE_ORDER = [
-  'ask', 'search', 'graph', 'docproc', 'callqa',
-  'workflows', 'personalize', 'visibility', 'remi', 'mcp',
+  'ask', 'voice', 'search', 'assets', 'graph', 'docproc', 'callqa',
+  'workflows', 'personalize', 'related', 'visibility', 'remi', 'mcp',
 ];
 
 // Files/dirs that are factory tooling and must NOT ship inside a generated demo.
