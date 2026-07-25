@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Lightbulb } from 'lucide-react';
+import { Card } from '@progress/kendo-react-layout';
 
 /**
  * A graceful "this surface needs enabling" state. Surfaces whose ARAG endpoint
@@ -18,7 +19,7 @@ export function SurfaceNotice({
   bullets?: string[];
 }) {
   return (
-    <div className="card overflow-hidden">
+    <Card className="overflow-hidden">
       <div className="px-6 py-6" style={{ background: 'var(--brand-soft)' }}>
         <div className="flex items-center gap-2" style={{ color: 'var(--brand-strong)' }}>
           <Lightbulb size={18} />
@@ -43,6 +44,6 @@ export function SurfaceNotice({
           binding a Knowledge Box with the features it needs. The shell renders it automatically — no code change.
         </p>
       </div>
-    </div>
+    </Card>
   );
 }

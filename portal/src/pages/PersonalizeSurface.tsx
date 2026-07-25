@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Sparkles, FileText } from 'lucide-react';
+import { Chip } from '@progress/kendo-react-buttons';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { search, catalog } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
@@ -66,14 +68,16 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
       {interests.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {interests.map((it) => (
-            <button
+            <Chip
               key={it}
+              text={it}
+              selected={active === it}
               onClick={() => setActive(it)}
-              className="chip transition"
-              style={active === it ? { background: 'var(--brand)', color: 'var(--brand-contrast)', borderColor: 'var(--brand)', cursor: 'pointer' } : { cursor: 'pointer' }}
-            >
-              {it}
-            </button>
+              rounded="full"
+              size="small"
+              fillMode={active === it ? 'solid' : 'outline'}
+              style={active === it ? { background: 'var(--brand)', color: 'var(--brand-contrast)', borderColor: 'var(--brand)' } : undefined}
+            />
           ))}
         </div>
       )}
@@ -87,13 +91,15 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {(recs || []).map((r) => (
-              <button key={r.id} onClick={() => setOpenDoc(r.id)} className="card block p-4 text-left transition hover:shadow-md">
-                <div className="flex items-center gap-2">
-                  <FileText size={14} className="shrink-0 text-ink-400" />
-                  <span className="line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{r.title}</span>
-                </div>
-                {r.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{r.snippet}</p>}
-              </button>
+              <Card key={r.id} onClick={() => setOpenDoc(r.id)} className="cursor-pointer transition hover:shadow-md">
+                <CardBody className="p-4">
+                  <div className="flex items-center gap-2">
+                    <FileText size={14} className="shrink-0 text-ink-400" />
+                    <span className="line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{r.title}</span>
+                  </div>
+                  {r.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{r.snippet}</p>}
+                </CardBody>
+              </Card>
             ))}
           </div>
         )}

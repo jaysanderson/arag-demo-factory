@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Moon, Sun } from 'lucide-react';
+import { AppBar, AppBarSection, AppBarSpacer } from '@progress/kendo-react-layout';
+import { Button } from '@progress/kendo-react-buttons';
+import { Loader } from '@progress/kendo-react-indicators';
 import { loadConfig, type DemoConfig } from './lib/config';
 import { applyTheme, initColorScheme, setColorScheme } from './lib/theme';
 import { surfaceIcon } from './lib/icons';
@@ -8,7 +11,6 @@ import { SURFACES } from './pages/registry';
 import { StatusChip } from './components/StatusChip';
 import { DemoScriptPanel } from './components/DemoScriptPanel';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
-import { Spinner } from './components/States';
 
 export default function App() {
   const [config, setConfig] = useState<DemoConfig | null>(null);
@@ -30,8 +32,9 @@ export default function App() {
 
   if (!config) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <Spinner label="Loading portal…" />
+      <div className="flex h-full items-center justify-center gap-3 text-sm text-ink-500">
+        <Loader type="pulsing" themeColor="primary" />
+        Loading portal…
       </div>
     );
   }
@@ -44,69 +47,34 @@ export default function App() {
       <DisclaimerBanner text={config.safety?.disclaimer || ''} />
 
       <header className="sticky top-0 z-30 border-b border-ink-200 bg-ink-50/85 backdrop-blur dark:border-ink-800 dark:bg-ink-950/85">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
-          <Brand config={config} home={home} />
+        <AppBar positionMode="static" className="mx-auto h-16 max-w-6xl bg-transparent px-4 sm:px-6">
+          <AppBarSection>
+            <Brand config={config} home={home} />
+          </AppBarSection>
 
-          <nav className="ml-2 hidden items-center gap-1 md:flex">
-            {surfaces.map((s) => {
-              const Icon = surfaceIcon(s.icon);
-              return (
-                <NavLink
-                  key={s.route}
-                  to={s.route}
-                  className={({ isActive }) =>
-                    `inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                      isActive
-                        ? 'text-ink-900 dark:text-ink-50'
-                        : 'text-ink-500 hover:bg-ink-100 hover:text-ink-800 dark:hover:bg-ink-800 dark:hover:text-ink-100'
-                    }`
-                  }
-                  style={({ isActive }: { isActive: boolean }) =>
-                    isActive ? { background: 'var(--brand-soft)', color: 'var(--brand-strong)' } : undefined
-                  }
-                >
-                  <Icon size={15} />
-                  {s.label}
-                </NavLink>
-              );
-            })}
-          </nav>
+          <AppBarSection className="ml-2 hidden md:flex">
+            <SurfaceNav surfaces={surfaces} />
+          </AppBarSection>
 
-          <div className="ml-auto flex items-center gap-2">
+          <AppBarSpacer />
+
+          <AppBarSection className="flex items-center gap-2">
             <StatusChip />
             <DemoScriptPanel steps={config.demoScript || []} />
-            <button
+            <Button
+              fillMode="outline"
               onClick={toggleDark}
-              className="rounded-lg border border-ink-200 bg-white p-2 text-ink-600 transition hover:bg-ink-50 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:bg-ink-800"
               aria-label="Toggle colour scheme"
+              title="Toggle colour scheme"
             >
               {dark ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          </div>
-        </div>
+            </Button>
+          </AppBarSection>
+        </AppBar>
 
         {/* Mobile nav */}
         <nav className="scroll-slim flex gap-1 overflow-x-auto border-t border-ink-200 px-3 py-2 md:hidden dark:border-ink-800">
-          {surfaces.map((s) => {
-            const Icon = surfaceIcon(s.icon);
-            return (
-              <NavLink
-                key={s.route}
-                to={s.route}
-                className={({ isActive }) =>
-                  `inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium ${
-                    isActive ? 'text-ink-900 dark:text-ink-50' : 'text-ink-500'
-                  }`
-                }
-                style={({ isActive }: { isActive: boolean }) =>
-                  isActive ? { background: 'var(--brand-soft)', color: 'var(--brand-strong)' } : undefined
-                }
-              >
-                <Icon size={15} />
-                {s.label}
-              </NavLink>
-            );
-          })}
+          <SurfaceNav surfaces={surfaces} mobile />
         </nav>
       </header>
 
@@ -127,6 +95,34 @@ export default function App() {
       <DisclaimerFooter text={config.safety?.disclaimer || ''} brand={config.theme.brandName} />
       <RouteTitle config={config} />
     </div>
+  );
+}
+
+/** Config-driven surface nav rendered as togglable Kendo Buttons. */
+function SurfaceNav({ surfaces, mobile }: { surfaces: DemoConfig['surfaces']; mobile?: boolean }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  return (
+    <>
+      {surfaces.map((s) => {
+        const Icon = surfaceIcon(s.icon);
+        const active = location.pathname === s.route;
+        return (
+          <Button
+            key={s.route}
+            togglable
+            selected={active}
+            fillMode="flat"
+            onClick={() => navigate(s.route)}
+            className={mobile ? 'shrink-0' : undefined}
+            style={active ? { background: 'var(--brand-soft)', color: 'var(--brand-strong)' } : undefined}
+            startIcon={<Icon size={15} />}
+          >
+            {s.label}
+          </Button>
+        );
+      })}
+    </>
   );
 }
 

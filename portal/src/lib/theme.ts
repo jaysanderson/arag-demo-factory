@@ -52,6 +52,13 @@ export function applyTheme(theme: ThemeTokens) {
   root.style.setProperty('--accent-strong', shade(accent, -0.2));
   root.style.setProperty('--accent-soft', shade(accent, 0.84));
 
+  // Re-skin the whole KendoReact set per demo. The default theme derives every
+  // hover/active/subtle/on-primary state from --kendo-color-primary via oklch()
+  // relative colours, so setting the base primary is enough to repaint buttons,
+  // chips, tabs, focus rings, charts and the rest in the demo's brand colour.
+  root.style.setProperty('--kendo-color-primary', brand);
+  root.style.setProperty('--kendo-color-primary-emphasis', accent);
+
   if (theme.brandName) document.title = theme.brandName;
 }
 

@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Button } from '@progress/kendo-react-buttons';
+import { Card } from '@progress/kendo-react-layout';
+import { AutoComplete } from '@progress/kendo-react-dropdowns';
 import type { SurfaceProps } from './types';
 import { graph, entities, type GraphNode, type GraphEdge } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
@@ -126,34 +129,34 @@ export function GraphSurface({ surface }: SurfaceProps) {
         connect. Leave the box empty for the densest part of the graph, or name an entity to explore its neighbourhood.
       </PageHeader>
 
-      <form
-        onSubmit={(e) => { e.preventDefault(); setSeed(pending); }}
-        className="card mb-4 flex items-center gap-2 p-2"
-      >
-        <input
-          value={pending}
-          onChange={(e) => setPending(e.target.value)}
-          list="graph-entities"
-          placeholder="Entity name — e.g. an organisation, person, place or product"
-          className="field border-0 bg-transparent shadow-none focus:shadow-none"
-        />
-        <datalist id="graph-entities">
-          {suggestions.map((v) => <option key={v} value={v} />)}
-        </datalist>
-        <button type="submit" className="btn btn-brand">Explore</button>
-        {seed && <button type="button" className="btn btn-ghost" onClick={() => explore('')}>Whole graph</button>}
-      </form>
+      <Card className="mb-4">
+        <form
+          onSubmit={(e) => { e.preventDefault(); setSeed(pending); }}
+          className="flex items-center gap-2 p-2"
+        >
+          <AutoComplete
+            value={pending}
+            data={suggestions}
+            onChange={(e) => setPending(String(e.value))}
+            placeholder="Entity name — e.g. an organisation, person, place or product"
+            fillMode="flat"
+            className="flex-1"
+          />
+          <Button type="submit" themeColor="primary">Explore</Button>
+          {seed && <Button type="button" fillMode="outline" onClick={() => explore('')}>Whole graph</Button>}
+        </form>
+      </Card>
 
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
       {loading ? (
-        <div className="card px-6 py-14 text-center text-sm text-ink-400">Building graph…</div>
+        <Card><div className="px-6 py-14 text-center text-sm text-ink-400">Building graph…</div></Card>
       ) : nodes.length === 0 ? (
-        <div className="card px-6 py-14 text-center text-sm text-ink-500">
+        <Card><div className="px-6 py-14 text-center text-sm text-ink-500">
           No relations found{seed ? ` for “${seed}”` : ''}. Try a suggested entity, or explore the whole graph.
-        </div>
+        </div></Card>
       ) : (
-        <div className="card overflow-hidden">
+        <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-[560px] w-full min-w-[680px]">
               {links.map((link, i) => {
@@ -203,7 +206,7 @@ export function GraphSurface({ surface }: SurfaceProps) {
               {nodes.length} entities · {links.length} relations · click a node to explore it
             </span>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );

@@ -1,10 +1,13 @@
-import { AlertTriangle, Loader2, Inbox, ShieldAlert } from 'lucide-react';
+import { Inbox, ShieldAlert } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Loader } from '@progress/kendo-react-indicators';
+import { Notification } from '@progress/kendo-react-notification';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 
 export function Spinner({ label }: { label?: string }) {
   return (
     <div className="flex items-center gap-2 text-sm text-ink-500">
-      <Loader2 size={16} className="animate-spin" />
+      <Loader size="small" type="pulsing" themeColor="primary" />
       {label || 'Loading…'}
     </div>
   );
@@ -26,20 +29,21 @@ export function TypingDots() {
 
 export function ErrorBanner({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
-      <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-      <div>{children}</div>
-    </div>
+    <Notification type={{ style: 'error', icon: true }} className="w-full">
+      <span className="text-sm">{children}</span>
+    </Notification>
   );
 }
 
 export function EmptyState({ title, hint }: { title: string; hint?: ReactNode }) {
   return (
-    <div className="card flex flex-col items-center gap-2 px-6 py-14 text-center">
-      <Inbox size={26} className="text-ink-400" />
-      <p className="font-medium text-ink-700 dark:text-ink-200">{title}</p>
-      {hint && <p className="max-w-md text-sm text-ink-500">{hint}</p>}
-    </div>
+    <Card>
+      <CardBody className="flex flex-col items-center gap-2 px-6 py-14 text-center">
+        <Inbox size={26} className="text-ink-400" />
+        <p className="font-medium text-ink-700 dark:text-ink-200">{title}</p>
+        {hint && <p className="max-w-md text-sm text-ink-500">{hint}</p>}
+      </CardBody>
+    </Card>
   );
 }
 

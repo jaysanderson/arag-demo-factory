@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FileInput, Tags, ScanText, CheckCircle2, Braces, ArrowRight } from 'lucide-react';
+import { Card, CardBody } from '@progress/kendo-react-layout';
+import { Chip } from '@progress/kendo-react-buttons';
 import type { SurfaceProps } from './types';
 import { catalog, type CatalogCard } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
@@ -32,7 +34,8 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
       </PageHeader>
 
       {/* Pipeline */}
-      <div className="card p-5">
+      <Card>
+        <CardBody className="p-5">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-ink-500">The pipeline</p>
         <div className="flex flex-col gap-3 md:flex-row md:items-stretch">
           {STAGES.map((s, i) => (
@@ -50,7 +53,8 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
             </div>
           ))}
         </div>
-      </div>
+        </CardBody>
+      </Card>
 
       {/* Proof on the real corpus */}
       <div>
@@ -70,22 +74,27 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {items.map((c) => (
-              <div key={c.id} className="card p-4">
-                <div className="flex items-center gap-2">
-                  <span className="chip !px-1.5 text-[11px]" style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)' }}>{c.docType}</span>
-                  {c.mediaType && <span className="chip !px-1.5 text-[11px]">{c.mediaType}</span>}
-                </div>
-                <p className="mt-2 line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {Object.entries(c.labels).flatMap(([ls, labels]) =>
-                    labels.slice(0, 3).map((l) => (
-                      <span key={`${ls}:${l}`} className="chip !px-1.5 !py-0 text-[10px]">
-                        <span className="text-ink-400">{ls}:</span> {l}
-                      </span>
-                    ))
-                  )}
-                </div>
-              </div>
+              <Card key={c.id}>
+                <CardBody className="p-4">
+                  <div className="flex items-center gap-2">
+                    <Chip
+                      text={c.docType}
+                      size="small"
+                      rounded="full"
+                      style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)', borderColor: 'transparent' }}
+                    />
+                    {c.mediaType && <Chip text={c.mediaType} size="small" fillMode="outline" rounded="full" />}
+                  </div>
+                  <p className="mt-2 line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {Object.entries(c.labels).flatMap(([ls, labels]) =>
+                      labels.slice(0, 3).map((l) => (
+                        <Chip key={`${ls}:${l}`} text={`${ls}: ${l}`} size="small" fillMode="outline" rounded="full" />
+                      ))
+                    )}
+                  </div>
+                </CardBody>
+              </Card>
             ))}
           </div>
         )}

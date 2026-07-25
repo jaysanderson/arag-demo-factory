@@ -196,6 +196,16 @@ Factory tooling (removed from generated projects):
 
 - **Plain JavaScript in factory tooling; TypeScript in the portal** (matches the shipped
   portfolio — research-portal, capstones).
+- **UI components: KendoReact (Progress's own React library) is the default.** Build every
+  portal surface with KendoReact components — `@progress/kendo-react-{layout,buttons,inputs,
+  grid,charts,indicators,notification,…}` on `@progress/kendo-theme-default`, themed per demo
+  from `demo.config.json.theme`. Reach for a non-Kendo component only where Kendo has no fit
+  and it makes the demo materially better (e.g. the force-directed graph canvas, a custom
+  streaming-answer pane); keep those to a minimum. Tailwind is layout/spacing glue, not the
+  component system. Installs resolve through HAR (`.npmrc`) — see `docs/UI-KENDO.md`.
+- **FastTrack (`ml-fasttrack`) is intentionally NOT used.** It is a MarkLogic-bound accelerator
+  (its `MarkLogicProvider` speaks MarkLogic's `/v1/search`), it is not on HAR, and no ARAG demo
+  uses it. Its look is reproduced with KendoReact directly — which is what FastTrack is built on.
 - The portal **never talks to Nuclia directly** — the Express server holds the token and
   proxies, exactly as every shipped demo does (`X-NUCLIA-SERVICEACCOUNT: Bearer …`).
 - Answers **must** render citations. An ungrounded answer is surfaced as a warning, never as

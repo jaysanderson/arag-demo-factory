@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Search, X, FileText, Clock } from 'lucide-react';
+import { Search, X, FileText } from 'lucide-react';
+import { Button, Chip } from '@progress/kendo-react-buttons';
+import { Card, CardBody } from '@progress/kendo-react-layout';
+import { Input, Checkbox } from '@progress/kendo-react-inputs';
 import type { SurfaceProps } from './types';
 import { search, catalog, type CatalogResult, type CatalogCard } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
@@ -116,58 +119,66 @@ export function SearchSurface({ surface }: SurfaceProps) {
         {hasFacets && ' Narrow by type, topic, region and more; counts come live from the Knowledge Box.'}
       </PageHeader>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          runSearch(query);
-        }}
-        className="card flex items-center gap-2 p-2"
-      >
-        <Search size={18} className="ml-2 text-ink-400" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search the corpus by concept…"
-          className="field border-0 bg-transparent shadow-none focus:shadow-none"
-        />
-        <button type="submit" className="btn btn-brand">Search</button>
-      </form>
+      <Card>
+        <CardBody className="p-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              runSearch(query);
+            }}
+            className="flex items-center gap-2"
+          >
+            <Search size={18} className="ml-2 shrink-0 text-ink-400" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(String(e.value))}
+              placeholder="Search the corpus by concept…"
+              className="flex-1"
+            />
+            <Button type="submit" themeColor="primary">Search</Button>
+          </form>
+        </CardBody>
+      </Card>
 
       <div className={`mt-6 grid gap-6 ${hasFacets ? 'lg:grid-cols-[16rem_1fr]' : ''}`}>
         {/* Facets */}
         {hasFacets && (
           <aside className="space-y-4">
             {filterList.length > 0 && (
-              <button onClick={clearFilters} className="inline-flex items-center gap-1 text-xs text-ink-500 hover:text-ink-800">
-                <X size={12} /> Clear {filterList.length} filter{filterList.length > 1 ? 's' : ''}
-              </button>
+              <Button
+                fillMode="flat"
+                size="small"
+                onClick={clearFilters}
+                startIcon={<X size={12} />}
+              >
+                Clear {filterList.length} filter{filterList.length > 1 ? 's' : ''}
+              </Button>
             )}
             {facetKeys.length === 0 && <p className="text-xs text-ink-400">No facets available.</p>}
             {facetKeys.map((ls) => (
-              <div key={ls} className="card p-3">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
-                  {prettyLabelset(ls)}
-                </p>
-                <ul className="space-y-1">
-                  {facets[ls].slice(0, 8).map(({ label, count }) => {
-                    const active = filters.has(`/classification.labels/${ls}/${label}`);
-                    return (
-                      <li key={label}>
-                        <button
-                          onClick={() => toggleFilter(ls, label)}
-                          className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1 text-left text-sm transition ${
-                            active ? 'font-semibold' : 'text-ink-600 hover:bg-ink-50 dark:text-ink-300 dark:hover:bg-ink-800'
-                          }`}
-                          style={active ? { background: 'var(--brand-soft)', color: 'var(--brand-strong)' } : undefined}
-                        >
-                          <span className="truncate">{label}</span>
-                          <span className="chip !px-1.5 !py-0 text-[11px]">{count}</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              <Card key={ls}>
+                <CardBody className="p-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                    {prettyLabelset(ls)}
+                  </p>
+                  <ul className="space-y-1.5">
+                    {facets[ls].slice(0, 8).map(({ label, count }) => {
+                      const active = filters.has(`/classification.labels/${ls}/${label}`);
+                      return (
+                        <li key={label} className="flex items-center justify-between gap-2">
+                          <Checkbox
+                            checked={active}
+                            onChange={() => toggleFilter(ls, label)}
+                            label={label}
+                            className="min-w-0 [&_.k-checkbox-label]:truncate"
+                          />
+                          <Chip text={String(count)} size="small" fillMode="outline" rounded="full" />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </CardBody>
+              </Card>
             ))}
           </aside>
         )}
@@ -186,18 +197,26 @@ export function SearchSurface({ surface }: SurfaceProps) {
                 <EmptyState title="No matches" hint="Try a broader concept or remove a filter." />
               ) : (
                 hits.map((h) => (
-                  <button
+                  <Card
                     key={h.id}
                     onClick={() => setOpenDoc(h.id)}
-                    className="card block w-full p-4 text-left transition hover:shadow-md"
+                    className="cursor-pointer transition hover:shadow-md"
                   >
-                    <div className="flex items-center gap-2">
-                      <FileText size={14} className="shrink-0 text-ink-400" />
-                      <span className="font-semibold text-ink-900 dark:text-ink-100">{h.title}</span>
-                      <span className="ml-auto chip !px-1.5 text-[11px]">{Math.round(h.score * 100)}%</span>
-                    </div>
-                    {h.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{h.snippet}</p>}
-                  </button>
+                    <CardBody className="p-4">
+                      <div className="flex items-center gap-2">
+                        <FileText size={14} className="shrink-0 text-ink-400" />
+                        <span className="font-semibold text-ink-900 dark:text-ink-100">{h.title}</span>
+                        <Chip
+                          text={`${Math.round(h.score * 100)}%`}
+                          size="small"
+                          fillMode="outline"
+                          rounded="full"
+                          className="ml-auto"
+                        />
+                      </div>
+                      {h.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{h.snippet}</p>}
+                    </CardBody>
+                  </Card>
                 ))
               )}
             </>
@@ -229,20 +248,32 @@ function BrowseGrid({
       <p className="text-xs text-ink-500">{total ?? items.length} documents in the corpus</p>
       <div className="grid gap-3 sm:grid-cols-2">
         {items.map((c) => (
-          <button key={c.id} onClick={() => onOpen(c.id)} className="card block p-4 text-left transition hover:shadow-md">
-            <div className="flex items-center gap-2">
-              <span className="chip !px-1.5 text-[11px]" style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)' }}>
-                {c.docType}
-              </span>
-              {c.durationMinutes != null && (
-                <span className="chip !px-1.5 text-[11px]">
-                  <Clock size={10} /> {c.durationMinutes}m
-                </span>
-              )}
-            </div>
-            <p className="mt-2 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
-            {c.summary && <p className="mt-1 line-clamp-2 text-sm text-ink-500">{c.summary}</p>}
-          </button>
+          <Card
+            key={c.id}
+            onClick={() => onOpen(c.id)}
+            className="cursor-pointer transition hover:shadow-md"
+          >
+            <CardBody className="p-4">
+              <div className="flex items-center gap-2">
+                <Chip
+                  text={c.docType}
+                  size="small"
+                  rounded="full"
+                  style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)', borderColor: 'transparent' }}
+                />
+                {c.durationMinutes != null && (
+                  <Chip
+                    text={`${c.durationMinutes}m`}
+                    size="small"
+                    fillMode="outline"
+                    rounded="full"
+                  />
+                )}
+              </div>
+              <p className="mt-2 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
+              {c.summary && <p className="mt-1 line-clamp-2 text-sm text-ink-500">{c.summary}</p>}
+            </CardBody>
+          </Card>
         ))}
       </div>
     </>

@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
 import { Mic, Square, Volume2 } from 'lucide-react';
+import { Button } from '@progress/kendo-react-buttons';
+import { Input } from '@progress/kendo-react-inputs';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import type { Citation } from '../lib/arag';
 import { ask } from '../lib/arag';
@@ -91,7 +94,8 @@ export function VoiceSurface({ surface }: SurfaceProps) {
         grounded in the Knowledge Box and shows its sources; it declines out loud when the corpus can't support one.
       </PageHeader>
 
-      <div className="rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
+      <Card>
+        <CardBody className="p-6">
         <div className="flex flex-col items-center gap-4 py-4">
           <button
             onClick={toggleListen}
@@ -113,15 +117,13 @@ export function VoiceSurface({ surface }: SurfaceProps) {
               className="flex w-full max-w-xl gap-2"
               onSubmit={(e) => { e.preventDefault(); runQuery(typed); }}
             >
-              <input
+              <Input
                 value={typed}
-                onChange={(e) => setTyped(e.target.value)}
+                onChange={(e) => setTyped(String(e.value))}
                 placeholder="Ask a question…"
-                className="flex-1 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-ink-700 dark:bg-ink-800"
+                className="flex-1"
               />
-              <button className="rounded-lg px-4 py-2 text-sm font-semibold text-white" style={{ background: 'var(--brand)' }}>
-                Ask
-              </button>
+              <Button type="submit" themeColor="primary">Ask</Button>
             </form>
           )}
         </div>
@@ -132,26 +134,29 @@ export function VoiceSurface({ surface }: SurfaceProps) {
             {transcript}
           </div>
         )}
-      </div>
+        </CardBody>
+      </Card>
 
       {(answer || streaming) && (
         <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-          <div className="rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--brand)' }}>
-              <Volume2 size={14} /> {grounded ? 'Grounded answer' : streaming ? 'Answering…' : 'Answer'}
-            </div>
-            <p className="whitespace-pre-wrap leading-relaxed text-ink-800 dark:text-ink-100">{answer}</p>
-            {!streaming && citations && citations.length === 0 && (
-              <div className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                Ungrounded — no supporting source was found. Treat this as unverified.
+          <Card>
+            <CardBody className="p-6">
+              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--brand)' }}>
+                <Volume2 size={14} /> {grounded ? 'Grounded answer' : streaming ? 'Answering…' : 'Answer'}
               </div>
-            )}
-            {latencyMs != null && (
-              <div className="mt-4 text-xs text-ink-400">
-                {(latencyMs / 1000).toFixed(1)}s · {citations?.length ?? 0} source{citations?.length === 1 ? '' : 's'} · citation coverage {grounded ? 'ok' : 'none'}
-              </div>
-            )}
-          </div>
+              <p className="whitespace-pre-wrap leading-relaxed text-ink-800 dark:text-ink-100">{answer}</p>
+              {!streaming && citations && citations.length === 0 && (
+                <div className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                  Ungrounded — no supporting source was found. Treat this as unverified.
+                </div>
+              )}
+              {latencyMs != null && (
+                <div className="mt-4 text-xs text-ink-400">
+                  {(latencyMs / 1000).toFixed(1)}s · {citations?.length ?? 0} source{citations?.length === 1 ? '' : 's'} · citation coverage {grounded ? 'ok' : 'none'}
+                </div>
+              )}
+            </CardBody>
+          </Card>
           <div>{citations && <Citations citations={citations} />}</div>
         </div>
       )}

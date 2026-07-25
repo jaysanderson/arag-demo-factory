@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Shuffle, Sparkles, Share2, Play } from 'lucide-react';
+import { Button, Chip } from '@progress/kendo-react-buttons';
+import { Input } from '@progress/kendo-react-inputs';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import type { CatalogCard, GraphResult } from '../lib/arag';
 import { catalog, graph } from '../lib/arag';
@@ -61,30 +64,29 @@ export function RelatedSurface({ surface }: SurfaceProps) {
 
       <form onSubmit={(e) => { e.preventDefault(); run(pending); }} className="flex gap-2">
         <div className="relative flex-1">
-          <Shuffle size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
-          <input
+          <Shuffle size={16} className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-ink-400" />
+          <Input
             value={pending}
-            onChange={(e) => setPending(e.target.value)}
+            onChange={(e) => setPending(String(e.value))}
             placeholder="A title or topic — e.g. a video, article or matter"
-            className="w-full rounded-lg border border-ink-200 bg-white py-2 pl-9 pr-3 text-sm dark:border-ink-700 dark:bg-ink-800"
+            className="w-full [&_.k-input-inner]:pl-7"
           />
         </div>
-        <button className="rounded-lg px-4 py-2 text-sm font-semibold text-white" style={{ background: 'var(--brand)' }}>
-          Find related
-        </button>
+        <Button type="submit" themeColor="primary">Find related</Button>
       </form>
 
       {!seed && picks.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-ink-500">Try:</span>
           {picks.map((p) => (
-            <button
+            <Chip
               key={p.id}
+              text={p.title.length > 46 ? p.title.slice(0, 46) + '…' : p.title}
               onClick={() => { setPending(p.title); run(p.title); }}
-              className="rounded-full border border-ink-200 px-3 py-1 text-xs text-ink-600 hover:border-ink-400 dark:border-ink-700 dark:text-ink-300"
-            >
-              {p.title.length > 46 ? p.title.slice(0, 46) + '…' : p.title}
-            </button>
+              fillMode="outline"
+              rounded="full"
+              size="small"
+            />
           ))}
         </div>
       )}
@@ -108,15 +110,17 @@ export function RelatedSurface({ surface }: SurfaceProps) {
             <div className="space-y-2">
               {similar.length === 0 && <div className="text-sm text-ink-400">No semantic neighbours found.</div>}
               {similar.map((c) => (
-                <div key={c.id} className="flex items-center gap-3 rounded-lg border border-ink-200 bg-white p-3 dark:border-ink-800 dark:bg-ink-900">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
-                    <Play size={16} />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
-                    <div className="text-[11px] uppercase text-ink-400">{mediaBadge(c)}</div>
-                  </div>
-                </div>
+                <Card key={c.id}>
+                  <CardBody className="flex items-center gap-3 p-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
+                      <Play size={16} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
+                      <div className="text-[11px] uppercase text-ink-400">{mediaBadge(c)}</div>
+                    </div>
+                  </CardBody>
+                </Card>
               ))}
             </div>
           </section>
@@ -131,16 +135,14 @@ export function RelatedSurface({ surface }: SurfaceProps) {
                 <div className="text-sm text-ink-400">No shared-entity connections found for this title.</div>
               )}
               {graphRes?.nodes.slice(0, 20).map((n) => (
-                <button
+                <Chip
                   key={n.id}
+                  text={`${n.label} · ${n.degree}`}
                   onClick={() => { setPending(n.label); run(n.label); }}
-                  title={`${n.group} · ${n.degree} connections`}
-                  className="rounded-full border px-3 py-1 text-xs transition hover:shadow-sm"
-                  style={{ borderColor: 'var(--brand-soft)', color: 'var(--brand)', background: 'var(--brand-soft)' }}
-                >
-                  {n.label}
-                  <span className="ml-1 opacity-60">· {n.degree}</span>
-                </button>
+                  rounded="full"
+                  size="small"
+                  style={{ borderColor: 'transparent', color: 'var(--brand)', background: 'var(--brand-soft)' }}
+                />
               ))}
             </div>
             <p className="mt-3 text-xs text-ink-400">

@@ -14,10 +14,26 @@
     --accent-strong: #b0741a;
     --accent-soft: #fbf3e6;
     color-scheme: light;
+    /* Let Kendo inherit the portal's own font stack instead of its default. */
+    --kendo-font-family: inherit;
   }
 
   html.dark {
     color-scheme: dark;
+  }
+
+  /* Dark mode for KendoReact. The default theme derives on-surface text,
+     base hover/active and subtle fills from these root surfaces via oklch()
+     relative colours, so overriding the surfaces + borders repaints the whole
+     Kendo set dark — no separate dark swatch build needed. */
+  html.dark {
+    --kendo-color-app-surface: #0a0a0a;
+    --kendo-color-surface: #171717;
+    --kendo-color-surface-alt: #171717;
+    --kendo-color-base-subtle: #1c1c1c;
+    --kendo-color-base: #262626;
+    --kendo-color-border: rgba(255, 255, 255, 0.12);
+    --kendo-color-border-alt: rgba(255, 255, 255, 0.22);
   }
 
   html,
@@ -149,4 +165,33 @@
   html.dark .scroll-slim::-webkit-scrollbar-thumb {
     @apply bg-ink-700;
   }
+}
+
+/* ---- KendoReact integration ---------------------------------------------
+   Keep Kendo primitives on the portal's soft, rounded look and let them sit on
+   the app background rather than Kendo's default hard surfaces. Layout/spacing
+   still comes from Tailwind on the wrapping elements. */
+.k-card {
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+.k-card.card-flat {
+  box-shadow: none;
+}
+/* Kendo AppBar as the portal's translucent, sticky top bar. */
+.k-appbar {
+  background: transparent;
+  border: 0;
+}
+/* Togglable nav buttons: use the brand-subtle fill when selected. */
+.k-button.k-selected {
+  color: var(--brand-strong);
+}
+html.dark .k-button.k-selected {
+  color: var(--brand-contrast);
+}
+/* Kendo Grid inherits the card's rounded corners. */
+.k-grid {
+  border-radius: 0.75rem;
+  overflow: hidden;
 }

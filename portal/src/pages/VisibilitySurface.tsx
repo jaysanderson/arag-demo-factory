@@ -1,4 +1,15 @@
-import { Eye, Bot } from 'lucide-react';
+import { Eye } from 'lucide-react';
+import { Card, CardBody } from '@progress/kendo-react-layout';
+import {
+  Chart,
+  ChartSeries,
+  ChartSeriesItem,
+  ChartCategoryAxis,
+  ChartCategoryAxisItem,
+  ChartValueAxis,
+  ChartValueAxisItem,
+  ChartTooltip,
+} from '@progress/kendo-react-charts';
 import type { SurfaceProps } from './types';
 import { PageHeader } from '../components/PageHeader';
 import { SurfaceNotice } from '../components/SurfaceNotice';
@@ -10,6 +21,15 @@ import { SurfaceNotice } from '../components/SurfaceNotice';
 const MODELS = ['GPT-class', 'Claude-class', 'Gemini-class', 'Llama-class', 'Mistral-class'];
 
 export function VisibilitySurface({ surface }: SurfaceProps) {
+  const css = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+  const brand = css?.getPropertyValue('--brand').trim() || '#00713c';
+  const accent = css?.getPropertyValue('--accent').trim() || '#d9a441';
+  const chartData = MODELS.map((m, i) => ({
+    model: m,
+    value: [72, 64, 58, 41, 33][i],
+    color: i < 2 ? brand : accent,
+  }));
+
   return (
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="AI Visibility">
@@ -18,27 +38,32 @@ export function VisibilitySurface({ surface }: SurfaceProps) {
       </PageHeader>
 
       {/* Illustrative scorecard shape (structure, not live scores). */}
-      <div className="card p-5">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-ink-500">Visibility across models</p>
-        <div className="space-y-3">
-          {MODELS.map((m, i) => {
-            const pct = [72, 64, 58, 41, 33][i];
-            return (
-              <div key={m} className="flex items-center gap-3">
-                <Bot size={15} className="shrink-0 text-ink-400" />
-                <span className="w-32 shrink-0 text-sm text-ink-600 dark:text-ink-300">{m}</span>
-                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
-                  <div className="h-full rounded-full" style={{ width: `${pct}%`, background: i < 2 ? 'var(--brand)' : 'var(--accent)' }} />
-                </div>
-                <span className="w-10 shrink-0 text-right text-xs font-medium text-ink-500">{pct}%</span>
-              </div>
-            );
-          })}
-        </div>
-        <p className="mt-3 text-xs text-ink-400">
-          Illustrative structure. Live scores require the account model catalogue — see below.
-        </p>
-      </div>
+      <Card>
+        <CardBody className="p-5">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-ink-500">Visibility across models</p>
+          <Chart style={{ height: 240 }} transitions={false}>
+            <ChartTooltip format="{0}%" />
+            <ChartCategoryAxis>
+              <ChartCategoryAxisItem categories={MODELS} />
+            </ChartCategoryAxis>
+            <ChartValueAxis>
+              <ChartValueAxisItem max={100} labels={{ format: '{0}%' }} />
+            </ChartValueAxis>
+            <ChartSeries>
+              <ChartSeriesItem
+                type="bar"
+                data={chartData}
+                field="value"
+                categoryField="model"
+                colorField="color"
+              />
+            </ChartSeries>
+          </Chart>
+          <p className="mt-3 text-xs text-ink-400">
+            Illustrative structure. Live scores require the account model catalogue — see below.
+          </p>
+        </CardBody>
+      </Card>
 
       <SurfaceNotice
         title="AI Visibility Index"

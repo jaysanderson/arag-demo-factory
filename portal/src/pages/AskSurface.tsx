@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { SendHorizontal, Square, RotateCcw } from 'lucide-react';
+import { Button, Chip } from '@progress/kendo-react-buttons';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { ask, type Citation } from '../lib/arag';
 import { renderMarkdown } from '../lib/markdown';
@@ -95,46 +97,46 @@ export function AskSurface({ surface, config }: SurfaceProps) {
       </PageHeader>
 
       {/* Composer */}
-      <div className="card p-2">
-        <div className="flex items-end gap-2">
-          <textarea
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                run(query);
-              }
-            }}
-            rows={1}
-            placeholder="e.g. How do impact mills compare with chaff lining for ryegrass control?"
-            className="field max-h-40 min-h-[46px] flex-1 resize-none border-0 bg-transparent shadow-none focus:shadow-none"
-          />
-          {streaming ? (
-            <button className="btn btn-ghost" onClick={stop}>
-              <Square size={15} /> Stop
-            </button>
-          ) : (
-            <button className="btn btn-brand" onClick={() => run(query)} disabled={!query.trim()}>
-              <SendHorizontal size={16} /> Ask
-            </button>
-          )}
-        </div>
-      </div>
+      <Card>
+        <CardBody className="p-2">
+          <div className="flex items-end gap-2">
+            <textarea
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  run(query);
+                }
+              }}
+              rows={1}
+              placeholder="e.g. How do impact mills compare with chaff lining for ryegrass control?"
+              className="field max-h-40 min-h-[46px] flex-1 resize-none border-0 bg-transparent shadow-none focus:shadow-none"
+            />
+            {streaming ? (
+              <Button fillMode="outline" onClick={stop} startIcon={<Square size={15} />}>
+                Stop
+              </Button>
+            ) : (
+              <Button
+                themeColor="primary"
+                onClick={() => run(query)}
+                disabled={!query.trim()}
+                startIcon={<SendHorizontal size={16} />}
+              >
+                Ask
+              </Button>
+            )}
+          </div>
+        </CardBody>
+      </Card>
 
       {/* Suggestions */}
       {!answer && !streaming && suggestions.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="self-center text-xs font-medium text-ink-400">Try:</span>
           {suggestions.map((s) => (
-            <button
-              key={s}
-              onClick={() => run(s)}
-              className="chip transition hover:border-brand hover:text-brand"
-              style={{ cursor: 'pointer' }}
-            >
-              {s}
-            </button>
+            <Chip key={s} text={s} onClick={() => run(s)} fillMode="outline" rounded="full" size="small" />
           ))}
         </div>
       )}
@@ -144,43 +146,50 @@ export function AskSurface({ surface, config }: SurfaceProps) {
       {/* Answer + sources */}
       {(answer || streaming) && (
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_20rem]">
-          <div className="card p-5">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                Grounded answer
-              </span>
-              {done && (
-                <button onClick={reset} className="inline-flex items-center gap-1 text-xs text-ink-400 hover:text-ink-600">
-                  <RotateCcw size={12} /> New question
-                </button>
+          <Card>
+            <CardBody className="p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+                  Grounded answer
+                </span>
+                {done && (
+                  <Button
+                    fillMode="flat"
+                    size="small"
+                    onClick={reset}
+                    startIcon={<RotateCcw size={12} />}
+                  >
+                    New question
+                  </Button>
+                )}
+              </div>
+              <div
+                ref={answerRef}
+                className="answer-prose max-h-[60vh] overflow-y-auto scroll-slim"
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(answer) }}
+              />
+              {streaming && (
+                <div className="mt-2">
+                  <TypingDots />
+                </div>
               )}
-            </div>
-            <div
-              ref={answerRef}
-              className="answer-prose max-h-[60vh] overflow-y-auto scroll-slim"
-              dangerouslySetInnerHTML={{ __html: renderMarkdown(answer) }}
-            />
-            {streaming && (
-              <div className="mt-2">
-                <TypingDots />
-              </div>
-            )}
-            {ungrounded && (
-              <div className="mt-4">
-                <UngroundedWarning>
-                  {refusalLike
-                    ? 'The portal correctly declined: the Knowledge Box holds nothing that supports this question, so it did not invent an answer. That refusal is the behaviour to trust.'
-                    : 'The Knowledge Box returned no citations for this answer. Do not rely on the text above — an uncited answer is treated as ungrounded here.'}
-                </UngroundedWarning>
-              </div>
-            )}
-          </div>
+              {ungrounded && (
+                <div className="mt-4">
+                  <UngroundedWarning>
+                    {refusalLike
+                      ? 'The portal correctly declined: the Knowledge Box holds nothing that supports this question, so it did not invent an answer. That refusal is the behaviour to trust.'
+                      : 'The Knowledge Box returned no citations for this answer. Do not rely on the text above — an uncited answer is treated as ungrounded here.'}
+                  </UngroundedWarning>
+                </div>
+              )}
+            </CardBody>
+          </Card>
 
           <aside className="lg:sticky lg:top-4 lg:self-start">
             {citations && citations.length > 0 ? (
               <Citations citations={citations} onOpen={setOpenDoc} />
             ) : streaming ? (
-              <div className="card p-4 text-sm text-ink-400">Resolving sources…</div>
+              <Card className="card-flat"><CardBody className="p-4 text-sm text-ink-400">Resolving sources…</CardBody></Card>
             ) : null}
           </aside>
         </div>

@@ -6,3 +6,5 @@ dist
 npm-debug.log*
 .fly
 *.tsbuildinfo
+telerik-license.txt
+kendo-ui-license.txt

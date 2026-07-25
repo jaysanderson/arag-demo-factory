@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Play, Plus, X, GitBranch } from 'lucide-react';
+import { Button } from '@progress/kendo-react-buttons';
+import { Input } from '@progress/kendo-react-inputs';
+import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { ask, type Citation } from '../lib/arag';
 import { renderMarkdown } from '../lib/markdown';
@@ -81,9 +84,9 @@ export function WorkflowsSurface({ surface, config }: SurfaceProps) {
         icon={surface.icon}
         title="Workflows"
         actions={
-          <button className="btn btn-brand" onClick={run} disabled={running || !steps.length}>
-            <Play size={15} /> {running ? 'Running…' : 'Run workflow'}
-          </button>
+          <Button themeColor="primary" onClick={run} disabled={running || !steps.length} startIcon={<Play size={15} />}>
+            {running ? 'Running…' : 'Run workflow'}
+          </Button>
         }
       >
         Not one answer — a chain of grounded steps that mirrors how an analyst works. Each step retrieves and cites
@@ -92,23 +95,26 @@ export function WorkflowsSurface({ surface, config }: SurfaceProps) {
 
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
-      <div className="card flex items-center gap-2 p-2">
-        <Plus size={16} className="ml-2 text-ink-400" />
-        <input
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && add()}
-          placeholder="Add a step (a grounded sub-question)…"
-          className="field border-0 bg-transparent shadow-none focus:shadow-none"
-        />
-        <button onClick={add} className="btn btn-ghost">Add step</button>
-      </div>
+      <Card>
+        <CardBody className="flex items-center gap-2 p-2">
+          <Plus size={16} className="ml-2 shrink-0 text-ink-400" />
+          <Input
+            value={draft}
+            onChange={(e) => setDraft(String(e.value))}
+            onKeyDown={(e) => e.key === 'Enter' && add()}
+            placeholder="Add a step (a grounded sub-question)…"
+            className="flex-1"
+          />
+          <Button fillMode="outline" onClick={add}>Add step</Button>
+        </CardBody>
+      </Card>
 
       <ol className="space-y-3">
         {steps.map((s, i) => (
           <li key={i} className="relative">
             {i < steps.length - 1 && <span className="absolute left-[19px] top-10 h-[calc(100%-1rem)] w-px bg-ink-200 dark:bg-ink-800" />}
-            <div className="card p-4">
+            <Card>
+              <CardBody className="p-4">
               <div className="flex items-start gap-3">
                 <span
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
@@ -123,9 +129,9 @@ export function WorkflowsSurface({ surface, config }: SurfaceProps) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-ink-900 dark:text-ink-100">{s.q}</p>
-                    <button onClick={() => remove(i)} className="ml-auto rounded p-1 text-ink-400 hover:text-ink-700" aria-label="Remove step">
+                    <Button fillMode="flat" size="small" className="ml-auto" onClick={() => remove(i)} aria-label="Remove step">
                       <X size={14} />
-                    </button>
+                    </Button>
                   </div>
                   {s.state === 'done' && (
                     <>
@@ -140,7 +146,8 @@ export function WorkflowsSurface({ surface, config }: SurfaceProps) {
                   {s.state === 'error' && <p className="mt-1 text-xs text-red-600">{s.note}</p>}
                 </div>
               </div>
-            </div>
+              </CardBody>
+            </Card>
           </li>
         ))}
       </ol>
