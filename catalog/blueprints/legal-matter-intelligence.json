@@ -1,0 +1,54 @@
+{
+  "id": "legal-matter-intelligence",
+  "name": "Legal Matter Intelligence",
+  "vertical": "Legal / Professional Services",
+  "provenanceDemo": "capstone-legal",
+  "liveReference": "https://capstone-legal.fly.dev",
+  "persona": "Tilden & Voss LLP — a fictional family-law and trusts-and-estates firm",
+  "tagline": "A partner-grade research workbench over a firm's matters, precedent and know-how.",
+  "elevatorPitch": "Associates surface on-point precedent in seconds with citations a partner will actually trust, and the matter graph reveals related engagements and conflicts that no keyword search would ever connect.",
+  "matchTags": ["legal","law","matters","precedent","litigation","contracts","counsel","firm","attorney","case law","family law","trusts","estates","conflicts","paralegal","know-how","professional services"],
+  "capabilities": ["cited-ask", "find", "facets", "graph", "personas"],
+  "theme": {
+    "brandName": "Tilden & Voss",
+    "primary": "#1f3a5f",
+    "accent": "#b08d57",
+    "mood": "authoritative, restrained, editorial"
+  },
+  "corpus": {
+    "domain": "US family-law and trusts-and-estates practice — matter files, precedent, firm know-how and client intake",
+    "docTypes": ["matter memo", "precedent brief", "statute note", "client intake form", "engagement letter", "deposition summary", "settlement agreement", "internal know-how note"],
+    "targetCount": 44,
+    "recurringEntities": {
+      "attorneys": 8,
+      "matters": 14,
+      "clients": 12,
+      "jurisdictions": 5,
+      "opposingCounsel": 6,
+      "practiceAreas": 4
+    },
+    "cornerstoneQueries": [
+      "What is our standard position on a spendthrift trust clause, and which matters have relied on it?",
+      "Which matters involved contested guardianship in California, and who was lead attorney?",
+      "How have we argued undue influence in will-contest matters, and what precedent did we cite?",
+      "Show the engagement history and related matters for the Harrow family trust."
+    ],
+    "refusalProbes": [
+      "What are the current SEC insider-trading penalties for a public company?",
+      "Draft me a UK employment-tribunal claim for unfair dismissal."
+    ],
+    "notes": "Two personas — a Client-facing view (guarded, plain-English, engagement-safe) and a Research view (full precedent, internal know-how, deposition detail) — are the same KB filtered by stored search_configurations, so the personas surface has real teeth. Matters, clients and opposing counsel recur across memos and briefs so the graph forms genuine conflict-check edges."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Ask a real practice question — the answer is grounded in the firm's own matters and precedent, every claim cited to the memo it came from.", "show": "Ask: 'our standard spendthrift trust clause' → cited answer, sources grouped by matter" },
+    { "step": 2, "say": "Flip from the Research persona to the Client persona — same question, guarded engagement-safe answer. One KB, audience-scoped by configuration.", "show": "Persona switch → Client view withholds internal know-how" },
+    { "step": 3, "say": "The matter graph surfaces related engagements and shared opposing counsel — the conflict-check a keyword search misses.", "show": "Graph around a client entity → related matters + opposing counsel edges" },
+    { "step": 4, "say": "Narrow the whole book of matters by practice area, jurisdiction and attorney — counts come live from the Knowledge Box.", "show": "Facets filter to contested-guardianship matters in California" },
+    { "step": 5, "say": "Ask something outside the firm's corpus and it refuses rather than inventing law — the behaviour that earns a partner's trust.", "show": "Refusal probe → explicit ungrounded warning, no confabulated statute" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Tilden & Voss LLP is a fictional firm and all matters, clients and precedent are synthetic. Not legal advice."
+  }
+}

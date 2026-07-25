@@ -1,0 +1,29 @@
+{
+  "id": "remi",
+  "name": "Groundedness Dashboard",
+  "surface": "remi",
+  "tagline": "REMi scores every answer for groundedness and relevance.",
+  "aragEndpoints": [
+    "/ask"
+  ],
+  "requires": [
+    "cited-ask"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": false
+  },
+  "portal": {
+    "route": "/quality",
+    "navLabel": "Quality",
+    "component": "RemiSurface",
+    "icon": "gauge"
+  },
+  "sells": "A live groundedness score turns 'trust me' into a number an exec can govern against.",
+  "provenance": [
+    "ironbark-arag",
+    "codeintel-arag"
+  ]
+}

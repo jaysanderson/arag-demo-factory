@@ -1,0 +1,30 @@
+{
+  "id": "facets",
+  "name": "Faceted Browse",
+  "surface": "search",
+  "tagline": "Filter the whole corpus by type, topic, source, date.",
+  "aragEndpoints": [
+    "/catalog"
+  ],
+  "requires": [
+    "find"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": false,
+    "labelsets": true,
+    "graph": false
+  },
+  "portal": {
+    "route": "/search",
+    "navLabel": "Search",
+    "component": "SearchSurface",
+    "icon": "filter"
+  },
+  "sells": "Counts come live from the Knowledge Box, never a stale local index — the corpus is the source of truth.",
+  "provenance": [
+    "research-portal-arag",
+    "capstone-legal",
+    "capstone-atlas-operations"
+  ]
+}

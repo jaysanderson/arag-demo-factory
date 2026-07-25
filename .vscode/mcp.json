@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "nuclia": {
+      "type": "http",
+      "url": "https://${env:NUCLIA_ZONE}.rag.progress.cloud/api/v1/kb/${env:NUCLIA_KB_ID}/mcp",
+      "headers": {
+        "X-NUCLIA-SERVICEACCOUNT": "Bearer ${env:NUCLIA_SERVICEACCOUNT}"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@0.0.74", "--headless"]
+    }
+  }
+}

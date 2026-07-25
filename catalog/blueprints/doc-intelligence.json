@@ -1,0 +1,52 @@
+{
+  "id": "doc-intelligence",
+  "name": "Document Intelligence Studio",
+  "vertical": "Shared Services / Back-Office Automation / Intelligent Document Processing",
+  "provenanceDemo": "arag-doc-processing",
+  "liveReference": "https://arag-doc-processing.fly.dev",
+  "persona": "Meridian Shared Services (fictional back-office automation team inside a mid-market enterprise)",
+  "tagline": "Drop any business document and watch an 8-step pipeline turn it into clean, validated, structured data.",
+  "elevatorPitch": "A back-office team drops an invoice, a contract, or a pre-authorisation form and — with no per-document template — the pipeline classifies it, reads its layout with a visual LLM, extracts the fields to a schema, and hands back validated JSON, so a task that took an operator ten minutes becomes ten seconds a partner will trust.",
+  "matchTags": ["document processing", "idp", "intelligent document processing", "invoice", "contract", "resume", "purchase order", "po", "pre-authorisation", "remittance", "ocr", "extraction", "classification", "ner", "back office", "shared services", "automation", "forms", "unstructured", "structured data", "pipeline"],
+  "capabilities": ["doc-pipeline", "find", "cited-ask"],
+  "theme": {
+    "brandName": "Meridian Document Studio",
+    "primary": "#2b3a67",
+    "accent": "#f2994a",
+    "mood": "precise, industrial, control-room clean"
+  },
+  "corpus": {
+    "domain": "Mixed back-office document intake for a shared-services team — accounts payable, procurement, HR, and claims administration",
+    "docTypes": ["invoice", "purchase order", "vendor contract", "remittance advice", "insurance pre-authorisation form", "resume", "delivery note", "credit memo"],
+    "targetCount": 40,
+    "recurringEntities": {
+      "vendors": 12,
+      "costCenters": 8,
+      "approvers": 6,
+      "documentSchemas": 8,
+      "currencies": 4
+    },
+    "cornerstoneQueries": [
+      "What is the total payable on the invoice from vendor Cascade Supply and which cost centre does it map to?",
+      "Which vendor contracts renew before the end of Q3 and what are their auto-renewal terms?",
+      "Summarise the line items and net-30 terms on the most recent remittance advice.",
+      "Which pre-authorisation forms are missing a diagnosis code and need validation?"
+    ],
+    "refusalProbes": [
+      "What was the vendor's share price on the day this invoice was issued?",
+      "What is the personal credit score of the applicant on this resume?"
+    ],
+    "notes": "Each document carries source_doc_type, extraction_schema, and validation_status metadata so the pipeline stages (classify, extract, validate, standardise) all have something to render. Vendors, cost centres and approvers recur across doc types so extracted fields cross-reference into a coherent entity view. Standardised output should be shown in JSON, XML and CSV to prove format-agnostic export."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Drop a document in cold — no template, no config. The agent classifies what it is.", "show": "Upload a mixed PDF → pipeline step 3 tags it 'vendor invoice' with confidence" },
+    { "step": 2, "say": "The visual LLM reads the layout the way a person would — tables, stamps, totals — and extracts to a schema.", "show": "Steps 4-5: schema-driven fields populate with bounding-box highlights on the page" },
+    { "step": 3, "say": "It validates against business rules and standardises to clean structured data.", "show": "Step 8: same extraction exported as JSON, then toggled to XML and CSV" },
+    { "step": 4, "say": "Now the whole intake is queryable — ask across every document you've processed, grounded and cited.", "show": "Ask: 'which contracts auto-renew before Q3' → cited answer over extracted fields" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — all documents, vendors and identities are synthetic. Not real financial or personal records; extractions are illustrative only."
+  }
+}

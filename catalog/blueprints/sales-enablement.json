@@ -1,0 +1,52 @@
+{
+  "id": "sales-enablement",
+  "name": "Sales Enablement Companion",
+  "vertical": "B2B Software / Revenue / Sales Enablement",
+  "provenanceDemo": "arag-salesbuddy",
+  "liveReference": "https://arag-salesbuddy.fly.dev",
+  "persona": "Northwind Cloud (fictional B2B software vendor's revenue team)",
+  "tagline": "An AI selling companion grounded in your product truth and your sales methodology.",
+  "elevatorPitch": "A rep pastes messy call notes and gets a MEDDICC-qualified deal read, a per-account 'why now' narrative, and funnel-ready content — every claim grounded in the real product and methodology KBs, so nothing goes to a customer that the company can't stand behind.",
+  "matchTags": ["sales", "sales enablement", "revenue", "b2b", "selling", "seller", "companion", "meddicc", "qualification", "discovery", "funnel", "battlecard", "objection handling", "account planning", "why now", "pipeline", "crm", "product marketing", "playbook", "methodology"],
+  "capabilities": ["cited-ask", "find", "facets"],
+  "theme": {
+    "brandName": "Northwind Sales Companion",
+    "primary": "#0b6b5b",
+    "accent": "#e8b04b",
+    "mood": "confident, modern, revenue-team energetic"
+  },
+  "corpus": {
+    "domain": "Enablement content for a fictional cloud data-platform vendor — product truth plus a codified sales methodology",
+    "docTypes": ["product datasheet", "feature brief", "competitive battlecard", "objection-handling guide", "MEDDICC methodology playbook", "case study", "pricing & packaging note", "discovery question bank"],
+    "targetCount": 44,
+    "recurringEntities": {
+      "products": 6,
+      "competitors": 5,
+      "personas": 6,
+      "industries": 7,
+      "meddiccDimensions": 8
+    },
+    "cornerstoneQueries": [
+      "What is our 'why now' framing for a mid-market fintech evaluating us against Vantage Data?",
+      "Draft a MEDDICC qualification summary from these discovery notes: budget confirmed, no economic buyer identified, pain is slow reporting.",
+      "How do we handle the objection that our platform is too expensive versus an open-source stack?",
+      "Which case studies are relevant to a healthcare prospect worried about data residency?"
+    ],
+    "refusalProbes": [
+      "What discount did we give Contoso on their renewal last quarter?",
+      "What is competitor Vantage Data's unpublished internal roadmap?"
+    ],
+    "notes": "Two logical content sets — Product and Methodology — reuse the same products, competitors and personas so retrieval can blend product facts with selling guidance. MEDDICC dimensions recur as labels so qualification answers can be structured. All accounts, competitors and deals are invented; no real customer names."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Paste raw discovery notes — the companion qualifies the deal against MEDDICC, grounded in your own playbook.", "show": "Ask with pasted notes → structured MEDDICC read, each dimension cited to the methodology KB" },
+    { "step": 2, "say": "Ask for a per-account 'why now' — it blends product truth with the account's situation.", "show": "Ask: 'why now for a mid-market fintech vs Vantage Data' → cited narrative from Product + battlecard" },
+    { "step": 3, "say": "Draft funnel content on demand and it stays inside what the company can actually claim.", "show": "Ask: 'follow-up email addressing the price objection' → grounded draft, sources shown" },
+    { "step": 4, "say": "Browse the enablement library by product, persona and industry — counts live from the KB.", "show": "Facets narrow to healthcare + data-residency case studies" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — fictional vendor, products, competitors and accounts. Not real sales collateral or competitive intelligence."
+  }
+}

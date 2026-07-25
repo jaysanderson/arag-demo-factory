@@ -1,0 +1,29 @@
+{
+  "id": "graph",
+  "name": "Knowledge Graph Explorer",
+  "surface": "graph",
+  "tagline": "Entities and relationships ARAG extracts during processing.",
+  "aragEndpoints": [
+    "/graph",
+    "/graph/nodes"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": false,
+    "labelsets": false,
+    "graph": true
+  },
+  "portal": {
+    "route": "/graph",
+    "navLabel": "Graph",
+    "component": "GraphSurface",
+    "icon": "share"
+  },
+  "sells": "The graph surfaces connections no keyword search would — related matters, people, assets — the 'we didn't know we knew that' moment.",
+  "provenance": [
+    "capstone-legal",
+    "capstone-atlas-operations",
+    "capstone-aurora-concierge"
+  ]
+}

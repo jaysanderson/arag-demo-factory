@@ -1,0 +1,52 @@
+{
+  "id": "call-center-qa",
+  "name": "Contact-Centre QA Analytics",
+  "vertical": "Contact Centre / Health Insurance / Quality Assurance",
+  "provenanceDemo": "call-analysis-arag",
+  "liveReference": "https://call-analysis-arag.fly.dev",
+  "persona": "Corella Care (fictional health-insurance contact-centre operations team)",
+  "tagline": "Turn every recorded call into governed QA metrics you can query and defend.",
+  "elevatorPitch": "Instead of a supervisor spot-checking two calls in ten, augmentation agents score every call for first-call resolution, compliance and CSAT, surface complaint themes and cross-sell misses, and let ops ask 'which agents slipped a compliance line this week?' — each answer grounded in the actual transcript.",
+  "matchTags": ["call centre", "call center", "contact centre", "qa", "quality assurance", "voice of customer", "transcript", "compliance", "first call resolution", "fcr", "csat", "complaints", "cross-sell", "agent scorecard", "health insurance", "customer service", "speech analytics", "call analytics", "conversation intelligence"],
+  "capabilities": ["call-qa", "cited-ask", "find", "remi"],
+  "theme": {
+    "brandName": "Corella Care QA",
+    "primary": "#134e6f",
+    "accent": "#ff9f1c",
+    "mood": "operational, calm, dashboard-authoritative"
+  },
+  "corpus": {
+    "domain": "Analysed inbound member-service calls for a fictional health insurer — claims questions, coverage enquiries, complaints and retention saves",
+    "docTypes": ["call transcript", "call QA scorecard", "compliance checklist result", "complaint record", "CSAT survey response", "agent coaching note", "cross-sell opportunity log"],
+    "targetCount": 42,
+    "recurringEntities": {
+      "agents": 10,
+      "callReasons": 8,
+      "complaintCategories": 6,
+      "complianceRules": 7,
+      "queues": 5
+    },
+    "cornerstoneQueries": [
+      "Which calls this period failed the identity-verification compliance step, and which agents handled them?",
+      "What are the top complaint categories for coverage enquiries and how did first-call resolution trend?",
+      "Summarise the cross-sell opportunities that were raised but not converted in the retention queue.",
+      "Which agent has the highest CSAT on complaint calls and what did they do differently?"
+    ],
+    "refusalProbes": [
+      "What is the member's full policy number and date of birth from this call?",
+      "What were our call volumes in a region we don't operate in, Southeast Asia?"
+    ],
+    "notes": "Each call carries media_type='audio' and duration so the media/call surface lights up with a synced transcript; scorecards carry fcr, csat, compliance_pass and complaint_category fields for the analytics tiles. Agents, queues and complaint categories recur across calls so trends and per-agent rollups are real. Member PII is synthetic and citation-scrubbed; transcripts reference invented member names only."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Every call is scored automatically — first-call resolution, compliance, CSAT, complaint theme — not a 2% sample.", "show": "QA dashboard: FCR, compliance-pass and CSAT tiles with complaint-category breakdown" },
+    { "step": 2, "say": "Open any call and the transcript is synced, with the moments that drove the score highlighted.", "show": "Call detail: transcript scrolls with audio, compliance step flagged red" },
+    { "step": 3, "say": "Ask operational questions across every call — grounded in the actual transcripts.", "show": "Ask: 'which calls failed identity verification this week' → cited answer listing calls + agents" },
+    { "step": 4, "say": "And you can govern it — a groundedness score on every answer so QA decisions are defensible.", "show": "REMi quality panel: ungrounded rate near zero across the QA answers" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — fictional insurer, agents and members. Transcripts and QA scores are synthetic; not real calls, members, or protected health information."
+  }
+}

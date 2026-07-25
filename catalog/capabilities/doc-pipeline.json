@@ -1,0 +1,27 @@
+{
+  "id": "doc-pipeline",
+  "name": "Document Intelligence Studio",
+  "surface": "docproc",
+  "tagline": "Drop a document, watch classify → extract → validate → standardise.",
+  "aragEndpoints": [
+    "/ask",
+    "/find"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": true,
+    "graph": false
+  },
+  "portal": {
+    "route": "/studio",
+    "navLabel": "Doc Studio",
+    "component": "DocStudioSurface",
+    "icon": "file"
+  },
+  "sells": "An invoice, contract or claim becomes structured JSON in eight visible steps — the automation ROI story on a plate.",
+  "provenance": [
+    "arag-doc-processing"
+  ]
+}

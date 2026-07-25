@@ -1,0 +1,448 @@
+{
+  "generatedAt": "2026-07-25T02:14:15.680Z",
+  "counts": {
+    "blueprints": 11,
+    "capabilities": 12
+  },
+  "blueprints": [
+    {
+      "id": "ai-visibility",
+      "name": "Generative Visibility Index",
+      "vertical": "Marketing / Brand / Answer Engine Optimisation (AEO)",
+      "provenanceDemo": "geostack-progress",
+      "matchTags": [
+        "ai visibility",
+        "generative visibility",
+        "aeo",
+        "answer engine optimisation",
+        "geo",
+        "brand",
+        "marketing",
+        "share of voice",
+        "sentiment",
+        "citation",
+        "displacement",
+        "llm ranking",
+        "chatgpt",
+        "ask ai",
+        "recommendations",
+        "mcp",
+        "agent experience",
+        "discoverability",
+        "seo for ai"
+      ],
+      "capabilities": [
+        "visibility",
+        "find",
+        "cited-ask",
+        "mcp"
+      ],
+      "tagline": "Measure how your brand shows up across AI models — then make your content the source they cite."
+    },
+    {
+      "id": "call-center-qa",
+      "name": "Contact-Centre QA Analytics",
+      "vertical": "Contact Centre / Health Insurance / Quality Assurance",
+      "provenanceDemo": "call-analysis-arag",
+      "matchTags": [
+        "call centre",
+        "call center",
+        "contact centre",
+        "qa",
+        "quality assurance",
+        "voice of customer",
+        "transcript",
+        "compliance",
+        "first call resolution",
+        "fcr",
+        "csat",
+        "complaints",
+        "cross-sell",
+        "agent scorecard",
+        "health insurance",
+        "customer service",
+        "speech analytics",
+        "call analytics",
+        "conversation intelligence"
+      ],
+      "capabilities": [
+        "call-qa",
+        "cited-ask",
+        "find",
+        "remi"
+      ],
+      "tagline": "Turn every recorded call into governed QA metrics you can query and defend."
+    },
+    {
+      "id": "code-intelligence",
+      "name": "Code Intelligence",
+      "vertical": "Software / Legacy Modernisation",
+      "provenanceDemo": "codeintel-arag",
+      "matchTags": [
+        "code",
+        "codebase",
+        "developer",
+        "legacy",
+        "modernisation",
+        "modernization",
+        "openedge",
+        "abl",
+        "erp",
+        "documentation",
+        "code search",
+        "key-man risk",
+        "dependency",
+        "blast radius",
+        "technical debt",
+        "source code",
+        "refactor",
+        "migration"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "graph",
+        "remi"
+      ],
+      "tagline": "Ask a legacy codebase questions in plain English and get answers cited to file and line — the antidote to key-man risk."
+    },
+    {
+      "id": "cx-concierge",
+      "name": "CX Concierge",
+      "vertical": "Retail / Customer Experience",
+      "provenanceDemo": "capstone-aurora-concierge",
+      "matchTags": [
+        "retail",
+        "ecommerce",
+        "customer experience",
+        "cx",
+        "concierge",
+        "shopping",
+        "storefront",
+        "product recommendations",
+        "personalisation",
+        "personalized feed",
+        "abandoned cart",
+        "winback",
+        "outdoor gear",
+        "catalogue",
+        "merchandising",
+        "conversion"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "personalize",
+        "graph",
+        "workflows"
+      ],
+      "tagline": "A grounded shopping concierge with a personalised feed, a journey graph and abandoned-cart winback — all over one product knowledge base."
+    },
+    {
+      "id": "doc-intelligence",
+      "name": "Document Intelligence Studio",
+      "vertical": "Shared Services / Back-Office Automation / Intelligent Document Processing",
+      "provenanceDemo": "arag-doc-processing",
+      "matchTags": [
+        "document processing",
+        "idp",
+        "intelligent document processing",
+        "invoice",
+        "contract",
+        "resume",
+        "purchase order",
+        "po",
+        "pre-authorisation",
+        "remittance",
+        "ocr",
+        "extraction",
+        "classification",
+        "ner",
+        "back office",
+        "shared services",
+        "automation",
+        "forms",
+        "unstructured",
+        "structured data",
+        "pipeline"
+      ],
+      "capabilities": [
+        "doc-pipeline",
+        "find",
+        "cited-ask"
+      ],
+      "tagline": "Drop any business document and watch an 8-step pipeline turn it into clean, validated, structured data."
+    },
+    {
+      "id": "enterprise-ops-command",
+      "name": "Enterprise Ops Command",
+      "vertical": "Enterprise Operations / IT & Service Management",
+      "provenanceDemo": "capstone-atlas-operations",
+      "matchTags": [
+        "operations",
+        "ops",
+        "enterprise",
+        "incident",
+        "rca",
+        "root cause",
+        "runbook",
+        "itsm",
+        "service management",
+        "sre",
+        "on-call",
+        "workflow",
+        "command centre",
+        "reliability",
+        "telemetry",
+        "change management",
+        "postmortem"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "graph",
+        "workflows",
+        "remi"
+      ],
+      "tagline": "Six grounded ops surfaces on one Knowledge Box — hybrid search, a two-voice concierge, schema-constrained workflows and composite-RAG incident RCA."
+    },
+    {
+      "id": "grains-research",
+      "name": "Agricultural Research Portal",
+      "vertical": "Research / Public Sector / Agriculture",
+      "provenanceDemo": "research-portal-arag",
+      "matchTags": [
+        "research",
+        "grains",
+        "agriculture",
+        "agronomy",
+        "trials",
+        "crops",
+        "science",
+        "university",
+        "government research",
+        "knowledge base",
+        "reports",
+        "papers",
+        "r&d",
+        "public sector"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "facets",
+        "graph",
+        "remi"
+      ],
+      "tagline": "A grounded research portal over a body of trials, papers, and transcribed media."
+    },
+    {
+      "id": "insurance-claims-workbench",
+      "name": "Insurance Claims Workbench",
+      "vertical": "Insurance / Financial Services",
+      "provenanceDemo": "ironbark-arag",
+      "matchTags": [
+        "insurance",
+        "insurer",
+        "claims",
+        "policy",
+        "coverage",
+        "underwriting",
+        "fraud",
+        "siu",
+        "actuarial",
+        "premium",
+        "adjuster",
+        "call qa",
+        "complaints",
+        "financial services",
+        "claims handling",
+        "risk"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "facets",
+        "call-qa",
+        "remi",
+        "graph"
+      ],
+      "tagline": "One grounded workbench for every insurance desk — claims, coverage, underwriting, SIU and QA on a single Knowledge Box."
+    },
+    {
+      "id": "legal-matter-intelligence",
+      "name": "Legal Matter Intelligence",
+      "vertical": "Legal / Professional Services",
+      "provenanceDemo": "capstone-legal",
+      "matchTags": [
+        "legal",
+        "law",
+        "matters",
+        "precedent",
+        "litigation",
+        "contracts",
+        "counsel",
+        "firm",
+        "attorney",
+        "case law",
+        "family law",
+        "trusts",
+        "estates",
+        "conflicts",
+        "paralegal",
+        "know-how",
+        "professional services"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "facets",
+        "graph",
+        "personas"
+      ],
+      "tagline": "A partner-grade research workbench over a firm's matters, precedent and know-how."
+    },
+    {
+      "id": "personalization",
+      "name": "Retail Personalisation Engine",
+      "vertical": "Retail / E-commerce / Digital Experience",
+      "provenanceDemo": "capstone-aurora-concierge",
+      "matchTags": [
+        "retail",
+        "e-commerce",
+        "ecommerce",
+        "personalisation",
+        "personalization",
+        "recommendations",
+        "product discovery",
+        "concierge",
+        "shopping assistant",
+        "storefront",
+        "catalogue",
+        "catalog",
+        "conversational commerce",
+        "seo",
+        "merchandising",
+        "customer experience",
+        "cx",
+        "woocommerce",
+        "cms",
+        "answer engine"
+      ],
+      "capabilities": [
+        "personalize",
+        "find",
+        "cited-ask"
+      ],
+      "tagline": "One ARAG engine replaces five point tools — grounded search, recommendations, AI chat and SEO, all from the catalogue."
+    },
+    {
+      "id": "sales-enablement",
+      "name": "Sales Enablement Companion",
+      "vertical": "B2B Software / Revenue / Sales Enablement",
+      "provenanceDemo": "arag-salesbuddy",
+      "matchTags": [
+        "sales",
+        "sales enablement",
+        "revenue",
+        "b2b",
+        "selling",
+        "seller",
+        "companion",
+        "meddicc",
+        "qualification",
+        "discovery",
+        "funnel",
+        "battlecard",
+        "objection handling",
+        "account planning",
+        "why now",
+        "pipeline",
+        "crm",
+        "product marketing",
+        "playbook",
+        "methodology"
+      ],
+      "capabilities": [
+        "cited-ask",
+        "find",
+        "facets"
+      ],
+      "tagline": "An AI selling companion grounded in your product truth and your sales methodology."
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "call-qa",
+      "name": "Call & Media Analytics",
+      "surface": "callqa",
+      "tagline": "Analytics over transcribed calls: resolution, compliance, CSAT."
+    },
+    {
+      "id": "cited-ask",
+      "name": "Grounded, Cited Answers",
+      "surface": "ask",
+      "tagline": "Streamed answers that always show their sources."
+    },
+    {
+      "id": "doc-pipeline",
+      "name": "Document Intelligence Studio",
+      "surface": "docproc",
+      "tagline": "Drop a document, watch classify → extract → validate → standardise."
+    },
+    {
+      "id": "facets",
+      "name": "Faceted Browse",
+      "surface": "search",
+      "tagline": "Filter the whole corpus by type, topic, source, date."
+    },
+    {
+      "id": "find",
+      "name": "Semantic Search",
+      "surface": "search",
+      "tagline": "Meaning-based retrieval that beats keyword search on the same corpus."
+    },
+    {
+      "id": "graph",
+      "name": "Knowledge Graph Explorer",
+      "surface": "graph",
+      "tagline": "Entities and relationships ARAG extracts during processing."
+    },
+    {
+      "id": "mcp",
+      "name": "MCP Endpoint Explorer",
+      "surface": "mcp",
+      "tagline": "The KB as an MCP server other agents can call."
+    },
+    {
+      "id": "personalize",
+      "name": "Personalised Experience",
+      "surface": "personalize",
+      "tagline": "Grounded, personalised feed and recommendations."
+    },
+    {
+      "id": "personas",
+      "name": "Audience-Scoped Views",
+      "surface": "ask",
+      "tagline": "Different answers for different audiences over one KB."
+    },
+    {
+      "id": "remi",
+      "name": "Groundedness Dashboard",
+      "surface": "remi",
+      "tagline": "REMi scores every answer for groundedness and relevance."
+    },
+    {
+      "id": "visibility",
+      "name": "AI Visibility Index",
+      "surface": "visibility",
+      "tagline": "How your brand appears across AI models, and how to fix it."
+    },
+    {
+      "id": "workflows",
+      "name": "Agentic Workflows",
+      "surface": "workflows",
+      "tagline": "Multi-step retrieval agents that reason over the KB."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "personas",
+  "name": "Audience-Scoped Views",
+  "surface": "ask",
+  "tagline": "Different answers for different audiences over one KB.",
+  "aragEndpoints": [
+    "/ask",
+    "/find"
+  ],
+  "requires": [
+    "cited-ask"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": true,
+    "graph": false
+  },
+  "portal": {
+    "route": "/ask",
+    "navLabel": "Ask",
+    "component": "AskSurface",
+    "icon": "users"
+  },
+  "sells": "Client vs. researcher, staff vs. public — one Knowledge Box, scoped answers via stored search configurations.",
+  "provenance": [
+    "capstone-legal"
+  ]
+}

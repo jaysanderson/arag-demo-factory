@@ -1,0 +1,28 @@
+{
+  "id": "call-qa",
+  "name": "Call & Media Analytics",
+  "surface": "callqa",
+  "tagline": "Analytics over transcribed calls: resolution, compliance, CSAT.",
+  "aragEndpoints": [
+    "/ask",
+    "/find"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": true,
+    "graph": false
+  },
+  "portal": {
+    "route": "/calls",
+    "navLabel": "Calls",
+    "component": "CallQaSurface",
+    "icon": "phone"
+  },
+  "sells": "Every call auto-scored for compliance, first-call resolution and cross-sell — QA that used to sample 2% now covers 100%.",
+  "provenance": [
+    "call-analysis-arag",
+    "ironbark-arag"
+  ]
+}

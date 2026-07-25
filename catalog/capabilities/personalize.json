@@ -1,0 +1,31 @@
+{
+  "id": "personalize",
+  "name": "Personalised Experience",
+  "surface": "personalize",
+  "tagline": "Grounded, personalised feed and recommendations.",
+  "aragEndpoints": [
+    "/ask",
+    "/find"
+  ],
+  "requires": [
+    "find"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": true,
+    "graph": false
+  },
+  "portal": {
+    "route": "/for-you",
+    "navLabel": "For You",
+    "component": "PersonalizeSurface",
+    "icon": "sparkle"
+  },
+  "sells": "One ARAG plugin replaces five point tools for search, recs, chat and SEO — all grounded in the catalogue.",
+  "provenance": [
+    "capstone-aurora-concierge",
+    "wordpress-arag-perso",
+    "umbraco-arag-perso"
+  ]
+}

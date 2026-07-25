@@ -1,0 +1,29 @@
+{
+  "id": "find",
+  "name": "Semantic Search",
+  "surface": "search",
+  "tagline": "Meaning-based retrieval that beats keyword search on the same corpus.",
+  "aragEndpoints": [
+    "/find",
+    "/catalog"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": false
+  },
+  "portal": {
+    "route": "/search",
+    "navLabel": "Search",
+    "component": "SearchSurface",
+    "icon": "search"
+  },
+  "sells": "Type a concept, not a keyword, and the right document surfaces — the 'aha' every buyer feels instantly.",
+  "provenance": [
+    "research-portal-arag",
+    "sitefinity-mcp-eftm2",
+    "every demo"
+  ]
+}

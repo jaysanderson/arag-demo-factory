@@ -1,0 +1,31 @@
+# Fly.io deployment for a generated ARAG demo portal.
+# Rename `app` to your demo slug (e.g. <slug>.fly.dev) before `fly deploy`.
+# Set the KB token as a secret, never in [env]:
+#   fly secrets set NUCLIA_SERVICEACCOUNT=… NUCLIA_KB_URL=… NUCLIA_ZONE=…
+app = "arag-portal"
+primary_region = "iad"
+
+[build]
+
+[env]
+  PORT = "8080"
+  NODE_ENV = "production"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.checks.health]
+    method = "GET"
+    path = "/api/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

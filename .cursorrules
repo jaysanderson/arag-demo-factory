@@ -1,0 +1,49 @@
+# ARAG Demo Factory — Project Rules
+
+This repo is a **one-shot demo factory** for **Progress Agentic RAG (ARAG / Nuclia)**. A
+sales engineer fires **one prompt**; you map it to a catalog blueprint × capabilities and
+build a themed, grounded, cited research portal end-to-end — no menu, no pausing.
+
+- **Read `AGENTS.md`** — it is authoritative for orchestration, the catalog, the pipeline,
+  and the Hard Rules. `CLAUDE.md` is the quick reference.
+- **ONE SHOT, NO MENU.** On the first message, load `catalog/catalog.json`, score the prompt
+  against blueprint `matchTags`, pick the best blueprint, honour explicit capability
+  add/drop modifiers, echo a single `Building: …` line, then run Phases 0-6 without pausing.
+  Only ask a question if the prompt has zero domain signal (a bare "hi") — and then ask one
+  open question, never a menu. This is the deliberate INVERSE of the PDP reference package's
+  "always show A/B/C/D" rule. Do not copy that rule here.
+- **Nuclia does the retrieval.** No local vector store or second index over corpus content.
+  All retrieval + generation is ARAG (`/ask`, `/find`, `/catalog`, `/graph`).
+- **Never rewrite the portal shell — configure it** via `demo.config.json`.
+- **Answers must render citations.** An ungrounded answer is a warning, never bare text.
+- **Hard Rules (non-negotiable):** synthetic only, no real brands, anonymise identities, no
+  residency/zone strings on screen, visible disclaimer, KB token server-side only.
+
+## MCP
+
+The `nuclia` MCP server is the primary interface for all Knowledge Box work
+(`search_documents`, `get_document`, `batch_get_documents`, ingest/write tools). MCP lives
+in the **orchestrator's** runtime — subagents don't inherit it, so all KB work (bind,
+ingest, configure, verify) stays in the orchestrator's loop; delegate only file/code
+generation. Fall back to the ARAG REST API only if MCP is unavailable, or for non-Nuclia
+targets (the portal's own server/UI).
+
+## Architecture
+
+```
+Portal (Vite + React + TS, config-driven, one shell)
+  -> Express server (server/index.mjs) — holds NUCLIA_SERVICEACCOUNT, proxies ARAG
+       -> Progress Agentic RAG (Nuclia) — /ask /find /catalog /graph /resources predict/chat mcp
+  -> demo.config.json — blueprint × capabilities drive which surfaces render + theme + KB binding
+```
+
+## Key files
+
+| Purpose | Path |
+|---------|------|
+| Orchestration (authoritative) | `AGENTS.md` |
+| The shopping list | `catalog/` (`catalog.json`, `blueprints/`, `capabilities/`) |
+| Composer / scaffolder | `create-app.js` |
+| Portal shell | `portal/` |
+| Canonical Nuclia surface | `docs/ARAG-API.md` |
+| Live portfolio snapshot | `DEMOS.md` |

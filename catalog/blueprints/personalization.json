@@ -1,0 +1,52 @@
+{
+  "id": "personalization",
+  "name": "Retail Personalisation Engine",
+  "vertical": "Retail / E-commerce / Digital Experience",
+  "provenanceDemo": "capstone-aurora-concierge",
+  "liveReference": "https://capstone-aurora-concierge.fly.dev",
+  "persona": "Fernwood & Field (fictional outdoor-and-lifestyle e-commerce retailer)",
+  "tagline": "One ARAG engine replaces five point tools — grounded search, recommendations, AI chat and SEO, all from the catalogue.",
+  "elevatorPitch": "A retailer swaps five bolt-on plugins for one engine: shoppers get a conversational concierge, a personalised feed, and search that actually understands intent — every recommendation and answer grounded in the live product catalogue, so nothing is invented and nothing is out of stock.",
+  "matchTags": ["retail", "e-commerce", "ecommerce", "personalisation", "personalization", "recommendations", "product discovery", "concierge", "shopping assistant", "storefront", "catalogue", "catalog", "conversational commerce", "seo", "merchandising", "customer experience", "cx", "woocommerce", "cms", "answer engine"],
+  "capabilities": ["personalize", "find", "cited-ask"],
+  "theme": {
+    "brandName": "Fernwood & Field",
+    "primary": "#3b5a3f",
+    "accent": "#d98c4a",
+    "mood": "warm, outdoorsy, premium-catalogue editorial"
+  },
+  "corpus": {
+    "domain": "Product catalogue and shopping content for a fictional outdoor-and-lifestyle retailer — apparel, gear, and buying guidance",
+    "docTypes": ["product listing", "category page", "buying guide", "how-to / care article", "customer review digest", "size & fit guide", "seasonal lookbook", "FAQ"],
+    "targetCount": 46,
+    "recurringEntities": {
+      "products": 18,
+      "categories": 7,
+      "brandsCarried": 6,
+      "useCases": 8,
+      "shopperSegments": 5
+    },
+    "cornerstoneQueries": [
+      "I'm hiking the coast in shoulder season and want a waterproof jacket under $250 — what do you recommend and why?",
+      "Which three-season tents pack down smallest for bike-touring, and how do they compare on weight?",
+      "What should I layer for an alpine start in autumn, and do you have it in my size?",
+      "Recommend a gift under $100 for someone getting into trail running."
+    ],
+    "refusalProbes": [
+      "What is another customer's order history and shipping address?",
+      "Can you give me a 90% discount code that isn't in your catalogue?"
+    ],
+    "notes": "Products recur across buying guides, reviews and lookbooks so recommendations can cite real catalogue items and cross-sell coherently. Each product carries category, price_band, use_case and in_stock metadata so the personalised feed and grounded recommendations have something to filter and rank on. Shopper segments drive the personalised feed. All products, brands carried and reviews are invented; no real retail brand."
+  },
+  "demoScript": [
+    { "step": 1, "say": "A shopper asks in plain language — the concierge answers and recommends from the live catalogue, grounded and cited.", "show": "Ask: 'waterproof jacket under $250 for shoulder-season hiking' → cited answer with real products" },
+    { "step": 2, "say": "The feed personalises to the shopper's segment — no generic homepage.", "show": "Personalised feed reorders for a 'bike-touring' segment vs a 'trail-running' segment" },
+    { "step": 3, "say": "Search understands intent, not just keywords, and every result is a catalogue item.", "show": "Find: 'packs small for bike-touring' → semantically ranked tents, in-stock only" },
+    { "step": 4, "say": "One engine did search, recommendations, chat and the SEO copy — replacing five separate plugins.", "show": "Toggle: same grounded answer rendered as on-page SEO content" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — fictional retailer, products and reviews. Prices, stock and recommendations are synthetic and not real commercial offers."
+  }
+}

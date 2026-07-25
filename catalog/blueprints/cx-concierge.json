@@ -1,0 +1,54 @@
+{
+  "id": "cx-concierge",
+  "name": "CX Concierge",
+  "vertical": "Retail / Customer Experience",
+  "provenanceDemo": "capstone-aurora-concierge",
+  "liveReference": "https://capstone-aurora-concierge.fly.dev",
+  "persona": "Aurora Outfitters — a fictional outdoor-gear retailer's storefront concierge",
+  "tagline": "A grounded shopping concierge with a personalised feed, a journey graph and abandoned-cart winback — all over one product knowledge base.",
+  "elevatorPitch": "A shopper asks for gear the way they'd ask a store expert and gets a cited, in-stock recommendation; the same engine personalises their feed and wins back an abandoned cart — turning grounded retrieval directly into conversion.",
+  "matchTags": ["retail","ecommerce","customer experience","cx","concierge","shopping","storefront","product recommendations","personalisation","personalized feed","abandoned cart","winback","outdoor gear","catalogue","merchandising","conversion"],
+  "capabilities": ["cited-ask", "find", "personalize", "graph", "workflows"],
+  "theme": {
+    "brandName": "Aurora Outfitters",
+    "primary": "#0f5132",
+    "accent": "#e8843c",
+    "mood": "warm, adventurous, outdoorsy-premium"
+  },
+  "corpus": {
+    "domain": "Outdoor-gear retail — product catalogue, buying guides, gear-care and warranty content, reviews and journey signals",
+    "docTypes": ["product page", "buying guide", "gear-care guide", "warranty policy", "customer review", "size & fit chart", "trip checklist", "returns policy"],
+    "targetCount": 48,
+    "recurringEntities": {
+      "products": 18,
+      "categories": 8,
+      "brands": 6,
+      "materials": 7,
+      "activities": 6,
+      "customerSegments": 4
+    },
+    "cornerstoneQueries": [
+      "What's the warmest three-season sleeping bag under two kilos, and does it come in a women's fit?",
+      "Which rain jacket is best for alpine hiking, and what's the waterproof rating and care routine?",
+      "I'm heading to Patagonia in shoulder season — build me a layering kit from what's in stock.",
+      "What's the warranty and returns policy on the Summit 45 pack if a buckle fails?"
+    ],
+    "refusalProbes": [
+      "What's the delivery ETA on my order number 88213?",
+      "Can you price-match a competitor's Black Friday tent deal from last year?"
+    ],
+    "notes": "Personalisation is the differentiator: the same grounded /ask that powers the concierge also scopes a personalised feed and an abandoned-cart winback via customer-segment fields — grounded retrieval turning straight into conversion. Products, categories and materials recur across pages, guides and reviews so the journey graph forms real 'goes-with' and 'viewed-together' edges. A Tier-3 workflow assembles a multi-item trip kit; every recommendation is cited to a product page so nothing is invented or out of stock."
+  },
+  "demoScript": [
+    { "step": 1, "say": "A shopper asks like they would a store expert — the concierge answers with a cited, in-stock recommendation, not a generic blurb.", "show": "Ask: 'warmest three-season bag under 2kg, women's fit' → cited product answer" },
+    { "step": 2, "say": "Ask for a whole kit and a workflow assembles it — a layering system built only from what's actually in the catalogue.", "show": "Workflow: 'Patagonia shoulder-season layering kit' → multi-item cited kit" },
+    { "step": 3, "say": "The feed personalises to the shopper's segment — same engine, now merchandising the homepage.", "show": "Personalised feed re-ranks for the 'alpine day-hiker' segment" },
+    { "step": 4, "say": "The journey graph connects products people buy and view together — powering 'completes-the-kit' recommendations.", "show": "Graph around the Summit 45 pack → goes-with tents, poles, rain shells" },
+    { "step": 5, "say": "It abandons gracefully too — ask about someone else's order and it refuses rather than inventing a delivery date.", "show": "Refusal probe → declines to fabricate order status" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Aurora Outfitters is a fictional retailer and all products, prices and reviews are synthetic. Not a real store; not purchasing advice."
+  }
+}

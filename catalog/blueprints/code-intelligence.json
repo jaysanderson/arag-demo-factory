@@ -1,0 +1,54 @@
+{
+  "id": "code-intelligence",
+  "name": "Code Intelligence",
+  "vertical": "Software / Legacy Modernisation",
+  "provenanceDemo": "codeintel-arag",
+  "liveReference": "https://codeintel-arag.fly.dev",
+  "persona": "Meridian Codex — a fictional distributor's system for understanding its 25-year-old OpenEdge ABL ERP",
+  "tagline": "Ask a legacy codebase questions in plain English and get answers cited to file and line — the antidote to key-man risk.",
+  "elevatorPitch": "The one engineer who understands a 25-year-old ERP is about to retire; Meridian Codex turns the code itself into a knowledge base that answers with file-and-line citations, auto-generates the missing docs, and maps blast radius before anyone touches a modernisation.",
+  "matchTags": ["code","codebase","developer","legacy","modernisation","modernization","openedge","abl","erp","documentation","code search","key-man risk","dependency","blast radius","technical debt","source code","refactor","migration"],
+  "capabilities": ["cited-ask", "find", "graph", "remi"],
+  "theme": {
+    "brandName": "Meridian Codex",
+    "primary": "#1b2b4a",
+    "accent": "#4ea3c7",
+    "mood": "engineered, blueprint-precise, quietly modern"
+  },
+  "corpus": {
+    "domain": "A fictional distributor's 25-year-old OpenEdge ABL ERP ('MeridianONE') — source modules, includes, schema, and the sparse docs and tickets around them",
+    "docTypes": ["ABL source module", "include file", "database schema definition", "auto-generated module doc", "modernisation risk note", "change ticket", "integration spec", "developer README"],
+    "targetCount": 44,
+    "recurringEntities": {
+      "modules": 16,
+      "procedures": 20,
+      "tables": 12,
+      "developers": 6,
+      "integrations": 7,
+      "riskItems": 10
+    },
+    "cornerstoneQueries": [
+      "How does the order-allocation procedure decide which warehouse fills a line, and where is that logic?",
+      "What depends on the customer-pricing include, and what's the blast radius if we change it?",
+      "Which modules touch the general-ledger posting table, and which have no documentation?",
+      "What are the highest-risk modules to modernise first, and why?"
+    ],
+    "refusalProbes": [
+      "How do I write this same logic in Python with Django ORM?",
+      "What's the latest OpenEdge 12.8 licensing cost from Progress?"
+    ],
+    "notes": "Presents as Meridian's own engineering system — ARAG is invisible. The wow is file+line grounding: ask-the-codebase answers cite the exact module and line, hitting 5/5 groundedness, so an engineer trusts it over the retiring expert's memory. Modules, procedures and tables recur across source and docs so the dependency/blast-radius graph forms real call and data-flow edges. A modernisation risk register ranks modules by coupling and doc-coverage; REMi proves the cited answers are grounded, not paraphrased guesses."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Start with the estate — a map of a 25-year-old ERP nobody fully remembers, built straight from the code.", "show": "Estate overview → module inventory, doc-coverage heat" },
+    { "step": 2, "say": "Ask the codebase a real question and it answers with the exact file and line — grounded, cited, 5/5.", "show": "Ask: 'how does order allocation pick a warehouse?' → answer cited to module + line" },
+    { "step": 3, "say": "Before touching anything, ask for blast radius — the graph shows every module and table that depends on this logic.", "show": "Graph around the customer-pricing include → dependent modules + data-flow edges" },
+    { "step": 4, "say": "The risk register ranks what to modernise first — highest coupling, thinnest docs — with the reasoning cited.", "show": "Modernisation risk register → top-risk modules with rationale" },
+    { "step": 5, "say": "Ask it to leap outside the codebase and it refuses rather than hallucinating a rewrite — the discipline that makes it safe for engineers.", "show": "Refusal probe → declines to invent a Python port" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Meridian Codex and the MeridianONE ERP are fictional and all source, schema and tickets are synthetic. Not real code; not modernisation advice."
+  }
+}

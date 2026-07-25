@@ -1,0 +1,91 @@
+{
+  "blueprint": "grains-research",
+  "title": "Grains Research Portal",
+  "persona": "A national grains research & development corporation (fictional GRDC-style body)",
+  "theme": {
+    "brandName": "Grains Research Portal",
+    "primary": "#00713c",
+    "accent": "#d9a441",
+    "mood": "trustworthy, field-tested, editorial-scientific"
+  },
+  "surfaces": [
+    {
+      "id": "ask",
+      "route": "/ask",
+      "label": "Ask",
+      "component": "AskSurface",
+      "icon": "chat",
+      "capabilities": ["cited-ask"],
+      "enabled": true
+    },
+    {
+      "id": "search",
+      "route": "/search",
+      "label": "Search",
+      "component": "SearchSurface",
+      "icon": "search",
+      "capabilities": ["find", "facets"],
+      "enabled": true
+    },
+    {
+      "id": "graph",
+      "route": "/graph",
+      "label": "Graph",
+      "component": "GraphSurface",
+      "icon": "share",
+      "capabilities": ["graph"],
+      "enabled": true
+    },
+    {
+      "id": "remi",
+      "route": "/quality",
+      "label": "Quality",
+      "component": "RemiSurface",
+      "icon": "gauge",
+      "capabilities": ["remi"],
+      "enabled": true
+    }
+  ],
+  "kb": {
+    "baseUrlEnv": "NUCLIA_KB_URL",
+    "zoneEnv": "NUCLIA_ZONE",
+    "tokenEnv": "NUCLIA_SERVICEACCOUNT"
+  },
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — synthetic grains research using real Australian districts, varieties and institutions for realism. Not actual research; not agronomic advice."
+  },
+  "demoScript": [
+    {
+      "step": 1,
+      "say": "Ask a real agronomy question — the answer is grounded in trial data with citations.",
+      "show": "Ask: 'impact mills vs chaff lining for ryegrass' → cited answer, sources grouped by document"
+    },
+    {
+      "step": 2,
+      "say": "Now watch it refuse. The corpus has no Canadian canola prices, so it declines rather than inventing.",
+      "show": "Ask a refusal probe → explicit ungrounded warning"
+    },
+    {
+      "step": 3,
+      "say": "Browse the whole corpus by crop, region, topic and media type — counts come live from the Knowledge Box.",
+      "show": "Search facets narrow to Western-region barley"
+    },
+    {
+      "step": 4,
+      "say": "The graph connects researchers, sites and varieties that recur across documents.",
+      "show": "Graph around a trial site entity"
+    },
+    {
+      "step": 5,
+      "say": "And every answer carries a groundedness score you can govern against.",
+      "show": "Quality dashboard — ungrounded rate near zero"
+    }
+  ],
+  "provenance": {
+    "demo": "research-portal-arag",
+    "reference": "https://research-portal-arag.fly.dev"
+  },
+  "generatedBy": "arag-demo-factory"
+}

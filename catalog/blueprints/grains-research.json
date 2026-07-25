@@ -1,0 +1,54 @@
+{
+  "id": "grains-research",
+  "name": "Agricultural Research Portal",
+  "vertical": "Research / Public Sector / Agriculture",
+  "provenanceDemo": "research-portal-arag",
+  "liveReference": "https://research-portal-arag.fly.dev",
+  "persona": "A national grains research & development corporation (fictional GRDC-style body)",
+  "tagline": "A grounded research portal over a body of trials, papers, and transcribed media.",
+  "elevatorPitch": "An agronomist asks a question in plain English and gets an answer grounded in real trial data with citations — and the portal correctly refuses when the corpus can't support an answer, which is what earns a researcher's trust.",
+  "matchTags": ["research","grains","agriculture","agronomy","trials","crops","science","university","government research","knowledge base","reports","papers","r&d","public sector"],
+  "capabilities": ["cited-ask", "find", "facets", "graph", "remi"],
+  "theme": {
+    "brandName": "Grains Research Portal",
+    "primary": "#00713c",
+    "accent": "#d9a441",
+    "mood": "trustworthy, field-tested, editorial-scientific"
+  },
+  "corpus": {
+    "domain": "Australian grains research & development — trials, Update papers, fact sheets, final reports, podcast & webinar transcripts",
+    "docTypes": ["trial report", "update paper", "fact sheet", "final report", "podcast transcript", "webinar transcript", "grower case study"],
+    "targetCount": 42,
+    "recurringEntities": {
+      "researchers": 14,
+      "trialSites": 10,
+      "crops": 9,
+      "varieties": 12,
+      "investmentCodes": 12,
+      "organisations": 8
+    },
+    "cornerstoneQueries": [
+      "How did sowing date interact with variety phenology for Scepter wheat at Merredin?",
+      "How do impact mills compare with chaff lining for annual ryegrass seed control?",
+      "What yield loss does crown rot cause in the Northern region, and how does inoculum load affect it?",
+      "Which lentil variety and plant density performed best at Horsham?"
+    ],
+    "refusalProbes": [
+      "What were canola export prices from Canada in 2024?",
+      "What is the recommended irrigation schedule for rice in the Riverina?"
+    ],
+    "notes": "This blueprint has a fully-built reference corpus already ingested into a live Knowledge Box; it is the factory's end-to-end proof. Multi-modal doc types (podcast/webinar transcripts carry duration + media_type) so the media angle shows."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Ask a real agronomy question — the answer is grounded in trial data with citations.", "show": "Ask: 'impact mills vs chaff lining for ryegrass' → cited answer, sources grouped by document" },
+    { "step": 2, "say": "Now watch it refuse. The corpus has no Canadian canola prices, so it declines rather than inventing.", "show": "Ask a refusal probe → explicit ungrounded warning" },
+    { "step": 3, "say": "Browse the whole corpus by crop, region, topic and media type — counts come live from the Knowledge Box.", "show": "Search facets narrow to Western-region barley" },
+    { "step": 4, "say": "The graph connects researchers, sites and varieties that recur across documents.", "show": "Graph around a trial site entity" },
+    { "step": 5, "say": "And every answer carries a groundedness score you can govern against.", "show": "Quality dashboard — ungrounded rate near zero" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — synthetic grains research using real Australian districts, varieties and institutions for realism. Not actual research; not agronomic advice."
+  }
+}

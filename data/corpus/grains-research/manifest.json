@@ -1,0 +1,1478 @@
+{
+  "$schema": "./MANIFEST_SCHEMA.md",
+  "blueprint": "grains-research",
+  "generatedBy": "scripts/generate-corpus.mjs",
+  "domain": "Australian grains research & development — trials, Update papers, fact sheets, final reports, podcast & webinar transcripts",
+  "notes": "This blueprint has a fully-built reference corpus already ingested into a live Knowledge Box; it is the factory's end-to-end proof. Multi-modal doc types (podcast/webinar transcripts carry duration + media_type) so the media angle shows.",
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — synthetic grains research using real Australian districts, varieties and institutions for realism. Not actual research; not agronomic advice."
+  },
+  "counts": {
+    "targetDocuments": 42,
+    "documentsPlanned": 42,
+    "entities": 65,
+    "docTypes": 7,
+    "mediaDocuments": 12
+  },
+  "taxonomy": [
+    {
+      "id": "doc_type",
+      "title": "Document type",
+      "multiple": false,
+      "labels": [
+        "trial report",
+        "update paper",
+        "fact sheet",
+        "final report",
+        "podcast transcript",
+        "webinar transcript",
+        "grower case study"
+      ]
+    },
+    {
+      "id": "topic",
+      "title": "Topic",
+      "multiple": true,
+      "labels": []
+    },
+    {
+      "id": "media_type",
+      "title": "Media type",
+      "multiple": false,
+      "labels": [
+        "audio",
+        "video",
+        "text"
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "id": "researcher-01",
+      "group": "researchers",
+      "label": "Researcher 1"
+    },
+    {
+      "id": "researcher-02",
+      "group": "researchers",
+      "label": "Researcher 2"
+    },
+    {
+      "id": "researcher-03",
+      "group": "researchers",
+      "label": "Researcher 3"
+    },
+    {
+      "id": "researcher-04",
+      "group": "researchers",
+      "label": "Researcher 4"
+    },
+    {
+      "id": "researcher-05",
+      "group": "researchers",
+      "label": "Researcher 5"
+    },
+    {
+      "id": "researcher-06",
+      "group": "researchers",
+      "label": "Researcher 6"
+    },
+    {
+      "id": "researcher-07",
+      "group": "researchers",
+      "label": "Researcher 7"
+    },
+    {
+      "id": "researcher-08",
+      "group": "researchers",
+      "label": "Researcher 8"
+    },
+    {
+      "id": "researcher-09",
+      "group": "researchers",
+      "label": "Researcher 9"
+    },
+    {
+      "id": "researcher-10",
+      "group": "researchers",
+      "label": "Researcher 10"
+    },
+    {
+      "id": "researcher-11",
+      "group": "researchers",
+      "label": "Researcher 11"
+    },
+    {
+      "id": "researcher-12",
+      "group": "researchers",
+      "label": "Researcher 12"
+    },
+    {
+      "id": "researcher-13",
+      "group": "researchers",
+      "label": "Researcher 13"
+    },
+    {
+      "id": "researcher-14",
+      "group": "researchers",
+      "label": "Researcher 14"
+    },
+    {
+      "id": "trialsite-01",
+      "group": "trialSites",
+      "label": "TrialSite 1"
+    },
+    {
+      "id": "trialsite-02",
+      "group": "trialSites",
+      "label": "TrialSite 2"
+    },
+    {
+      "id": "trialsite-03",
+      "group": "trialSites",
+      "label": "TrialSite 3"
+    },
+    {
+      "id": "trialsite-04",
+      "group": "trialSites",
+      "label": "TrialSite 4"
+    },
+    {
+      "id": "trialsite-05",
+      "group": "trialSites",
+      "label": "TrialSite 5"
+    },
+    {
+      "id": "trialsite-06",
+      "group": "trialSites",
+      "label": "TrialSite 6"
+    },
+    {
+      "id": "trialsite-07",
+      "group": "trialSites",
+      "label": "TrialSite 7"
+    },
+    {
+      "id": "trialsite-08",
+      "group": "trialSites",
+      "label": "TrialSite 8"
+    },
+    {
+      "id": "trialsite-09",
+      "group": "trialSites",
+      "label": "TrialSite 9"
+    },
+    {
+      "id": "trialsite-10",
+      "group": "trialSites",
+      "label": "TrialSite 10"
+    },
+    {
+      "id": "crop-01",
+      "group": "crops",
+      "label": "Crop 1"
+    },
+    {
+      "id": "crop-02",
+      "group": "crops",
+      "label": "Crop 2"
+    },
+    {
+      "id": "crop-03",
+      "group": "crops",
+      "label": "Crop 3"
+    },
+    {
+      "id": "crop-04",
+      "group": "crops",
+      "label": "Crop 4"
+    },
+    {
+      "id": "crop-05",
+      "group": "crops",
+      "label": "Crop 5"
+    },
+    {
+      "id": "crop-06",
+      "group": "crops",
+      "label": "Crop 6"
+    },
+    {
+      "id": "crop-07",
+      "group": "crops",
+      "label": "Crop 7"
+    },
+    {
+      "id": "crop-08",
+      "group": "crops",
+      "label": "Crop 8"
+    },
+    {
+      "id": "crop-09",
+      "group": "crops",
+      "label": "Crop 9"
+    },
+    {
+      "id": "variety-01",
+      "group": "varieties",
+      "label": "Variety 1"
+    },
+    {
+      "id": "variety-02",
+      "group": "varieties",
+      "label": "Variety 2"
+    },
+    {
+      "id": "variety-03",
+      "group": "varieties",
+      "label": "Variety 3"
+    },
+    {
+      "id": "variety-04",
+      "group": "varieties",
+      "label": "Variety 4"
+    },
+    {
+      "id": "variety-05",
+      "group": "varieties",
+      "label": "Variety 5"
+    },
+    {
+      "id": "variety-06",
+      "group": "varieties",
+      "label": "Variety 6"
+    },
+    {
+      "id": "variety-07",
+      "group": "varieties",
+      "label": "Variety 7"
+    },
+    {
+      "id": "variety-08",
+      "group": "varieties",
+      "label": "Variety 8"
+    },
+    {
+      "id": "variety-09",
+      "group": "varieties",
+      "label": "Variety 9"
+    },
+    {
+      "id": "variety-10",
+      "group": "varieties",
+      "label": "Variety 10"
+    },
+    {
+      "id": "variety-11",
+      "group": "varieties",
+      "label": "Variety 11"
+    },
+    {
+      "id": "variety-12",
+      "group": "varieties",
+      "label": "Variety 12"
+    },
+    {
+      "id": "investmentcode-01",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 1"
+    },
+    {
+      "id": "investmentcode-02",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 2"
+    },
+    {
+      "id": "investmentcode-03",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 3"
+    },
+    {
+      "id": "investmentcode-04",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 4"
+    },
+    {
+      "id": "investmentcode-05",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 5"
+    },
+    {
+      "id": "investmentcode-06",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 6"
+    },
+    {
+      "id": "investmentcode-07",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 7"
+    },
+    {
+      "id": "investmentcode-08",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 8"
+    },
+    {
+      "id": "investmentcode-09",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 9"
+    },
+    {
+      "id": "investmentcode-10",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 10"
+    },
+    {
+      "id": "investmentcode-11",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 11"
+    },
+    {
+      "id": "investmentcode-12",
+      "group": "investmentCodes",
+      "label": "InvestmentCode 12"
+    },
+    {
+      "id": "organisation-01",
+      "group": "organisations",
+      "label": "Organisation 1"
+    },
+    {
+      "id": "organisation-02",
+      "group": "organisations",
+      "label": "Organisation 2"
+    },
+    {
+      "id": "organisation-03",
+      "group": "organisations",
+      "label": "Organisation 3"
+    },
+    {
+      "id": "organisation-04",
+      "group": "organisations",
+      "label": "Organisation 4"
+    },
+    {
+      "id": "organisation-05",
+      "group": "organisations",
+      "label": "Organisation 5"
+    },
+    {
+      "id": "organisation-06",
+      "group": "organisations",
+      "label": "Organisation 6"
+    },
+    {
+      "id": "organisation-07",
+      "group": "organisations",
+      "label": "Organisation 7"
+    },
+    {
+      "id": "organisation-08",
+      "group": "organisations",
+      "label": "Organisation 8"
+    }
+  ],
+  "documents": [
+    {
+      "id": "trial-report-001",
+      "docType": "trial report",
+      "titleHint": "Trial Report #1",
+      "entityRefs": [
+        "researcher-01",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-01",
+        "crop-02",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-002",
+      "docType": "update paper",
+      "titleHint": "Update Paper #2",
+      "entityRefs": [
+        "researcher-02",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-03",
+        "crop-04",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-003",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #3",
+      "entityRefs": [
+        "researcher-03",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-05",
+        "crop-06",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-004",
+      "docType": "final report",
+      "titleHint": "Final Report #4",
+      "entityRefs": [
+        "researcher-04",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-07",
+        "crop-08",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-005",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #5",
+      "entityRefs": [
+        "researcher-05",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-09",
+        "crop-01",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 46
+      }
+    },
+    {
+      "id": "webinar-transcript-006",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #6",
+      "entityRefs": [
+        "researcher-06",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-02",
+        "crop-03",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 53
+      }
+    },
+    {
+      "id": "grower-case-study-007",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #7",
+      "entityRefs": [
+        "researcher-07",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-04",
+        "crop-05",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "trial-report-008",
+      "docType": "trial report",
+      "titleHint": "Trial Report #8",
+      "entityRefs": [
+        "researcher-08",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-06",
+        "crop-07",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-009",
+      "docType": "update paper",
+      "titleHint": "Update Paper #9",
+      "entityRefs": [
+        "researcher-09",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-08",
+        "crop-09",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-010",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #10",
+      "entityRefs": [
+        "researcher-10",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-01",
+        "crop-02",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-011",
+      "docType": "final report",
+      "titleHint": "Final Report #11",
+      "entityRefs": [
+        "researcher-11",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-03",
+        "crop-04",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-012",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #12",
+      "entityRefs": [
+        "researcher-12",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-05",
+        "crop-06",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 53
+      }
+    },
+    {
+      "id": "webinar-transcript-013",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #13",
+      "entityRefs": [
+        "researcher-13",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-07",
+        "crop-08",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 18
+      }
+    },
+    {
+      "id": "grower-case-study-014",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #14",
+      "entityRefs": [
+        "researcher-14",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-09",
+        "crop-01",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "trial-report-015",
+      "docType": "trial report",
+      "titleHint": "Trial Report #15",
+      "entityRefs": [
+        "researcher-01",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-02",
+        "crop-03",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-016",
+      "docType": "update paper",
+      "titleHint": "Update Paper #16",
+      "entityRefs": [
+        "researcher-02",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-04",
+        "crop-05",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-017",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #17",
+      "entityRefs": [
+        "researcher-03",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-06",
+        "crop-07",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-018",
+      "docType": "final report",
+      "titleHint": "Final Report #18",
+      "entityRefs": [
+        "researcher-04",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-08",
+        "crop-09",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-019",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #19",
+      "entityRefs": [
+        "researcher-05",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-01",
+        "crop-02",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 18
+      }
+    },
+    {
+      "id": "webinar-transcript-020",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #20",
+      "entityRefs": [
+        "researcher-06",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-03",
+        "crop-04",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 25
+      }
+    },
+    {
+      "id": "grower-case-study-021",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #21",
+      "entityRefs": [
+        "researcher-07",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-05",
+        "crop-06",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "trial-report-022",
+      "docType": "trial report",
+      "titleHint": "Trial Report #22",
+      "entityRefs": [
+        "researcher-08",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-07",
+        "crop-08",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-023",
+      "docType": "update paper",
+      "titleHint": "Update Paper #23",
+      "entityRefs": [
+        "researcher-09",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-09",
+        "crop-01",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-024",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #24",
+      "entityRefs": [
+        "researcher-10",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-02",
+        "crop-03",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-025",
+      "docType": "final report",
+      "titleHint": "Final Report #25",
+      "entityRefs": [
+        "researcher-11",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-04",
+        "crop-05",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-026",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #26",
+      "entityRefs": [
+        "researcher-12",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-06",
+        "crop-07",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 25
+      }
+    },
+    {
+      "id": "webinar-transcript-027",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #27",
+      "entityRefs": [
+        "researcher-13",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-08",
+        "crop-09",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 32
+      }
+    },
+    {
+      "id": "grower-case-study-028",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #28",
+      "entityRefs": [
+        "researcher-14",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-01",
+        "crop-02",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "trial-report-029",
+      "docType": "trial report",
+      "titleHint": "Trial Report #29",
+      "entityRefs": [
+        "researcher-01",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-03",
+        "crop-04",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-030",
+      "docType": "update paper",
+      "titleHint": "Update Paper #30",
+      "entityRefs": [
+        "researcher-02",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-05",
+        "crop-06",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-031",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #31",
+      "entityRefs": [
+        "researcher-03",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-07",
+        "crop-08",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-032",
+      "docType": "final report",
+      "titleHint": "Final Report #32",
+      "entityRefs": [
+        "researcher-04",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-09",
+        "crop-01",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-033",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #33",
+      "entityRefs": [
+        "researcher-05",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-02",
+        "crop-03",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 32
+      }
+    },
+    {
+      "id": "webinar-transcript-034",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #34",
+      "entityRefs": [
+        "researcher-06",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-04",
+        "crop-05",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 39
+      }
+    },
+    {
+      "id": "grower-case-study-035",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #35",
+      "entityRefs": [
+        "researcher-07",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-06",
+        "crop-07",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "trial-report-036",
+      "docType": "trial report",
+      "titleHint": "Trial Report #36",
+      "entityRefs": [
+        "researcher-08",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-08",
+        "crop-09",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "trial report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "update-paper-037",
+      "docType": "update paper",
+      "titleHint": "Update Paper #37",
+      "entityRefs": [
+        "researcher-09",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-01",
+        "crop-02",
+        "variety-01",
+        "variety-02",
+        "investmentcode-01",
+        "investmentcode-02",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "update paper"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "fact-sheet-038",
+      "docType": "fact sheet",
+      "titleHint": "Fact Sheet #38",
+      "entityRefs": [
+        "researcher-10",
+        "trialsite-05",
+        "trialsite-06",
+        "crop-03",
+        "crop-04",
+        "variety-03",
+        "variety-04",
+        "investmentcode-03",
+        "investmentcode-04",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "fact sheet"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "final-report-039",
+      "docType": "final report",
+      "titleHint": "Final Report #39",
+      "entityRefs": [
+        "researcher-11",
+        "trialsite-07",
+        "trialsite-08",
+        "crop-05",
+        "crop-06",
+        "variety-05",
+        "variety-06",
+        "investmentcode-05",
+        "investmentcode-06",
+        "organisation-05",
+        "organisation-06"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "final report"
+        }
+      ],
+      "media": null
+    },
+    {
+      "id": "podcast-transcript-040",
+      "docType": "podcast transcript",
+      "titleHint": "Podcast Transcript #40",
+      "entityRefs": [
+        "researcher-12",
+        "trialsite-09",
+        "trialsite-10",
+        "crop-07",
+        "crop-08",
+        "variety-07",
+        "variety-08",
+        "investmentcode-07",
+        "investmentcode-08",
+        "organisation-07",
+        "organisation-08"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "podcast transcript"
+        }
+      ],
+      "media": {
+        "media_type": "audio",
+        "duration_minutes": 39
+      }
+    },
+    {
+      "id": "webinar-transcript-041",
+      "docType": "webinar transcript",
+      "titleHint": "Webinar Transcript #41",
+      "entityRefs": [
+        "researcher-13",
+        "trialsite-01",
+        "trialsite-02",
+        "crop-09",
+        "crop-01",
+        "variety-09",
+        "variety-10",
+        "investmentcode-09",
+        "investmentcode-10",
+        "organisation-01",
+        "organisation-02"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "webinar transcript"
+        }
+      ],
+      "media": {
+        "media_type": "video",
+        "duration_minutes": 46
+      }
+    },
+    {
+      "id": "grower-case-study-042",
+      "docType": "grower case study",
+      "titleHint": "Grower Case Study #42",
+      "entityRefs": [
+        "researcher-14",
+        "trialsite-03",
+        "trialsite-04",
+        "crop-02",
+        "crop-03",
+        "variety-11",
+        "variety-12",
+        "investmentcode-11",
+        "investmentcode-12",
+        "organisation-03",
+        "organisation-04"
+      ],
+      "classifications": [
+        {
+          "labelset": "doc_type",
+          "label": "grower case study"
+        }
+      ],
+      "media": null
+    }
+  ],
+  "verification": {
+    "cornerstoneQueries": [
+      "How did sowing date interact with variety phenology for Scepter wheat at Merredin?",
+      "How do impact mills compare with chaff lining for annual ryegrass seed control?",
+      "What yield loss does crown rot cause in the Northern region, and how does inoculum load affect it?",
+      "Which lentil variety and plant density performed best at Horsham?"
+    ],
+    "refusalProbes": [
+      "What were canola export prices from Canada in 2024?",
+      "What is the recommended irrigation schedule for rice in the Riverina?"
+    ]
+  }
+}

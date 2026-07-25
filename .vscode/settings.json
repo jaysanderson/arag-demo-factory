@@ -1,0 +1,121 @@
+{
+  // ─────────────────────────────────────────────────────────
+  // ARAG Demo Factory — VS Code Workspace Settings
+  // ─────────────────────────────────────────────────────────
+  // Auto-approves a curated allowlist of safe, read-only and
+  // build development commands so one-shot demo generation is not
+  // interrupted by prompts. Destructive commands (rm, kill, chmod,
+  // Remove-Item, Stop-Process) are deliberately left OFF the list
+  // so they still require manual approval.
+  //
+  // Works across macOS, Linux, and Windows. Copied into generated
+  // demo projects by create-app.js.
+  // ─────────────────────────────────────────────────────────
+
+  // ── Terminal Command Auto-Approval ──────────────────────
+  // Only safe build / inspection / VCS / health-check commands.
+  "chat.tools.terminal.autoApprove": {
+    // Build & runtime
+    "node": true,
+    "npm": true,
+    "npx": true,
+    "vite": true,
+    // Deploy (portal ships to Fly.io)
+    "fly": true,
+    "flyctl": true,
+    // Version control
+    "git": true,
+    // Network & health checks
+    "curl": true,
+    "wget": true,
+    // Safe inspection commands
+    "ls": true,
+    "cat": true,
+    "head": true,
+    "tail": true,
+    "grep": true,
+    "find": true,
+    "which": true,
+    "wc": true,
+    "lsof": true,
+    "echo": true,
+    "printf": true,
+    "date": true,
+    "test": true,
+    "basename": true,
+    "dirname": true,
+    "realpath": true,
+    "stat": true,
+    "file": true,
+    "diff": true,
+    "sort": true,
+    "uniq": true,
+    "jq": true,
+    "pwd": true,
+    "uname": true,
+    "hostname": true,
+    "netstat": true,
+    "mkdir": true,
+    "cp": true,
+    "touch": true,
+    // Windows inspection equivalents
+    "dir": true,
+    "type": true,
+    "where": true,
+    "findstr": true,
+    "/^Get-/i": true,
+    "/^Test-Path/i": true,
+    "/^Select-String/i": true,
+    "/^Invoke-WebRequest/i": true
+  },
+
+  // ── File Edit Auto-Approval ─────────────────────────────
+  // Auto-approve edits to project file types only.
+  "chat.tools.edits.autoApprove": {
+    "**/*.js": true,
+    "**/*.jsx": true,
+    "**/*.ts": true,
+    "**/*.tsx": true,
+    "**/*.mjs": true,
+    "**/*.json": true,
+    "**/*.jsonc": true,
+    "**/*.css": true,
+    "**/*.html": true,
+    "**/*.md": true,
+    "**/*.yml": true,
+    "**/*.yaml": true,
+    "**/*.toml": true,
+    "**/*.sh": true,
+    "**/*.ps1": true,
+    "**/Dockerfile*": true,
+    "**/fly.toml": true,
+    "**/.gitignore": true,
+    "**/.dockerignore": true
+  },
+
+  // ── URL Auto-Approval ───────────────────────────────────
+  // Local portal health checks and the ARAG cloud endpoints.
+  "chat.tools.urls.autoApprove": [
+    "http://localhost:*",
+    "https://localhost:*",
+    "http://127.0.0.1:*",
+    "https://127.0.0.1:*",
+    "https://*.rag.progress.cloud/*",
+    "https://*.dp.progress.cloud/*"
+  ],
+
+  // ── Agent Configuration ─────────────────────────────────
+  // The one-shot pipeline runs Phases 0-6 in a single turn with
+  // verification; the default request budget of 25 is too low.
+  "chat.agent.maxRequests": 75,
+
+  // ── MCP Servers ─────────────────────────────────────────
+  "chat.mcp.autoStart": "newAndOutdated",
+
+  // ── Editor Preferences ──────────────────────────────────
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/portal/dist": true,
+    "**/.git": true
+  }
+}

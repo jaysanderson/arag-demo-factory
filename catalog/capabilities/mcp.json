@@ -1,0 +1,28 @@
+{
+  "id": "mcp",
+  "name": "MCP Endpoint Explorer",
+  "surface": "mcp",
+  "tagline": "The KB as an MCP server other agents can call.",
+  "aragEndpoints": [
+    "{kb}/mcp/sse"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": false
+  },
+  "portal": {
+    "route": "/mcp",
+    "navLabel": "MCP",
+    "component": "McpSurface",
+    "icon": "plug"
+  },
+  "sells": "Your content becomes a tool any AI agent can call — the Agent-Experience story that lands with technical buyers.",
+  "provenance": [
+    "sitefinity-mcp-eftm2",
+    "progress-citeforge",
+    "maintenanceos"
+  ]
+}

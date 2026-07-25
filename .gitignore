@@ -1,0 +1,38 @@
+# Secrets — NEVER commit. The KB token lives only in .env (server-side).
+.env
+.env.*
+!.env.example
+
+# MCP config carries the resolved KB token via env substitution — keep it local
+.mcp.json
+
+# Dependencies
+node_modules/
+portal/node_modules/
+
+# Build output
+portal/dist/
+dist/
+
+# Generated corpus (synthetic, regenerated per build)
+corpus/generated/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Playwright MCP snapshots / screenshots (tool artifacts)
+.playwright-mcp/
+
+# Demo recordings (large video files)
+recordings/
+portal/.env

@@ -1,0 +1,54 @@
+{
+  "id": "insurance-claims-workbench",
+  "name": "Insurance Claims Workbench",
+  "vertical": "Insurance / Financial Services",
+  "provenanceDemo": "ironbark-arag",
+  "liveReference": "https://ironbark-arag.fly.dev",
+  "persona": "Ironbark Mutual — a fictional general insurer running a multi-desk staff workbench",
+  "tagline": "One grounded workbench for every insurance desk — claims, coverage, underwriting, SIU and QA on a single Knowledge Box.",
+  "elevatorPitch": "A claims handler, an underwriter and a fraud investigator all ask the same corpus in plain English and each gets a cited answer scoped to their desk — cutting file-review time while a groundedness score keeps every answer auditable.",
+  "matchTags": ["insurance","insurer","claims","policy","coverage","underwriting","fraud","siu","actuarial","premium","adjuster","call qa","complaints","financial services","claims handling","risk"],
+  "capabilities": ["cited-ask", "find", "facets", "call-qa", "remi", "graph"],
+  "theme": {
+    "brandName": "Ironbark Mutual",
+    "primary": "#5a2d0c",
+    "accent": "#c9922e",
+    "mood": "solid, dependable, workmanlike"
+  },
+  "corpus": {
+    "domain": "General-insurance operations — claims files, policy wordings, underwriting guidelines, SIU/fraud referrals, complaints and analysed claim-line calls",
+    "docTypes": ["claim file note", "policy wording", "coverage endorsement", "underwriting guideline", "SIU referral report", "complaint record", "call transcript", "claims bulletin"],
+    "targetCount": 46,
+    "recurringEntities": {
+      "handlers": 10,
+      "policyholders": 14,
+      "claims": 16,
+      "productLines": 6,
+      "brokers": 7,
+      "assessors": 6
+    },
+    "cornerstoneQueries": [
+      "Is storm-surge damage covered under the Home Advantage policy, and what endorsement changes that?",
+      "What are the red-flag indicators for a staged-collision motor claim, and which SIU referrals cited them?",
+      "What is our underwriting appetite for a timber-frame commercial property, and who signs off the exception?",
+      "Summarise the complaint history for policyholder Renner and whether any breached our service standards."
+    ],
+    "refusalProbes": [
+      "What is the current cash surrender value of a whole-life policy with MetLife?",
+      "What are the CFPB mortgage-servicing rules for escrow accounts?"
+    ],
+    "notes": "Multi-desk workbench: claims, coverage, underwriting, SIU/fraud and ops each read the same KB scoped by resource labels. Call transcripts carry media_type + duration so the call-QA surface (first-call resolution, compliance flags, complaint categories) lights up. Claims, handlers and policyholders recur across notes, calls and referrals so the graph exposes linked-claim fraud rings. REMi groundedness is the governance story — an insurer will not ship an answer it cannot audit."
+  },
+  "demoScript": [
+    { "step": 1, "say": "A claims handler asks a coverage question — the answer quotes the exact policy wording and endorsement, cited to the document.", "show": "Ask: 'is storm-surge covered under Home Advantage?' → cited answer with endorsement reference" },
+    { "step": 2, "say": "Switch to the SIU desk. Ask for fraud indicators and it pulls red flags straight from past referrals — grounded, never guessed.", "show": "Ask: 'staged-collision red flags' → cited answer from SIU referrals" },
+    { "step": 3, "say": "The call-QA surface turns a shelf of recorded claim calls into metrics — first-call resolution, compliance, complaint categories — with a transcript you can jump into.", "show": "Call analytics dashboard → open a flagged call, synced transcript" },
+    { "step": 4, "say": "The graph links claims, policyholders and assessors that recur across files — surfacing a possible linked-claim ring.", "show": "Graph around a policyholder → shared assessor + linked claims" },
+    { "step": 5, "say": "Every answer carries a groundedness score, so compliance can govern the whole desk against a hallucination threshold.", "show": "REMi dashboard — ungrounded rate near zero" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Ironbark Mutual is a fictional insurer and all claims, policies and calls are synthetic. Not insurance or financial advice."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "workflows",
+  "name": "Agentic Workflows",
+  "surface": "workflows",
+  "tagline": "Multi-step retrieval agents that reason over the KB.",
+  "aragEndpoints": [
+    "/api/agent/session/ephemeral",
+    "/ask"
+  ],
+  "requires": [
+    "cited-ask"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": true
+  },
+  "portal": {
+    "route": "/workflows",
+    "navLabel": "Workflows",
+    "component": "WorkflowsSurface",
+    "icon": "steps"
+  },
+  "sells": "Not one answer — a chain of grounded steps (retrieve, reason, compose) that mirrors how an analyst actually works.",
+  "provenance": [
+    "capstone-atlas-operations",
+    "capstone-aurora-concierge"
+  ]
+}

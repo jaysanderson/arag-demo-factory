@@ -1,0 +1,54 @@
+{
+  "id": "enterprise-ops-command",
+  "name": "Enterprise Ops Command",
+  "vertical": "Enterprise Operations / IT & Service Management",
+  "provenanceDemo": "capstone-atlas-operations",
+  "liveReference": "https://capstone-atlas-operations.fly.dev",
+  "persona": "Atlas Operations — a fictional enterprise's unified operations command centre",
+  "tagline": "Six grounded ops surfaces on one Knowledge Box — hybrid search, a two-voice concierge, schema-constrained workflows and composite-RAG incident RCA.",
+  "elevatorPitch": "An on-call engineer describes an incident in plain English and the command centre runs a schema-constrained workflow that assembles a cited root-cause narrative from runbooks, past incidents and telemetry — collapsing mean-time-to-resolve without a single hallucinated step.",
+  "matchTags": ["operations","ops","enterprise","incident","rca","root cause","runbook","itsm","service management","sre","on-call","workflow","command centre","reliability","telemetry","change management","postmortem"],
+  "capabilities": ["cited-ask", "find", "graph", "workflows", "remi"],
+  "theme": {
+    "brandName": "Atlas Operations",
+    "primary": "#12303a",
+    "accent": "#3fb6a8",
+    "mood": "precise, mission-control, calm-under-load"
+  },
+  "corpus": {
+    "domain": "Enterprise operations knowledge — runbooks, incident postmortems, change records, service catalogue, SLAs and on-call procedures",
+    "docTypes": ["runbook", "incident postmortem", "change record", "service definition", "SLA agreement", "escalation procedure", "architecture note", "ops bulletin"],
+    "targetCount": 45,
+    "recurringEntities": {
+      "services": 12,
+      "incidents": 15,
+      "engineers": 10,
+      "systems": 9,
+      "teams": 6,
+      "changeRecords": 12
+    },
+    "cornerstoneQueries": [
+      "What is the runbook for a failed payment-gateway deploy, and which past incidents used it?",
+      "Reconstruct the root cause of the checkout latency incident and the change that triggered it.",
+      "Which services depend on the identity platform, and what is the blast radius if it degrades?",
+      "What is our SLA and escalation path for a Sev-1 in the fulfilment service?"
+    ],
+    "refusalProbes": [
+      "What is the current AWS us-east-1 status on the public health dashboard?",
+      "What are Kubernetes 1.31 upstream release notes?"
+    ],
+    "notes": "The wow is the composite-RAG RCA: a schema-constrained workflow (agent session) that fans out across runbooks, postmortems and change records and returns a typed, cited root-cause narrative — not a single /ask call. Services, incidents and change records recur across documents so the typed knowledge graph reasons over real dependency and blast-radius edges. A two-voice concierge (operator vs executive tone) reads the same KB. REMi keeps the RCA auditable."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Hybrid search over the whole ops estate finds the right runbook by meaning, not just keywords.", "show": "Search: 'payment gateway deploy rollback' → runbook + related postmortems ranked" },
+    { "step": 2, "say": "Describe an incident and the command centre runs a schema-constrained workflow — it assembles a cited root-cause narrative across runbooks, postmortems and change records.", "show": "Workflow: 'checkout latency spike' → typed RCA with cited steps and the triggering change" },
+    { "step": 3, "say": "The typed knowledge graph answers the blast-radius question directly — what breaks if this service degrades.", "show": "Graph around the identity platform → dependent services + impact edges" },
+    { "step": 4, "say": "The two-voice concierge reframes the same answer for an executive versus an operator — one KB, two registers.", "show": "Concierge toggle → operator detail vs executive summary" },
+    { "step": 5, "say": "Every RCA carries a groundedness score, so a Sev-1 review can trust the narrative was assembled, not imagined.", "show": "REMi dashboard on the RCA — grounded, cited, auditable" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — Atlas Operations is a fictional organisation and all incidents, runbooks and change records are synthetic. Not operational guidance."
+  }
+}

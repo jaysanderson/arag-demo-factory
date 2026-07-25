@@ -1,0 +1,28 @@
+{
+  "id": "cited-ask",
+  "name": "Grounded, Cited Answers",
+  "surface": "ask",
+  "tagline": "Streamed answers that always show their sources.",
+  "aragEndpoints": [
+    "/ask"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": false
+  },
+  "portal": {
+    "route": "/ask",
+    "navLabel": "Ask",
+    "component": "AskSurface",
+    "icon": "chat"
+  },
+  "sells": "Grounded answers with citations — the antidote to hallucination, the single most important thing an exec needs to believe.",
+  "provenance": [
+    "capstone-legal",
+    "research-portal-arag",
+    "ironbark-arag"
+  ]
+}

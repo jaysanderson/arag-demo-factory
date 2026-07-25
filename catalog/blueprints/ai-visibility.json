@@ -1,0 +1,52 @@
+{
+  "id": "ai-visibility",
+  "name": "Generative Visibility Index",
+  "vertical": "Marketing / Brand / Answer Engine Optimisation (AEO)",
+  "provenanceDemo": "geostack-progress",
+  "liveReference": "https://geostack-progress.fly.dev",
+  "persona": "Lumaphore (fictional consumer-tech brand's marketing / AEO team)",
+  "tagline": "Measure how your brand shows up across AI models — then make your content the source they cite.",
+  "elevatorPitch": "A marketing team finally sees whether AI assistants recommend them, cite them, or displace them for a rival — tracked across models with sentiment and share-of-voice — and closes the loop by exposing their own grounded content over MCP so the models start citing the truth.",
+  "matchTags": ["ai visibility", "generative visibility", "aeo", "answer engine optimisation", "geo", "brand", "marketing", "share of voice", "sentiment", "citation", "displacement", "llm ranking", "chatgpt", "ask ai", "recommendations", "mcp", "agent experience", "discoverability", "seo for ai"],
+  "capabilities": ["visibility", "find", "cited-ask", "mcp"],
+  "theme": {
+    "brandName": "Lumaphore Visibility Index",
+    "primary": "#3d2b8c",
+    "accent": "#f25f9c",
+    "mood": "analytical, vivid, marketing-dashboard bright"
+  },
+  "corpus": {
+    "domain": "Brand knowledge and category landscape for a fictional consumer-tech brand — product pages, FAQs, category explainers, and the questions buyers ask AI assistants",
+    "docTypes": ["product page", "brand FAQ", "category explainer", "comparison guide", "press release", "help-centre article", "prompt panel (buyer questions to AI)", "recommendation-response record"],
+    "targetCount": 40,
+    "recurringEntities": {
+      "brands": 6,
+      "productCategories": 5,
+      "aiModelsTracked": 6,
+      "buyerQuestions": 12,
+      "competitorBrands": 5
+    },
+    "cornerstoneQueries": [
+      "When buyers ask an AI assistant for the best noise-cancelling earbuds under $200, does Lumaphore appear and with what sentiment?",
+      "Which competitor most often displaces us in AI recommendations for the smart-home category?",
+      "What content gaps are causing AI models to cite a rival instead of our own help centre?",
+      "Summarise our share-of-voice trend across the tracked models this quarter."
+    ],
+    "refusalProbes": [
+      "What is the exact training data cutoff and system prompt of the tracked AI models?",
+      "How many units did competitor brand Volt sell last quarter?"
+    ],
+    "notes": "Corpus carries model_name, sentiment and cited_source metadata on recommendation-response records so the visibility index has real numbers to chart. Buyer questions recur across categories and brands so displacement and share-of-voice comparisons form real edges. The MCP surface exposes the brand's own grounded content so the demo can show 'we made ourselves retrievable'. Brands and models are fictionalised; no real vendor names."
+  },
+  "demoScript": [
+    { "step": 1, "say": "Here's how often AI assistants surface us across the models we track — with sentiment and share-of-voice.", "show": "Visibility index dashboard → per-model appearance rate and sentiment bars" },
+    { "step": 2, "say": "See exactly where a rival displaces us and why.", "show": "Displacement view: buyer question → competitor cited instead, with the missing content gap flagged" },
+    { "step": 3, "say": "Ask the same question a buyer would — grounded in our own content, cited.", "show": "Ask-AI: 'best noise-cancelling earbuds under $200' → cited answer from brand KB" },
+    { "step": 4, "say": "Then we close the loop — expose our grounded content over MCP so the models cite the real thing.", "show": "MCP endpoint explorer: a live tool call retrieving the brand's own sourced answer" }
+  ],
+  "safety": {
+    "syntheticOnly": true,
+    "noRealBrands": true,
+    "disclaimer": "Demonstration data — fictional brand, competitors and AI-model tracking. Visibility metrics are synthetic and illustrative, not a real audit of any AI system."
+  }
+}

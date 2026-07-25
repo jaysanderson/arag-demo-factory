@@ -1,0 +1,29 @@
+{
+  "id": "visibility",
+  "name": "AI Visibility Index",
+  "surface": "visibility",
+  "tagline": "How your brand appears across AI models, and how to fix it.",
+  "aragEndpoints": [
+    "/predict/chat",
+    "/find",
+    "/ask"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": false
+  },
+  "portal": {
+    "route": "/visibility",
+    "navLabel": "Visibility",
+    "component": "VisibilitySurface",
+    "icon": "eye"
+  },
+  "sells": "Measure brand appearance across the model catalogue and make content retrievable via MCP — the AEO/AI-visibility narrative.",
+  "provenance": [
+    "geostack-progress",
+    "progress-citeforge"
+  ]
+}
