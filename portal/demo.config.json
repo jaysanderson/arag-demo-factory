@@ -2,6 +2,9 @@
   "blueprint": "helios-mission-control",
   "title": "HELIOS — Mission Intelligence",
   "persona": "HELIOS mission-intelligence, flight operations for the crewed vessel Aurelian (fictional deep-space program)",
+  "tagline": "Every mission decision, grounded in the ship's own documentation — because 80 million km from Earth, a hallucinated answer is fatal.",
+  "elevatorPitch": "This is the highest-stakes knowledge work there is: a Mars-transit flight team resolving a live anomaly, where every answer is cited to a procedure, a flight rule, or a past anomaly — never invented. If grounded AI can be trusted here, it can run your enterprise's knowledge without hallucinating.",
+  "vertical": "Aerospace / High-Stakes Operations / Showcase",
   "theme": {
     "brandName": "HELIOS",
     "primary": "#22d3ee",
@@ -16,6 +19,9 @@
       "label": "Ask",
       "component": "AskSurface",
       "icon": "chat",
+      "group": "Converse",
+      "tagline": "Streamed answers that always show their sources.",
+      "sells": "Grounded answers with citations — the antidote to hallucination, the single most important thing an exec needs to believe.",
       "capabilities": [
         "cited-ask",
         "personas"
@@ -28,6 +34,9 @@
       "label": "Voice",
       "component": "VoiceSurface",
       "icon": "mic",
+      "group": "Converse",
+      "tagline": "Speak to the assistant and hear grounded, cited answers back.",
+      "sells": "Real-time spoken Q&A that stays grounded and cited — the same governance as text, hands-free. The demo that makes a room lean in.",
       "capabilities": [
         "voice"
       ],
@@ -39,6 +48,9 @@
       "label": "Search",
       "component": "SearchSurface",
       "icon": "search",
+      "group": "Explore",
+      "tagline": "Meaning-based retrieval that beats keyword search on the same corpus.",
+      "sells": "Type a concept, not a keyword, and the right document surfaces — the 'aha' every buyer feels instantly.",
       "capabilities": [
         "find",
         "facets"
@@ -51,6 +63,9 @@
       "label": "Assets",
       "component": "AssetsSurface",
       "icon": "image",
+      "group": "Explore",
+      "tagline": "A governed asset library with semantic discovery and Ask-the-Archive.",
+      "sells": "Find the right asset by meaning, not filename; ask the archive a question and get a cited answer over images, video and documents — DAM that understands its own library.",
       "capabilities": [
         "assets"
       ],
@@ -62,6 +77,9 @@
       "label": "Graph",
       "component": "GraphSurface",
       "icon": "share",
+      "group": "Explore",
+      "tagline": "Entities and relationships ARAG extracts during processing.",
+      "sells": "The graph surfaces connections no keyword search would — related matters, people, assets — the 'we didn't know we knew that' moment.",
       "capabilities": [
         "graph"
       ],
@@ -73,6 +91,9 @@
       "label": "Doc Studio",
       "component": "DocStudioSurface",
       "icon": "file",
+      "group": "Analyze",
+      "tagline": "Drop a document, watch classify → extract → validate → standardise.",
+      "sells": "An invoice, contract or claim becomes structured JSON in eight visible steps — the automation ROI story on a plate.",
       "capabilities": [
         "doc-pipeline"
       ],
@@ -84,6 +105,9 @@
       "label": "Calls",
       "component": "CallQaSurface",
       "icon": "phone",
+      "group": "Analyze",
+      "tagline": "Analytics over transcribed calls: resolution, compliance, CSAT.",
+      "sells": "Every call auto-scored for compliance, first-call resolution and cross-sell — QA that used to sample 2% now covers 100%.",
       "capabilities": [
         "call-qa"
       ],
@@ -95,6 +119,9 @@
       "label": "Workflows",
       "component": "WorkflowsSurface",
       "icon": "steps",
+      "group": "Converse",
+      "tagline": "Multi-step retrieval agents that reason over the KB.",
+      "sells": "Not one answer — a chain of grounded steps (retrieve, reason, compose) that mirrors how an analyst actually works.",
       "capabilities": [
         "workflows"
       ],
@@ -106,6 +133,9 @@
       "label": "For You",
       "component": "PersonalizeSurface",
       "icon": "sparkle",
+      "group": "Extend",
+      "tagline": "Grounded, personalised feed and recommendations.",
+      "sells": "One ARAG plugin replaces five point tools for search, recs, chat and SEO — all grounded in the catalogue.",
       "capabilities": [
         "personalize"
       ],
@@ -117,6 +147,9 @@
       "label": "Related",
       "component": "RelatedSurface",
       "icon": "shuffle",
+      "group": "Explore",
+      "tagline": "\"More like this\" that understands content — semantic similarity plus shared-entity graph traversal.",
+      "sells": "Recommendations that go beyond tags: find titles that are close in meaning AND connected through the knowledge graph's shared entities — the YouTube-style 'related titles' that actually knows the content.",
       "capabilities": [
         "related"
       ],
@@ -128,6 +161,9 @@
       "label": "Visibility",
       "component": "VisibilitySurface",
       "icon": "eye",
+      "group": "Analyze",
+      "tagline": "How your brand appears across AI models, and how to fix it.",
+      "sells": "Measure brand appearance across the model catalogue and make content retrievable via MCP — the AEO/AI-visibility narrative.",
       "capabilities": [
         "visibility"
       ],
@@ -139,6 +175,9 @@
       "label": "Quality",
       "component": "RemiSurface",
       "icon": "gauge",
+      "group": "Analyze",
+      "tagline": "REMi scores every answer for groundedness and relevance.",
+      "sells": "A live groundedness score turns 'trust me' into a number an exec can govern against.",
       "capabilities": [
         "remi"
       ],
@@ -150,6 +189,9 @@
       "label": "MCP",
       "component": "McpSurface",
       "icon": "plug",
+      "group": "Extend",
+      "tagline": "The KB as an MCP server other agents can call.",
+      "sells": "Your content becomes a tool any AI agent can call — the Agent-Experience story that lands with technical buyers.",
       "capabilities": [
         "mcp"
       ],

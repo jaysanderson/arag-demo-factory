@@ -24,5 +24,6 @@
     "sitefinity-mcp-eftm2",
     "progress-citeforge",
     "maintenanceos"
-  ]
+  ],
+  "group": "Extend"
 }

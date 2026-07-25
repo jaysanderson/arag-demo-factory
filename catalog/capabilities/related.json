@@ -3,10 +3,31 @@
   "name": "Related & Similar Titles",
   "surface": "related",
   "tagline": "\"More like this\" that understands content — semantic similarity plus shared-entity graph traversal.",
-  "aragEndpoints": ["/find", "/catalog", "/graph"],
-  "requires": ["find"],
-  "kbRequirements": { "resources": true, "vectors": true, "labelsets": false, "graph": true },
-  "portal": { "route": "/related", "navLabel": "Related", "component": "RelatedSurface", "icon": "shuffle" },
+  "aragEndpoints": [
+    "/find",
+    "/catalog",
+    "/graph"
+  ],
+  "requires": [
+    "find"
+  ],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": false,
+    "graph": true
+  },
+  "portal": {
+    "route": "/related",
+    "navLabel": "Related",
+    "component": "RelatedSurface",
+    "icon": "shuffle"
+  },
   "sells": "Recommendations that go beyond tags: find titles that are close in meaning AND connected through the knowledge graph's shared entities — the YouTube-style 'related titles' that actually knows the content.",
-  "provenance": ["arag-personalize", "capstone-aurora-concierge", "capstone-legal"]
+  "provenance": [
+    "arag-personalize",
+    "capstone-aurora-concierge",
+    "capstone-legal"
+  ],
+  "group": "Explore"
 }

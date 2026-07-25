@@ -23,5 +23,6 @@
   "sells": "An invoice, contract or claim becomes structured JSON in eight visible steps — the automation ROI story on a plate.",
   "provenance": [
     "arag-doc-processing"
-  ]
+  ],
+  "group": "Analyze"
 }

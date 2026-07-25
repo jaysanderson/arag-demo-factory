@@ -25,5 +25,6 @@
     "capstone-legal",
     "capstone-atlas-operations",
     "capstone-aurora-concierge"
-  ]
+  ],
+  "group": "Explore"
 }

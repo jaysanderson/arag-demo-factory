@@ -1,20 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Moon, Sun } from 'lucide-react';
+import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Moon, Sun, Play } from 'lucide-react';
 import { AppBar, AppBarSection, AppBarSpacer } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
 import { Loader } from '@progress/kendo-react-indicators';
 import { loadConfig, type DemoConfig } from './lib/config';
 import { applyTheme, initColorScheme, setColorScheme } from './lib/theme';
-import { surfaceIcon } from './lib/icons';
 import { SURFACES } from './pages/registry';
+import { OverviewSurface } from './pages/OverviewSurface';
+import { GroupedNav } from './components/GroupedNav';
+import { GuidedTour } from './components/GuidedTour';
 import { StatusChip } from './components/StatusChip';
-import { DemoScriptPanel } from './components/DemoScriptPanel';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
 
 export default function App() {
   const [config, setConfig] = useState<DemoConfig | null>(null);
   const [dark, setDark] = useState<boolean>(() => document.documentElement.classList.contains('dark'));
+  const [tourOpen, setTourOpen] = useState(false);
 
   useEffect(() => {
     loadConfig().then((cfg) => {
@@ -42,23 +44,34 @@ export default function App() {
   }
 
   const surfaces = config.surfaces.filter((s) => SURFACES[s.component]);
-  const home = surfaces[0]?.route || '/ask';
+  const hasTour = (config.demoScript?.length || 0) > 0;
 
   return (
     <div className="flex min-h-full flex-col">
       <DisclaimerBanner text={config.safety?.disclaimer || ''} />
 
-      <header className="sticky top-0 z-30 border-b border-ink-200 bg-ink-50/85 backdrop-blur dark:border-ink-800 dark:bg-ink-950/85">
+      <header className="glass sticky top-0 z-30 border-b">
         <AppBar positionMode="static" className="mx-auto h-16 max-w-7xl bg-transparent px-4 sm:px-6">
           <AppBarSection>
-            <Brand config={config} home={home} />
+            <Brand config={config} />
+          </AppBarSection>
+
+          {/* Grouped console nav lives in the bar itself on desktop. */}
+          <AppBarSection className="ml-4 hidden lg:flex">
+            <GroupedNav surfaces={surfaces} />
           </AppBarSection>
 
           <AppBarSpacer />
 
           <AppBarSection className="flex items-center gap-2">
-            <StatusChip />
-            <DemoScriptPanel steps={config.demoScript || []} />
+            <span className="hidden xl:block">
+              <StatusChip />
+            </span>
+            {hasTour && (
+              <Button themeColor="primary" onClick={() => setTourOpen(true)} startIcon={<Play size={15} />}>
+                <span className="hidden sm:inline">Guided demo</span>
+              </Button>
+            )}
             <Button
               fillMode="outline"
               onClick={toggleDark}
@@ -70,11 +83,11 @@ export default function App() {
           </AppBarSection>
         </AppBar>
 
-        {/* Console nav — its own full-width scrollable row so many surfaces
-            (a flagship can have 13) stay legible and never clip. */}
-        <nav className="scroll-slim mx-auto flex max-w-7xl gap-1 overflow-x-auto border-t border-ink-200 px-3 py-1.5 dark:border-ink-800">
-          <SurfaceNav surfaces={surfaces} mobile />
-        </nav>
+        {/* On smaller screens the grouped nav gets its own full-width row so it
+            never crowds the brand or actions. */}
+        <div className="mx-auto max-w-7xl border-t px-3 py-1.5 lg:hidden" style={{ borderColor: 'var(--hairline)' }}>
+          <GroupedNav surfaces={surfaces} />
+        </div>
       </header>
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
@@ -82,54 +95,35 @@ export default function App() {
           <NoSurfaces />
         ) : (
           <Routes>
+            <Route
+              path="/"
+              element={<OverviewSurface config={config} surfaces={surfaces} onStartTour={() => setTourOpen(true)} />}
+            />
             {surfaces.map((s) => {
               const Component = SURFACES[s.component];
               return <Route key={s.route} path={s.route} element={<Component surface={s} config={config} />} />;
             })}
-            <Route path="*" element={<Navigate to={home} replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         )}
       </main>
 
       <DisclaimerFooter text={config.safety?.disclaimer || ''} brand={config.theme.brandName} />
+
+      {hasTour && (
+        <GuidedTour config={config} surfaces={surfaces} open={tourOpen} onClose={() => setTourOpen(false)} />
+      )}
+
       <RouteTitle config={config} />
     </div>
   );
 }
 
-/** Config-driven surface nav rendered as togglable Kendo Buttons. */
-function SurfaceNav({ surfaces, mobile }: { surfaces: DemoConfig['surfaces']; mobile?: boolean }) {
-  const navigate = useNavigate();
-  const location = useLocation();
+function Brand({ config }: { config: DemoConfig }) {
   return (
-    <>
-      {surfaces.map((s) => {
-        const Icon = surfaceIcon(s.icon);
-        const active = location.pathname === s.route;
-        return (
-          <Button
-            key={s.route}
-            togglable
-            selected={active}
-            fillMode="flat"
-            onClick={() => navigate(s.route)}
-            className={mobile ? 'shrink-0' : undefined}
-            style={active ? { background: 'var(--brand-soft)', color: 'var(--brand-strong)' } : undefined}
-            startIcon={<Icon size={15} />}
-          >
-            {s.label}
-          </Button>
-        );
-      })}
-    </>
-  );
-}
-
-function Brand({ config, home }: { config: DemoConfig; home: string }) {
-  return (
-    <NavLink to={home} className="flex items-center gap-2.5">
+    <NavLink to="/" className="flex items-center gap-2.5">
       <span
-        className="flex h-9 w-9 items-center justify-center rounded-xl font-display text-lg font-bold"
+        className="flex h-9 w-9 items-center justify-center rounded-xl font-display text-lg font-bold shadow-glow"
         style={{ background: 'var(--brand)', color: 'var(--brand-contrast)' }}
       >
         {config.theme.brandName?.[0] || 'A'}
@@ -138,7 +132,7 @@ function Brand({ config, home }: { config: DemoConfig; home: string }) {
         <p className="font-display text-base font-semibold text-ink-900 dark:text-ink-50">
           {config.theme.brandName}
         </p>
-        <p className="text-[11px] text-ink-400">Agentic RAG portal</p>
+        <p className="text-[11px] text-ink-400">Agentic RAG platform</p>
       </div>
     </NavLink>
   );

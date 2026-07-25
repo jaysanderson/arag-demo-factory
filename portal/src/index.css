@@ -13,6 +13,18 @@
     --accent: #d9a441;
     --accent-strong: #b0741a;
     --accent-soft: #fbf3e6;
+
+    /* Product chrome tokens — resolved for light here, dark below. Everything
+       downstream (glass headers, hairlines, elevated surfaces) reads these so
+       one shell stays cohesive across light and dark demos. */
+    --app-bg: #faf9f7;
+    --surface-1: #ffffff;
+    --surface-2: #faf9f7;
+    --hairline: rgba(28, 26, 22, 0.09);
+    --hairline-strong: rgba(28, 26, 22, 0.14);
+    --glass: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(28, 26, 22, 0.08);
+
     color-scheme: light;
     /* Let Kendo inherit the portal's own font stack instead of its default. */
     --kendo-font-family: inherit;
@@ -20,6 +32,17 @@
 
   html.dark {
     color-scheme: dark;
+
+    /* A cohesive cool near-black — not flat grey. The brand colour is mixed in
+       at low strength so the whole product reads as one tinted control room,
+       whatever the demo's accent (legal green, insurance blue, retail…). */
+    --app-bg: #07070b;
+    --surface-1: color-mix(in srgb, var(--brand) 5%, #0e0e15);
+    --surface-2: color-mix(in srgb, var(--brand) 4%, #0a0a10);
+    --hairline: rgba(255, 255, 255, 0.09);
+    --hairline-strong: rgba(255, 255, 255, 0.16);
+    --glass: color-mix(in srgb, var(--brand) 6%, rgba(10, 10, 16, 0.66));
+    --glass-border: rgba(255, 255, 255, 0.1);
   }
 
   /* Dark mode for KendoReact. The default theme derives on-surface text,
@@ -27,11 +50,11 @@
      relative colours, so overriding the surfaces + borders repaints the whole
      Kendo set dark — no separate dark swatch build needed. */
   html.dark {
-    --kendo-color-app-surface: #0a0a0a;
-    --kendo-color-surface: #171717;
-    --kendo-color-surface-alt: #171717;
-    --kendo-color-base-subtle: #1c1c1c;
-    --kendo-color-base: #262626;
+    --kendo-color-app-surface: #07070b;
+    --kendo-color-surface: color-mix(in srgb, var(--brand) 5%, #101018);
+    --kendo-color-surface-alt: color-mix(in srgb, var(--brand) 5%, #101018);
+    --kendo-color-base-subtle: color-mix(in srgb, var(--brand) 6%, #16161f);
+    --kendo-color-base: color-mix(in srgb, var(--brand) 7%, #20202b);
     --kendo-color-border: rgba(255, 255, 255, 0.12);
     --kendo-color-border-alt: rgba(255, 255, 255, 0.22);
   }
@@ -43,27 +66,72 @@
   }
 
   body {
-    @apply bg-ink-50 text-ink-800 antialiased;
+    @apply text-ink-800 antialiased;
+    background: var(--app-bg);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   html.dark body {
-    @apply bg-ink-950 text-ink-200;
+    @apply text-ink-200;
+    /* Mission-control glow: two soft light sources (brand + accent) bleeding
+       from the top of a near-black field. Fixed so it stays put while scrolling. */
+    background:
+      radial-gradient(120% 80% at 12% -10%, color-mix(in srgb, var(--brand) 22%, transparent) 0%, transparent 55%),
+      radial-gradient(90% 70% at 92% -5%, color-mix(in srgb, var(--accent) 15%, transparent) 0%, transparent 50%),
+      var(--app-bg);
+    background-attachment: fixed;
   }
 
   ::selection {
     background: var(--brand-soft);
     color: var(--brand-strong);
   }
+  html.dark ::selection {
+    background: color-mix(in srgb, var(--brand) 40%, transparent);
+    color: #fff;
+  }
 }
 
 @layer components {
-  /* Cards — the surface primitive, light/dark aware. */
+  /* Cards — the surface primitive, light/dark aware. Now reads the shared
+     surface + hairline tokens so every card feels part of one product. */
   .card {
-    @apply rounded-xl border border-ink-200 bg-white shadow-sm;
+    border-radius: 0.875rem;
+    border: 1px solid var(--hairline);
+    background: var(--surface-1);
+    @apply shadow-sm;
   }
   html.dark .card {
-    @apply border-ink-800 bg-ink-900;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 20px 40px -28px rgba(0, 0, 0, 0.8);
+  }
+
+  /* An elevated, glassy card for hero-adjacent panels and the bento grid. */
+  .card-elevated {
+    border-radius: 1.125rem;
+    border: 1px solid var(--hairline);
+    background: var(--surface-1);
+    @apply shadow-md;
+  }
+  html.dark .card-elevated {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset, 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+
+  /* Interactive card — subtle lift + brand hairline on hover. */
+  .card-hover {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--brand) 45%, var(--hairline));
+    box-shadow: var(--tw-shadow, 0 0), 0 22px 48px -26px color-mix(in srgb, var(--brand) 60%, transparent);
+  }
+
+  /* Frosted chrome for the sticky header / overlay bars. */
+  .glass {
+    background: var(--glass);
+    border-color: var(--glass-border);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    backdrop-filter: saturate(140%) blur(14px);
   }
 
   .chip {
@@ -71,6 +139,20 @@
   }
   html.dark .chip {
     @apply border-ink-700 bg-ink-800 text-ink-300;
+  }
+
+  /* Small uppercase label used above headings across the product. */
+  .eyebrow {
+    @apply text-eyebrow uppercase;
+    color: var(--brand);
+  }
+
+  /* Brand→accent gradient text for hero keywords and stat figures. */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--brand) 0%, color-mix(in srgb, var(--brand) 55%, var(--accent)) 55%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .btn {
@@ -153,6 +235,41 @@
 
   .typing-dot {
     animation: bounce-dot 1.2s infinite ease-in-out both;
+  }
+
+  /* Faint technical grid — the "mission-control" substrate behind the hero. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 0%, transparent 72%);
+    mask-image: radial-gradient(120% 90% at 50% 0%, #000 0%, transparent 72%);
+  }
+
+  /* Soft coloured light source; place absolutely behind hero/section content. */
+  .hero-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  html.dark .hero-orb {
+    opacity: 0.7;
+  }
+
+  /* Respect reduced-motion for all entrance/ambient animation. */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-scale-in,
+    .animate-pulse-glow,
+    .animate-drift {
+      animation: none !important;
+    }
+    .card-hover:hover {
+      transform: none;
+    }
   }
 
   .scroll-slim::-webkit-scrollbar {

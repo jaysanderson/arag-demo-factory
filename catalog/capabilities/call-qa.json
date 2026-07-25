@@ -24,5 +24,6 @@
   "provenance": [
     "call-analysis-arag",
     "ironbark-arag"
-  ]
+  ],
+  "group": "Analyze"
 }

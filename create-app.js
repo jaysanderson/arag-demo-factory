@@ -119,6 +119,9 @@ function resolveSurfaces(capabilityIds) {
         label: p.navLabel,
         component: p.component,
         icon: p.icon || null,
+        group: cap.group || 'Explore',
+        tagline: cap.tagline || '',
+        sells: cap.sells || '',
         capabilities: [id],
         enabled: true,
       });
@@ -150,6 +153,10 @@ function composeConfig(blueprint, capabilityIds, title) {
     blueprint: blueprint.id,
     title: title || blueprint.name,
     persona: blueprint.persona || null,
+    // Story hooks for the command-center landing / hero.
+    tagline: blueprint.tagline || '',
+    elevatorPitch: blueprint.elevatorPitch || '',
+    vertical: blueprint.vertical || '',
     theme: {
       brandName: blueprint.theme?.brandName || blueprint.name,
       primary: blueprint.theme?.primary || '#1f6feb',

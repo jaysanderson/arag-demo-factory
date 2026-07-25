@@ -18,6 +18,12 @@ export interface Surface {
   label: string;
   component: string; // must match a component name in src/pages
   icon?: string | null;
+  /** Capability area this surface belongs to — drives the grouped nav + bento. */
+  group?: 'Converse' | 'Explore' | 'Analyze' | 'Extend' | string | null;
+  /** One-line, product-facing description of the surface. */
+  tagline?: string | null;
+  /** The executive value line — why this surface matters to a buyer. */
+  sells?: string | null;
   capabilities?: string[];
   enabled: boolean;
 }
@@ -38,6 +44,12 @@ export interface DemoConfig {
   blueprint?: string;
   title: string;
   persona?: string | null;
+  /** Sub-copy under the hero headline. */
+  tagline?: string | null;
+  /** The large display headline on the command-center landing. */
+  elevatorPitch?: string | null;
+  /** Eyebrow context above the hero (industry / showcase framing). */
+  vertical?: string | null;
   theme: ThemeTokens;
   surfaces: Surface[];
   safety: Safety;

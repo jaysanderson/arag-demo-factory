@@ -27,5 +27,6 @@
     "capstone-aurora-concierge",
     "wordpress-arag-perso",
     "umbraco-arag-perso"
-  ]
+  ],
+  "group": "Extend"
 }

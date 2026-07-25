@@ -26,5 +26,6 @@
   "provenance": [
     "capstone-atlas-operations",
     "capstone-aurora-concierge"
-  ]
+  ],
+  "group": "Converse"
 }
