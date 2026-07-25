@@ -6,7 +6,8 @@
     "brandName": "HELIOS",
     "primary": "#22d3ee",
     "accent": "#f59e0b",
-    "mood": "cinematic mission-control, near-black, technical, high-stakes"
+    "mood": "cinematic mission-control, near-black, technical, high-stakes",
+    "scheme": "dark"
   },
   "surfaces": [
     {

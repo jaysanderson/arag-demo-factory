@@ -64,10 +64,12 @@ export function applyTheme(theme: ThemeTokens) {
 
 const DARK_KEY = 'arag-portal-theme';
 
-export function initColorScheme() {
+export function initColorScheme(preferred?: 'light' | 'dark') {
   const stored = localStorage.getItem(DARK_KEY);
   const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  const dark = stored ? stored === 'dark' : !!prefersDark;
+  // A visitor's saved choice always wins; otherwise the demo's own scheme
+  // (cinematic blueprints default dark); otherwise the OS preference.
+  const dark = stored ? stored === 'dark' : preferred ? preferred === 'dark' : !!prefersDark;
   document.documentElement.classList.toggle('dark', dark);
   return dark;
 }

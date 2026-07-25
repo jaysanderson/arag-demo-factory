@@ -106,37 +106,52 @@ const jsonOf = async (pathname, opts) => (await kbFetch(pathname, opts)).json();
 // ── labelset / facet discovery (cached) ──────────────────────────────────────
 // A config-driven portal does not know a KB's taxonomy ahead of time, so facet
 // paths are discovered from the KB's own labelsets and cached briefly.
-let facetCache = { paths: null, ts: 0 };
+// Cache the KB's declared labelsets AND their declared labels. Nuclia's /catalog
+// faceting can surface classification labels that belong to OTHER Knowledge
+// Boxes in the same account (observed: a space KB whose doc_type facet returned
+// another demo's doc types). A KB must only ever show its own taxonomy, so we
+// keep the set of labels each labelset actually declares and filter facets to it.
+let facetCache = { paths: null, allowed: {}, ts: 0 };
 async function facetPaths() {
   if (facetCache.paths && Date.now() - facetCache.ts < 300000) return facetCache.paths;
   try {
     const data = await jsonOf('/labelsets');
-    const ids = Object.keys(data.labelsets || {});
+    const sets = data.labelsets || {};
+    const ids = Object.keys(sets);
     const paths = ids.map((id) => `/classification.labels/${id}`);
-    facetCache = { paths, ts: Date.now() };
+    const allowed = {};
+    for (const id of ids) allowed[id] = new Set((sets[id].labels || []).map((l) => l.title));
+    facetCache = { paths, allowed, ts: Date.now() };
     return paths;
   } catch {
     return facetCache.paths || [];
   }
 }
 
-/** Normalises Nuclia's facet payload into `{ labelset: [{label, count}] }`. */
-function normaliseFacets(raw) {
+/**
+ * Normalises Nuclia's facet payload into `{ labelset: [{label, count}] }`,
+ * keeping only labels this KB declares (see facetPaths). `allowed` is the map
+ * of labelset id → Set of declared label titles.
+ */
+function normaliseFacets(raw, allowed = {}) {
   const source = raw?.fulltext?.facets || raw?.facets || {};
   const out = {};
   for (const [path, entries] of Object.entries(source)) {
     const labelset = path.split('/').filter(Boolean).pop();
     if (!labelset) continue;
+    const declared = allowed[labelset];
     const pairs = Array.isArray(entries)
       ? entries.map((e) => [e.facet ?? e.tag ?? '', e.total ?? e.count ?? 0])
       : Object.entries(entries).map(([key, value]) => [
           key,
           typeof value === 'number' ? value : value?.total ?? value?.count ?? 0,
         ]);
-    out[labelset] = pairs
+    const list = pairs
       .map(([key, count]) => ({ label: String(key).split('/').pop(), count }))
-      .filter((entry) => entry.label)
+      // Only labels the KB actually declares — drops any cross-KB phantom labels.
+      .filter((entry) => entry.label && (!declared || declared.size === 0 || declared.has(entry.label)))
       .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+    if (list.length) out[labelset] = list;
   }
   return out;
 }
@@ -280,7 +295,7 @@ app.post('/api/catalog', async (req, res) => {
     const items = Object.entries(resources).map(([id, r]) => toCard(id, r));
     res.json({
       items,
-      facets: normaliseFacets(raw),
+      facets: normaliseFacets(raw, facetCache.allowed),
       total: raw.fulltext?.total ?? items.length,
       page,
       pageSize,

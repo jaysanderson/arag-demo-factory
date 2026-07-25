@@ -20,8 +20,10 @@ export default function App() {
     loadConfig().then((cfg) => {
       setConfig(cfg);
       applyTheme(cfg.theme);
+      // Honour the demo's default scheme (cinematic blueprints default dark)
+      // unless the visitor has already chosen one.
+      setDark(initColorScheme(cfg.theme.scheme));
     });
-    setDark(initColorScheme());
   }, []);
 
   const toggleDark = () => {
@@ -47,13 +49,9 @@ export default function App() {
       <DisclaimerBanner text={config.safety?.disclaimer || ''} />
 
       <header className="sticky top-0 z-30 border-b border-ink-200 bg-ink-50/85 backdrop-blur dark:border-ink-800 dark:bg-ink-950/85">
-        <AppBar positionMode="static" className="mx-auto h-16 max-w-6xl bg-transparent px-4 sm:px-6">
+        <AppBar positionMode="static" className="mx-auto h-16 max-w-7xl bg-transparent px-4 sm:px-6">
           <AppBarSection>
             <Brand config={config} home={home} />
-          </AppBarSection>
-
-          <AppBarSection className="ml-2 hidden md:flex">
-            <SurfaceNav surfaces={surfaces} />
           </AppBarSection>
 
           <AppBarSpacer />
@@ -72,13 +70,14 @@ export default function App() {
           </AppBarSection>
         </AppBar>
 
-        {/* Mobile nav */}
-        <nav className="scroll-slim flex gap-1 overflow-x-auto border-t border-ink-200 px-3 py-2 md:hidden dark:border-ink-800">
+        {/* Console nav — its own full-width scrollable row so many surfaces
+            (a flagship can have 13) stay legible and never clip. */}
+        <nav className="scroll-slim mx-auto flex max-w-7xl gap-1 overflow-x-auto border-t border-ink-200 px-3 py-1.5 dark:border-ink-800">
           <SurfaceNav surfaces={surfaces} mobile />
         </nav>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
         {surfaces.length === 0 ? (
           <NoSurfaces />
         ) : (

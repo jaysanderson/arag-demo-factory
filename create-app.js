@@ -155,6 +155,9 @@ function composeConfig(blueprint, capabilityIds, title) {
       primary: blueprint.theme?.primary || '#1f6feb',
       accent: blueprint.theme?.accent || '#d9a441',
       mood: blueprint.theme?.mood || 'clean, trustworthy',
+      // 'dark' makes the generated portal default to the cinematic near-black
+      // scheme; visitors can still toggle.
+      scheme: blueprint.theme?.scheme || 'light',
     },
     surfaces,
     // KB binding points at server-side env — the token is NEVER written here (Hard Rule 6).

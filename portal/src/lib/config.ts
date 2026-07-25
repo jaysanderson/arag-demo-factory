@@ -8,6 +8,8 @@ export interface ThemeTokens {
   primary: string;
   accent: string;
   mood?: string;
+  /** Default colour scheme for the demo ('dark' for cinematic blueprints). */
+  scheme?: 'light' | 'dark';
 }
 
 export interface Surface {
