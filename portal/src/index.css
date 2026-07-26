@@ -245,6 +245,18 @@
   html.dark .field {
     @apply border-ink-700 bg-ink-900 text-ink-100 placeholder:text-ink-500;
   }
+
+  /* The home ask bar — a prominent, product-grade input the user works from. */
+  .ask-bar {
+    border: 1px solid var(--hairline-strong);
+    background: var(--surface-1);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -30px rgba(0, 0, 0, 0.6);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .ask-bar:focus-within {
+    border-color: color-mix(in srgb, var(--brand) 55%, var(--hairline-strong));
+    box-shadow: 0 0 0 4px var(--brand-softer), 0 18px 40px -26px color-mix(in srgb, var(--brand) 45%, transparent);
+  }
 }
 
 @layer utilities {

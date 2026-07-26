@@ -54,6 +54,8 @@ export interface DemoConfig {
   surfaces: Surface[];
   safety: Safety;
   demoScript?: DemoStep[];
+  /** Real starter questions (answerable) + out-of-scope probes (refusal). */
+  probes?: { answerable?: string[]; refusal?: string[] };
   provenance?: { demo?: string | null; reference?: string | null };
   generatedBy?: string;
 }

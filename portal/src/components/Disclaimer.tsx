@@ -44,12 +44,10 @@ export function DisclaimerFooter({ text, brand }: { text: string; brand: string 
         <span className="inline-flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--brand)' }} aria-hidden />
           <span className="font-medium text-ink-600 dark:text-ink-300">{brand}</span>
-          <span className="text-ink-400">·</span>
-          <span>
-            powered by <span className="font-medium" style={{ color: 'var(--brand)' }}>Progress Agentic RAG</span>
-          </span>
         </span>
-        <span className="text-ink-400">{text}</span>
+        <span className="flex-1 text-center text-ink-400">{text}</span>
+        {/* Honest, quiet attribution — a product credit, not a headline. */}
+        <span className="text-[11px] text-ink-400">Built on Progress Agentic RAG</span>
       </div>
     </footer>
   );

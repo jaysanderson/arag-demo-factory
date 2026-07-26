@@ -205,6 +205,18 @@ Factory tooling (removed from generated projects):
 
 - **Plain JavaScript in factory tooling; TypeScript in the portal** (matches the shipped
   portfolio — research-portal, capstones).
+- **The demo IS the product, not a pitch — this is the north star.** The whole point of the
+  one-shot build is to hand an SE a demo the prospect immediately reads as *their own working
+  environment*, somewhere they could be tremendously valuable right now. It must NOT look like a
+  sales-enablement tool or a Progress brochure. Concretely: the landing is a **working home** — a
+  prominent ask bar, real starter questions (`probes.answerable`), live knowledge-base status, and
+  a quiet tool launcher — never a marketing hero. Ban brochure tells: no "showcase" eyebrow/vertical,
+  no "one solution / N capability areas", no "how the demo flows" section, no capability-selling
+  copy in the UI. The product wears its **own** identity (title/brand as "Mission Intelligence"
+  etc.), not "Agentic RAG platform"; Progress attribution is a quiet footer credit. The blueprint's
+  `sells` line is **talk-track only and must never render in the product** — surfaces show the
+  functional `tagline`. Write `tagline`/`elevatorPitch`/`disclaimer` as product copy (what it does,
+  grounded + cited), not slogans. `OverviewSurface.tsx` is the reference implementation.
 - **UI components: use the Progress vendor controls (KendoReact) wherever possible.** This is a
   brand requirement, not a preference — a Progress Agentic RAG demo must visibly run on
   Progress's own UI stack. Build every surface with KendoReact — `@progress/kendo-react-{layout,

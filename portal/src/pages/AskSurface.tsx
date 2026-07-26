@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SendHorizontal, Square, RotateCcw } from 'lucide-react';
 import { Button } from '@progress/kendo-react-buttons';
 import { Pill } from '../components/Pill';
@@ -72,6 +72,19 @@ export function AskSurface({ surface, config }: SurfaceProps) {
       }
     );
   };
+
+  // Ask arrived from the home ask bar (or a shared link): /ask?q=… → run it once.
+  const location = useLocation();
+  const ranInitial = useRef(false);
+  useEffect(() => {
+    if (ranInitial.current) return;
+    const q = new URLSearchParams(location.search).get('q');
+    if (q && q.trim()) {
+      ranInitial.current = true;
+      run(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   const stop = () => {
     abortRef.current?.();

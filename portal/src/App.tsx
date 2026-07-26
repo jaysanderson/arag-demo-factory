@@ -85,7 +85,7 @@ export default function App() {
             </span>
             {hasTour && (
               <Button themeColor="primary" onClick={() => setTourOpen(true)} startIcon={<Play size={15} />}>
-                <span className="hidden sm:inline">Guided demo</span>
+                <span className="hidden sm:inline">Guided tour</span>
               </Button>
             )}
             <Button
@@ -133,6 +133,16 @@ export default function App() {
   );
 }
 
+// A product descriptor under the wordmark — the product's own identity, not the
+// vendor tech category. Derived from the title (e.g. "HELIOS — Mission
+// Intelligence" → "Mission Intelligence"), never "Agentic RAG platform".
+function brandDescriptor(config: DemoConfig): string {
+  const brand = config.theme.brandName || '';
+  const title = (config.title || '').trim();
+  const descriptor = title.replace(brand, '').replace(/^[\s—–·:|-]+/, '').trim();
+  return descriptor || 'Knowledge workspace';
+}
+
 function Brand({ config }: { config: DemoConfig }) {
   return (
     <NavLink to="/" className="flex items-center gap-2.5">
@@ -141,7 +151,7 @@ function Brand({ config }: { config: DemoConfig }) {
         <p className="font-display text-base font-semibold text-ink-900 dark:text-ink-50">
           {config.theme.brandName}
         </p>
-        <p className="text-[11px] text-ink-400">Agentic RAG platform</p>
+        <p className="text-[11px] text-ink-400">{brandDescriptor(config)}</p>
       </div>
     </NavLink>
   );

@@ -1,6 +1,6 @@
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play, ShieldCheck, Database, Layers, Radio, Sparkles } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Database, Layers, Radio, Search, CornerDownLeft } from 'lucide-react';
 import type { DemoConfig, Surface } from '../lib/config';
 import { getHealth, catalog } from '../lib/arag';
 import { groupSurfaces } from '../lib/nav';
@@ -8,10 +8,12 @@ import { surfaceIcon } from '../lib/icons';
 import { useReveal, useCountUp } from '../lib/motion';
 
 /**
- * The command center — the front door of the product. A cinematic hero, a live
- * status strip pulled from /api/health + /api/catalog, the capabilities as a
- * bento grid grouped by capability area, and the demo flow. Entirely driven by
- * demo.config.json, so it reads premium for any vertical or theme.
+ * The home of a working knowledge environment — NOT a product landing page.
+ * The prospect should feel they've opened their own internal tool: a place to
+ * ask the record a question, with the operational status of the knowledge base
+ * and a quiet launcher for the rest of the workspace. No "showcase" framing, no
+ * capability-selling copy, no "how the demo flows" — value is shown by using it.
+ * Entirely driven by demo.config.json, so it reads right for any vertical.
  */
 export function OverviewSurface({
   config,
@@ -25,155 +27,150 @@ export function OverviewSurface({
   const navigate = useNavigate();
   const groups = groupSurfaces(surfaces);
   const hasTour = (config.demoScript?.length || 0) > 0;
-
   const askRoute = surfaces.find((s) => s.id === 'ask')?.route || surfaces[0]?.route || '/ask';
-  // The tagline is the punchy headline; the fuller elevator pitch is the
-  // supporting sub-copy. (Using the whole pitch as a display headline buries
-  // everything below the fold.)
-  const headline = config.tagline || config.elevatorPitch || config.title;
-  const subcopy = config.tagline ? config.elevatorPitch : config.persona;
-  const eyebrow = config.vertical || config.persona || 'Agentic RAG';
+  const starters = (config.probes?.answerable || []).slice(0, 4);
+
+  const ask = (query: string) => {
+    const t = query.trim();
+    navigate(t ? `${askRoute}?q=${encodeURIComponent(t)}` : askRoute);
+  };
 
   return (
-    <div className="space-y-14 pb-4">
-      <Hero
+    <div className="space-y-12 pb-4">
+      <Home
         config={config}
-        eyebrow={eyebrow}
-        headline={headline}
-        subcopy={subcopy || undefined}
+        starters={starters}
+        onAsk={ask}
         hasTour={hasTour}
         onStartTour={onStartTour}
-        onAsk={() => navigate(askRoute)}
       />
 
-      {/* Capabilities — grouped bento */}
-      <section className="space-y-12">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">The platform</p>
-            <h2 className="mt-2 font-display text-display text-ink-900 dark:text-ink-50">
-              One solution, {groups.length} capability areas
-            </h2>
-          </div>
-          <p className="hidden max-w-sm text-sm text-ink-500 sm:block">
-            Every surface runs on the same grounded Knowledge Box behind one API — not a row of
-            disconnected tools.
-          </p>
-        </div>
-
-        {groups.map((g) => (
-          <GroupBento key={g.group} group={g.group} intro={g.intro} items={g.surfaces} onOpen={navigate} />
-        ))}
-      </section>
-
-      {hasTour && <DemoFlow config={config} surfaces={surfaces} onStartTour={onStartTour} />}
+      <Workspace groups={groups} onOpen={navigate} />
     </div>
   );
 }
 
-/* ── Hero ──────────────────────────────────────────────────────────────────── */
+/* ── Home: greeting + ask + starters + live status ──────────────────────────── */
 
-function Hero({
+function Home({
   config,
-  eyebrow,
-  headline,
-  subcopy,
+  starters,
+  onAsk,
   hasTour,
   onStartTour,
-  onAsk,
 }: {
   config: DemoConfig;
-  eyebrow: string;
-  headline: string;
-  subcopy?: string;
+  starters: string[];
+  onAsk: (q: string) => void;
   hasTour: boolean;
   onStartTour: () => void;
-  onAsk: () => void;
 }) {
-  return (
-    <section className="card-elevated ring-hairline relative overflow-hidden rounded-[1.75rem] px-6 py-12 sm:px-12 sm:py-16">
-      {/* Ambient light + technical grid */}
-      <div className="absolute inset-0 bg-grid" aria-hidden />
+  const [q, setQ] = useState('');
+  // Product promise: the headline states what this environment does; the subline
+  // is the grounding guarantee. Both come from config (blueprint-authored).
+  const headline = config.tagline || `Ask ${config.theme.brandName} anything.`;
+  const subline =
+    config.elevatorPitch ||
+    'Every answer is grounded in your own records and shows the sources it came from.';
 
-      {/* Horizon arc: a wide, low light bloom + a hairline arc rising behind the
-          headline — the "sun cresting a control-room horizon" motif. */}
+  return (
+    <section className="card-elevated ring-hairline relative overflow-hidden rounded-[1.75rem] px-6 py-12 sm:px-12 sm:py-14">
+      <div className="absolute inset-0 bg-grid opacity-70" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-x-0 -bottom-1/2 top-1/3 mx-auto animate-pulse-glow"
+        className="pointer-events-none absolute inset-x-0 -top-1/4 mx-auto h-[130%] animate-pulse-glow"
         style={{
           background:
-            'radial-gradient(60% 100% at 50% 0%, color-mix(in srgb, var(--brand) 34%, transparent) 0%, transparent 70%)',
+            'radial-gradient(50% 60% at 50% 0%, color-mix(in srgb, var(--brand) 22%, transparent) 0%, transparent 70%)',
         }}
         aria-hidden
       />
-      <div
-        className="pointer-events-none absolute left-1/2 top-[46%] aspect-square w-[130%] max-w-none -translate-x-1/2 rounded-[50%] border"
-        style={{
-          borderColor: 'color-mix(in srgb, var(--brand) 34%, transparent)',
-          boxShadow: '0 -14px 60px -20px color-mix(in srgb, var(--brand) 55%, transparent)',
-        }}
-        aria-hidden
-      />
+      <div className="hero-orb -left-24 -top-28 h-[24rem] w-[24rem] animate-drift-a" style={{ background: 'var(--brand)' }} aria-hidden />
+      <div className="hero-orb -right-24 -top-20 h-[20rem] w-[20rem] animate-drift-b" style={{ background: 'var(--accent)', animationDelay: '-6s' }} aria-hidden />
 
-      <div
-        className="hero-orb -left-24 -top-28 h-[26rem] w-[26rem] animate-drift-a"
-        style={{ background: 'var(--brand)' }}
-        aria-hidden
-      />
-      <div
-        className="hero-orb -right-20 -top-16 h-[22rem] w-[22rem] animate-drift-b"
-        style={{ background: 'var(--accent)', animationDelay: '-6s' }}
-        aria-hidden
-      />
-
-      <div className="relative mx-auto max-w-4xl text-center">
-        <div className="flex items-center justify-center gap-2.5 animate-fade-up">
-          <span
-            className="chip !border-transparent shadow-sm"
-            style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)' }}
-          >
-            <Sparkles size={12} />
-            {config.theme.brandName}
+      <div className="relative mx-auto max-w-3xl">
+        <div className="flex items-center gap-2 animate-fade-up">
+          <LiveDot />
+          <span className="text-eyebrow uppercase tracking-[0.18em] text-ink-500">
+            {config.title || config.theme.brandName}
           </span>
-          <span className="text-eyebrow uppercase tracking-[0.2em] text-ink-500">{eyebrow}</span>
         </div>
 
         <h1
-          className="mx-auto mt-6 max-w-4xl font-display text-display-lg animate-fade-up"
-          style={{ animationDelay: '80ms', textWrap: 'balance' } as CSSProperties}
+          className="mt-4 font-display text-display-lg animate-fade-up"
+          style={{ animationDelay: '60ms', textWrap: 'balance' }}
         >
-          <span className="text-shimmer animate-sheen">{headline}</span>
+          {headline}
         </h1>
-
-        {subcopy && (
+        {subline && (
           <p
-            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-500 sm:text-lg animate-fade-up"
-            style={{ animationDelay: '150ms' }}
+            className="mt-4 max-w-2xl text-base leading-relaxed text-ink-500 sm:text-lg animate-fade-up"
+            style={{ animationDelay: '120ms' }}
           >
-            {subcopy}
+            {subline}
           </p>
         )}
 
-        <div
-          className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row animate-fade-up"
-          style={{ animationDelay: '220ms' }}
+        {/* The primary action: ask the record. */}
+        <form
+          onSubmit={(e) => { e.preventDefault(); onAsk(q); }}
+          className="mt-8 animate-fade-up"
+          style={{ animationDelay: '180ms' }}
         >
-          {hasTour && (
-            <button onClick={onStartTour} className="btn btn-brand shadow-glow-lg">
-              <Play size={16} />
-              Start the guided demo
+          <div className="ask-bar flex items-center gap-2 rounded-2xl px-3 py-2">
+            <Search size={18} className="ml-1 shrink-0 text-ink-400" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={`Ask ${config.theme.brandName} a question…`}
+              className="min-w-0 flex-1 border-0 bg-transparent py-2 text-base outline-none placeholder:text-ink-400"
+              aria-label="Ask a question"
+            />
+            <button type="submit" className="btn btn-brand shrink-0 shadow-glow" aria-label="Ask">
+              Ask
+              <CornerDownLeft size={15} />
             </button>
-          )}
-          <button onClick={onAsk} className="btn btn-ghost">
-            Ask a question
-            <ArrowRight size={16} />
-          </button>
-        </div>
+          </div>
+        </form>
+
+        {starters.length > 0 && (
+          <div className="mt-4 flex flex-wrap items-center gap-2 animate-fade-up" style={{ animationDelay: '240ms' }}>
+            <span className="text-xs font-medium text-ink-400">Try</span>
+            {starters.map((s) => (
+              <button
+                key={s}
+                onClick={() => onAsk(s)}
+                className="max-w-full truncate rounded-full border px-3 py-1.5 text-left text-xs text-ink-600 transition hover:border-[color:var(--brand)] hover:text-ink-900 dark:text-ink-300 dark:hover:text-ink-100"
+                style={{ borderColor: 'var(--hairline-strong)' }}
+                title={s}
+              >
+                {s}
+              </button>
+            ))}
+            {hasTour && (
+              <button
+                onClick={onStartTour}
+                className="ml-auto text-xs font-medium text-ink-500 underline-offset-4 transition hover:text-[color:var(--brand)] hover:underline"
+              >
+                Take a guided tour
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      <div className="relative mt-14 animate-fade-up" style={{ animationDelay: '300ms' }}>
+      <div className="relative mt-12 animate-fade-up" style={{ animationDelay: '300ms' }}>
         <StatusStrip />
       </div>
     </section>
+  );
+}
+
+function LiveDot() {
+  return (
+    <span className="relative flex h-2 w-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: '#16a34a' }} />
+      <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#16a34a' }} />
+    </span>
   );
 }
 
@@ -188,7 +185,6 @@ interface Stats {
 
 function useStats(): Stats {
   const [stats, setStats] = useState<Stats>({ loading: true, connected: false, documents: null, categories: null });
-
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -200,92 +196,44 @@ function useStats(): Stats {
         if (typeof cat.total === 'number') documents = cat.total;
         const values = Object.values(cat.facets || {}).reduce((n, arr) => n + (arr?.length || 0), 0);
         categories = values || null;
-      } catch {
-        /* keep whatever health gave us; never fabricate numbers */
-      }
+      } catch { /* never fabricate numbers */ }
       if (alive) setStats({ loading: false, connected: health.ok, documents, categories });
     })();
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, []);
-
   return stats;
 }
 
 function StatusStrip() {
   const { loading, connected, documents, categories } = useStats();
-  // Count numeric figures up once they land — a small moment of life on mount.
   const docsAnim = useCountUp(documents, !loading);
   const catsAnim = useCountUp(categories, !loading);
   const citedAnim = useCountUp(100, !loading);
 
   return (
     <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-      <Stat
-        icon={<Radio size={15} />}
-        label="Knowledge Box"
-        value={loading ? '…' : connected ? 'Connected' : 'Offline'}
-        tone={connected ? 'live' : 'muted'}
-        live
-      />
-      <Stat
-        icon={<Database size={15} />}
-        label="Documents"
-        value={loading ? '…' : documents == null ? '—' : docsAnim.toLocaleString()}
-      />
-      <Stat
-        icon={<Layers size={15} />}
-        label="Content facets"
-        value={loading ? '…' : categories == null ? '—' : catsAnim.toLocaleString()}
-      />
-      <Stat
-        icon={<ShieldCheck size={15} />}
-        label="Answers"
-        value={loading ? '…' : `${citedAnim}% cited`}
-        tone="brand"
-      />
+      <Stat icon={<Radio size={15} />} label="Knowledge base" value={loading ? '…' : connected ? 'Connected' : 'Offline'} tone={connected ? 'live' : 'muted'} live />
+      <Stat icon={<Database size={15} />} label="Documents" value={loading ? '…' : documents == null ? '—' : docsAnim.toLocaleString()} />
+      <Stat icon={<Layers size={15} />} label="Topics" value={loading ? '…' : categories == null ? '—' : catsAnim.toLocaleString()} />
+      <Stat icon={<ShieldCheck size={15} />} label="Answers" value={loading ? '…' : `${citedAnim}% cited`} tone="brand" />
     </div>
   );
 }
 
-function Stat({
-  icon,
-  label,
-  value,
-  tone,
-  live,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-  tone?: 'brand' | 'live' | 'muted';
-  live?: boolean;
-}) {
-  const valueColor =
-    tone === 'brand' ? 'var(--brand)' : tone === 'live' ? '#16a34a' : tone === 'muted' ? undefined : undefined;
+function Stat({ icon, label, value, tone, live }: { icon: ReactNode; label: string; value: string; tone?: 'brand' | 'live' | 'muted'; live?: boolean; }) {
+  const valueColor = tone === 'brand' ? 'var(--brand)' : tone === 'live' ? '#16a34a' : undefined;
   return (
-    <div className="card card-hover ring-hairline flex items-center gap-3 rounded-xl px-3.5 py-3 text-left">
+    <div className="card ring-hairline flex items-center gap-3 rounded-xl px-3.5 py-3 text-left">
       <span
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-        style={{
-          background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 20%, transparent), color-mix(in srgb, var(--brand) 7%, transparent))',
-          color: 'var(--brand)',
-        }}
+        style={{ background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 20%, transparent), color-mix(in srgb, var(--brand) 7%, transparent))', color: 'var(--brand)' }}
       >
         {icon}
       </span>
       <div className="min-w-0">
         <div className="flex items-center gap-1.5">
-          {live && (
-            <span
-              className="h-1.5 w-1.5 rounded-full animate-pulse-glow"
-              style={{ background: tone === 'live' ? '#16a34a' : '#dc2626' }}
-            />
-          )}
-          <span className="truncate text-sm font-semibold text-ink-900 dark:text-ink-50" style={{ color: valueColor }}>
-            {value}
-          </span>
+          {live && <span className="h-1.5 w-1.5 rounded-full animate-pulse-glow" style={{ background: tone === 'live' ? '#16a34a' : '#dc2626' }} />}
+          <span className="truncate text-sm font-semibold text-ink-900 dark:text-ink-50" style={{ color: valueColor }}>{value}</span>
         </div>
         <span className="block text-[11px] uppercase tracking-wide text-ink-400">{label}</span>
       </div>
@@ -293,47 +241,31 @@ function Stat({
   );
 }
 
-/* ── Capabilities bento ─────────────────────────────────────────────────────── */
+/* ── Workspace: the tool launcher ───────────────────────────────────────────── */
 
-function GroupBento({
-  group,
-  intro,
-  items,
-  onOpen,
-}: {
-  group: string;
-  intro?: string;
-  items: Surface[];
-  onOpen: (route: string) => void;
-}) {
+function Workspace({ groups, onOpen }: { groups: ReturnType<typeof groupSurfaces>; onOpen: (route: string) => void }) {
+  return (
+    <section className="space-y-9">
+      <h2 className="font-display text-display text-ink-900 dark:text-ink-50">Your workspace</h2>
+      {groups.map((g) => (
+        <GroupBlock key={g.group} group={g.group} items={g.surfaces} onOpen={onOpen} />
+      ))}
+    </section>
+  );
+}
+
+function GroupBlock({ group, items, onOpen }: { group: string; items: Surface[]; onOpen: (route: string) => void }) {
   const { ref, visible } = useReveal<HTMLDivElement>();
   return (
     <div ref={ref}>
-      <div className="mb-5 flex items-baseline gap-3">
-        <h3 className="font-display text-xl font-semibold text-ink-900 dark:text-ink-50">{group}</h3>
-        <span
-          className="h-px flex-1"
-          style={{ background: 'linear-gradient(90deg, var(--hairline-strong), transparent)' }}
-        />
-        {intro && <p className="hidden max-w-md text-sm text-ink-500 md:block">{intro}</p>}
+      <div className="mb-4 flex items-baseline gap-3">
+        <h3 className="text-eyebrow uppercase tracking-[0.14em] text-ink-500">{group}</h3>
+        <span className="h-px flex-1" style={{ background: 'linear-gradient(90deg, var(--hairline-strong), transparent)' }} />
       </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((s, idx) => (
-          <div
-            key={s.route}
-            className={`reveal ${visible ? 'is-visible' : ''} ${
-              items.length === 1 ? 'md:col-span-3' : items.length > 1 && idx === 0 ? 'md:col-span-2' : ''
-            }`}
-            style={{ transitionDelay: `${idx * 70}ms` }}
-          >
-            <CapabilityCard
-              surface={s}
-              // A little bento rhythm: the first card of a multi-item area is wide.
-              wide={items.length > 1 && idx === 0}
-              full={items.length === 1}
-              onOpen={onOpen}
-            />
+          <div key={s.route} className={`reveal ${visible ? 'is-visible' : ''}`} style={{ transitionDelay: `${idx * 55}ms` }}>
+            <ToolCard surface={s} onOpen={onOpen} />
           </div>
         ))}
       </div>
@@ -341,117 +273,27 @@ function GroupBento({
   );
 }
 
-function CapabilityCard({
-  surface,
-  wide,
-  full,
-  onOpen,
-}: {
-  surface: Surface;
-  wide?: boolean;
-  full?: boolean;
-  onOpen: (route: string) => void;
-}) {
+function ToolCard({ surface, onOpen }: { surface: Surface; onOpen: (route: string) => void }) {
   const Icon = surfaceIcon(surface.icon);
   return (
     <button
       onClick={() => onOpen(surface.route)}
-      className="card card-hover ring-hairline group relative flex h-full w-full flex-col overflow-hidden rounded-2xl p-5 text-left"
+      className="card card-hover ring-hairline group relative flex h-full w-full items-start gap-3.5 overflow-hidden rounded-2xl p-4 text-left"
     >
-      {/* Brand light that blooms from the corner on hover. */}
       <span
-        className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: 'color-mix(in srgb, var(--brand) 40%, transparent)' }}
-        aria-hidden
-      />
-      <div className="relative flex items-center justify-between">
-        <span
-          className="flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105"
-          style={{
-            background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 22%, transparent), color-mix(in srgb, var(--brand) 8%, transparent))',
-            color: 'var(--brand)',
-          }}
-        >
-          <Icon size={20} />
+        className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105"
+        style={{ background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 22%, transparent), color-mix(in srgb, var(--brand) 8%, transparent))', color: 'var(--brand)' }}
+      >
+        <Icon size={19} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-1.5">
+          <span className="font-display text-[15px] font-semibold text-ink-900 dark:text-ink-50">{surface.label}</span>
+          <ArrowRight size={15} className="text-ink-300 transition-all group-hover:translate-x-0.5 group-hover:text-[color:var(--brand)]" />
         </span>
-        <ArrowRight
-          size={18}
-          className="text-ink-300 transition-all group-hover:translate-x-0.5 group-hover:text-[color:var(--brand)]"
-        />
-      </div>
-
-      <h4 className="mt-4 font-display text-lg font-semibold text-ink-900 dark:text-ink-50">{surface.label}</h4>
-      {surface.sells ? (
-        <p className={`mt-1.5 text-sm leading-snug text-ink-500 ${wide || full ? 'max-w-xl' : ''}`}>{surface.sells}</p>
-      ) : (
-        surface.tagline && <p className="mt-1.5 text-sm leading-snug text-ink-500">{surface.tagline}</p>
-      )}
-
-      {/* Hairline that lights up in the brand colour on hover. */}
-      <span
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
-        style={{ background: 'linear-gradient(90deg, var(--brand), var(--accent))' }}
-      />
+        {/* Functional description only — never the executive `sells` line. */}
+        {surface.tagline && <span className="mt-1 block text-sm leading-snug text-ink-500">{surface.tagline}</span>}
+      </span>
     </button>
-  );
-}
-
-/* ── Demo flow ──────────────────────────────────────────────────────────────── */
-
-function DemoFlow({
-  config,
-  surfaces,
-  onStartTour,
-}: {
-  config: DemoConfig;
-  surfaces: Surface[];
-  onStartTour: () => void;
-}) {
-  const beats = config.demoScript || [];
-  const { ref, visible } = useReveal<HTMLElement>();
-  return (
-    <section ref={ref} className="card-elevated ring-hairline relative overflow-hidden rounded-[1.75rem] p-6 sm:p-10">
-      <div className="hero-orb -right-16 top-0 h-64 w-64 animate-drift-b" style={{ background: 'var(--accent)' }} aria-hidden />
-      <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="eyebrow">How the demo flows</p>
-          <h2 className="mt-2 max-w-xl font-display text-display text-ink-900 dark:text-ink-50">
-            A guided story in {beats.length} beats
-          </h2>
-        </div>
-        <button onClick={onStartTour} className="btn btn-brand shrink-0 shadow-glow-lg">
-          <Play size={16} />
-          Play the guided demo
-        </button>
-      </div>
-
-      <ol className="relative mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {beats.map((b, bi) => {
-          const surface = surfaces.find(
-            (s) => (b.show || '').toLowerCase().startsWith(s.label.toLowerCase())
-          );
-          return (
-            <li
-              key={b.step}
-              className={`card card-hover reveal ${visible ? 'is-visible' : ''} rounded-2xl p-5`}
-              style={{ transitionDelay: `${bi * 60}ms` }}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold"
-                  style={{ background: 'var(--brand)', color: 'var(--brand-contrast)' }}
-                >
-                  {b.step}
-                </span>
-                {surface && (
-                  <span className="text-eyebrow uppercase tracking-wide text-ink-400">{surface.label}</span>
-                )}
-              </div>
-              <p className="mt-3 text-sm leading-snug text-ink-700 dark:text-ink-200">{b.say}</p>
-            </li>
-          );
-        })}
-      </ol>
-    </section>
   );
 }
