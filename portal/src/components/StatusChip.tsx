@@ -1,23 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Chip } from '@progress/kendo-react-buttons';
 import { getHealth } from '../lib/arag';
 
 // KB-connected status chip. Reports connectivity only — NEVER the zone/region
 // string (Hard Rule 4). Re-probes periodically so a cold KB shows as it wakes.
+//
+// A single upstream blip (e.g. a /counters timeout while a heavy graph query is
+// in flight) must NOT flash "unreachable" in front of a buyer. We require two
+// consecutive misses before showing "down", stay "connected" through one blip,
+// and re-probe quickly after a miss so recovery shows fast.
 export function StatusChip() {
   const [state, setState] = useState<'checking' | 'connected' | 'down'>('checking');
+  const misses = useRef(0);
 
   useEffect(() => {
     let alive = true;
-    const probe = async () => {
-      const h = await getHealth();
-      if (alive) setState(h.ok ? 'connected' : 'down');
+    let timer: ReturnType<typeof setTimeout>;
+
+    const schedule = (ms: number) => {
+      if (!alive) return;
+      timer = setTimeout(probe, ms);
     };
+
+    const probe = async () => {
+      let ok = false;
+      try {
+        ok = (await getHealth()).ok;
+      } catch {
+        ok = false;
+      }
+      if (!alive) return;
+      if (ok) {
+        misses.current = 0;
+        setState('connected');
+        schedule(30000);
+      } else {
+        misses.current += 1;
+        // Only surface "down" after a second consecutive miss; retry soon.
+        if (misses.current >= 2) setState('down');
+        schedule(misses.current >= 2 ? 30000 : 5000);
+      }
+    };
+
     probe();
-    const id = setInterval(probe, 30000);
     return () => {
       alive = false;
-      clearInterval(id);
+      clearTimeout(timer);
     };
   }, []);
 

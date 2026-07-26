@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Shuffle, Sparkles, Share2, Play } from 'lucide-react';
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Input } from '@progress/kendo-react-inputs';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import type { CatalogCard, GraphResult } from '../lib/arag';
-import { catalog, graph } from '../lib/arag';
+import { catalog, graph, search } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
+import { ClickableCard } from '../components/ClickableCard';
 
 // Related & Similar Titles — "more like this" that understands the content, the
 // YouTube-style member-experience recommendation. It shows the two mechanisms
@@ -17,14 +19,42 @@ import { PageHeader } from '../components/PageHeader';
 //     mirrors arag-personalize's KGRelated: traverse shared entities, rank by
 //     overlap, instead of tag-based related posts).
 
-function mediaBadge(c: CatalogCard) {
-  return c.mediaType || c.docType || 'title';
+type RelItem = { id: string; title: string; badge: string };
+
+// Flatten a /find payload into ranked, deduped document hits — the real semantic
+// neighbours (catalog is keyword/title-match only, so it can't do "more like this").
+function toSimilar(result: any, seedText: string): RelItem[] {
+  const out: RelItem[] = [];
+  for (const [rid, r] of Object.entries<any>(result?.resources || {})) {
+    if (r.title && r.title.toLowerCase() === seedText.toLowerCase()) continue;
+    let best = -Infinity;
+    for (const field of Object.values<any>(r.fields || {})) {
+      for (const p of Object.values<any>(field.paragraphs || {})) {
+        if ((p.score ?? 0) > best) best = p.score ?? 0;
+      }
+    }
+    const labels: Record<string, string[]> = {};
+    for (const c of r.usermetadata?.classifications || []) {
+      (labels[c.labelset] ||= []).push(c.label);
+    }
+    const badge = labels.media_type?.[0] || labels.doc_type?.[0] || 'title';
+    out.push({ id: rid, title: r.title || rid, badge, ...( { _s: best } as any) });
+  }
+  return out.sort((a: any, b: any) => (b._s ?? 0) - (a._s ?? 0)).slice(0, 6);
+}
+
+// HELIOS-style document codes (ANOM-HAL-011, MAL-ECLSS-07, P-204) are first-class
+// entities in the knowledge graph, so a title that carries one can seed the graph.
+function codeFrom(text: string): string | null {
+  const m = text.match(/\b[A-Z]{1,5}-[A-Z0-9]+(?:-[A-Z0-9.]+)*\b/);
+  return m ? m[0] : null;
 }
 
 export function RelatedSurface({ surface }: SurfaceProps) {
+  const navigate = useNavigate();
   const [seed, setSeed] = useState('');
   const [pending, setPending] = useState('');
-  const [similar, setSimilar] = useState<CatalogCard[]>([]);
+  const [similar, setSimilar] = useState<RelItem[]>([]);
   const [graphRes, setGraphRes] = useState<GraphResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [seedTitle, setSeedTitle] = useState<string>('');
@@ -41,13 +71,23 @@ export function RelatedSurface({ surface }: SurfaceProps) {
     setSeed(t);
     setSeedTitle(t);
     setLoading(true);
+    // Graph: try the seed directly (works when it's an entity, e.g. after a pivot),
+    // else fall back to a document code lifted from the title.
+    const graphSeed = async (): Promise<GraphResult | null> => {
+      const g = await graph({ entity: t, topK: 24 }).catch(() => null);
+      if (g && g.nodes.length > 0) return g;
+      const code = codeFrom(t);
+      if (code && code.toLowerCase() !== t.toLowerCase()) {
+        return graph({ entity: code, topK: 24 }).catch(() => null);
+      }
+      return g;
+    };
     Promise.all([
-      catalog({ query: t, pageSize: 8 }),
-      graph({ entity: t, topK: 24 }),
+      search({ query: t, pageSize: 8, features: ['keyword', 'semantic'] }),
+      graphSeed(),
     ])
-      .then(([c, g]) => {
-        // Drop the seed itself from the "similar" list where possible.
-        setSimilar((c.items || []).filter((x) => x.title.toLowerCase() !== t.toLowerCase()).slice(0, 6));
+      .then(([s, g]) => {
+        setSimilar(toSimilar(s, t));
         setGraphRes(g);
       })
       .catch(() => { setSimilar([]); setGraphRes(null); })
@@ -110,17 +150,19 @@ export function RelatedSurface({ surface }: SurfaceProps) {
             <div className="space-y-2">
               {similar.length === 0 && <div className="text-sm text-ink-400">No semantic neighbours found.</div>}
               {similar.map((c) => (
-                <Card key={c.id}>
-                  <CardBody className="flex items-center gap-3 p-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
-                      <Play size={16} />
-                    </span>
-                    <div className="min-w-0">
-                      <div className="truncate text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
-                      <div className="text-[11px] uppercase text-ink-400">{mediaBadge(c)}</div>
-                    </div>
-                  </CardBody>
-                </Card>
+                <ClickableCard key={c.id} ariaLabel={`Open ${c.title}`} onClick={() => navigate(`/r/${c.id}`)} className="hover:-translate-y-0.5">
+                  <Card className="card-hover">
+                    <CardBody className="flex items-center gap-3 p-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
+                        <Play size={16} />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
+                        <div className="text-[11px] uppercase text-ink-400">{c.badge}</div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </ClickableCard>
               ))}
             </div>
           </section>

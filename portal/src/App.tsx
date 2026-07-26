@@ -8,6 +8,7 @@ import { loadConfig, type DemoConfig } from './lib/config';
 import { applyTheme, initColorScheme, setColorScheme } from './lib/theme';
 import { SURFACES } from './pages/registry';
 import { OverviewSurface } from './pages/OverviewSurface';
+import { ResourceDetail } from './pages/ResourceDetail';
 import { GroupedNav } from './components/GroupedNav';
 import { GuidedTour } from './components/GuidedTour';
 import { StatusChip } from './components/StatusChip';
@@ -105,6 +106,9 @@ export default function App() {
               const Component = SURFACES[s.component];
               return <Route key={s.route} path={s.route} element={<Component surface={s} config={config} />} />;
             })}
+            {/* The YouTube-style watch/detail page — reachable from any resource
+                click; rendered inside the shell so nav + atmosphere stay. */}
+            <Route path="/r/:id" element={<ResourceDetail config={config} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         )}

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sparkles, FileText } from 'lucide-react';
 import { Chip } from '@progress/kendo-react-buttons';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { search, catalog } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
-import { DocumentDrawer } from '../components/DocumentDrawer';
+import { ClickableCard } from '../components/ClickableCard';
 import { Spinner } from '../components/States';
 
 interface Rec { id: string; title: string; snippet: string }
@@ -28,11 +29,11 @@ function toRecs(result: any): Rec[] {
 // interest and the corpus reorders around it — all retrieved, all attributable,
 // no separate recommender to keep in sync.
 export function PersonalizeSurface({ surface }: SurfaceProps) {
+  const navigate = useNavigate();
   const [interests, setInterests] = useState<string[]>([]);
   const [active, setActive] = useState<string>('');
   const [recs, setRecs] = useState<Rec[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [openDoc, setOpenDoc] = useState<string | null>(null);
 
   // Derive interest chips from the corpus's own facet labels — real topics, not
   // invented ones.
@@ -91,21 +92,21 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {(recs || []).map((r) => (
-              <Card key={r.id} onClick={() => setOpenDoc(r.id)} className="cursor-pointer transition hover:shadow-md">
-                <CardBody className="p-4">
-                  <div className="flex items-center gap-2">
-                    <FileText size={14} className="shrink-0 text-ink-400" />
-                    <span className="line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{r.title}</span>
-                  </div>
-                  {r.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{r.snippet}</p>}
-                </CardBody>
-              </Card>
+              <ClickableCard key={r.id} ariaLabel={`Open ${r.title}`} onClick={() => navigate(`/r/${r.id}`)} className="hover:-translate-y-0.5">
+                <Card className="card-hover h-full transition hover:shadow-md">
+                  <CardBody className="p-4">
+                    <div className="flex items-center gap-2">
+                      <FileText size={14} className="shrink-0 text-ink-400" />
+                      <span className="line-clamp-1 font-semibold text-ink-900 dark:text-ink-100">{r.title}</span>
+                    </div>
+                    {r.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{r.snippet}</p>}
+                  </CardBody>
+                </Card>
+              </ClickableCard>
             ))}
           </div>
         )}
       </div>
-
-      {openDoc && <DocumentDrawer id={openDoc} onClose={() => setOpenDoc(null)} />}
     </div>
   );
 }

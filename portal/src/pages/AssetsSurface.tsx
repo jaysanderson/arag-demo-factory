@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Image as ImageIcon, Film, FileText, Search, Sparkles } from 'lucide-react';
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Input } from '@progress/kendo-react-inputs';
@@ -7,6 +8,7 @@ import type { SurfaceProps } from './types';
 import type { Citation, CatalogCard } from '../lib/arag';
 import { catalog, ask } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
+import { ClickableCard } from '../components/ClickableCard';
 import { Citations } from '../components/Citations';
 
 // Asset Library (Agentic DAM) — a governed library with semantic discovery and
@@ -21,6 +23,7 @@ function mediaIcon(mediaType: string | null) {
 }
 
 export function AssetsSurface({ surface }: SurfaceProps) {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [cards, setCards] = useState<CatalogCard[]>([]);
   const [total, setTotal] = useState(0);
@@ -87,24 +90,26 @@ export function AssetsSurface({ surface }: SurfaceProps) {
         {cards.map((c) => {
           const Icon = mediaIcon(c.mediaType);
           return (
-            <Card key={c.id} className="overflow-hidden transition hover:shadow-md">
-              <div className="flex h-28 items-center justify-center" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
-                <Icon size={30} />
-              </div>
-              <CardBody className="space-y-1 p-3">
-                <div className="flex items-center gap-2">
-                  <Chip
-                    text={c.mediaType || c.docType || 'asset'}
-                    size="small"
-                    rounded="medium"
-                    style={{ background: 'var(--brand-soft)', color: 'var(--brand)', borderColor: 'transparent' }}
-                  />
-                  {c.durationMinutes ? <span className="text-[10px] text-ink-400">{c.durationMinutes}m</span> : null}
+            <ClickableCard key={c.id} ariaLabel={`Open ${c.title}`} onClick={() => navigate(`/r/${c.id}`)} className="hover:-translate-y-0.5">
+              <Card className="card-hover h-full overflow-hidden transition hover:shadow-md">
+                <div className="flex h-28 items-center justify-center" style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}>
+                  <Icon size={30} />
                 </div>
-                <div className="line-clamp-2 text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
-                {c.summary && <div className="line-clamp-2 text-xs text-ink-500">{c.summary}</div>}
-              </CardBody>
-            </Card>
+                <CardBody className="space-y-1 p-3">
+                  <div className="flex items-center gap-2">
+                    <Chip
+                      text={c.mediaType || c.docType || 'asset'}
+                      size="small"
+                      rounded="medium"
+                      style={{ background: 'var(--brand-soft)', color: 'var(--brand)', borderColor: 'transparent' }}
+                    />
+                    {c.durationMinutes ? <span className="text-[10px] text-ink-400">{c.durationMinutes}m</span> : null}
+                  </div>
+                  <div className="line-clamp-2 text-sm font-medium text-ink-800 dark:text-ink-100">{c.title}</div>
+                  {c.summary && <div className="line-clamp-2 text-xs text-ink-500">{c.summary}</div>}
+                </CardBody>
+              </Card>
+            </ClickableCard>
           );
         })}
       </div>
@@ -127,7 +132,7 @@ export function AssetsSurface({ surface }: SurfaceProps) {
           {(answer || asking) && (
             <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_18rem]">
               <p className="whitespace-pre-wrap leading-relaxed text-ink-800 dark:text-ink-100">{answer || 'Searching the archive…'}</p>
-              <div>{citations && <Citations citations={citations} />}</div>
+              <div>{citations && <Citations citations={citations} onOpen={(rid) => navigate(`/r/${rid}`)} />}</div>
             </div>
           )}
         </CardBody>

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Mic, Square, Volume2 } from 'lucide-react';
 import { Button } from '@progress/kendo-react-buttons';
 import { Input } from '@progress/kendo-react-inputs';
@@ -22,6 +23,7 @@ const SpeechRecognition: any =
   (typeof window !== 'undefined' && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)) || null;
 
 export function VoiceSurface({ surface }: SurfaceProps) {
+  const navigate = useNavigate();
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [typed, setTyped] = useState('');
@@ -157,7 +159,7 @@ export function VoiceSurface({ surface }: SurfaceProps) {
               )}
             </CardBody>
           </Card>
-          <div>{citations && <Citations citations={citations} />}</div>
+          <div>{citations && <Citations citations={citations} onOpen={(rid) => navigate(`/r/${rid}`)} />}</div>
         </div>
       )}
     </div>

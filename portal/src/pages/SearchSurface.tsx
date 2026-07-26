@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, X, FileText } from 'lucide-react';
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Card, CardBody } from '@progress/kendo-react-layout';
@@ -6,7 +7,7 @@ import { Input, Checkbox } from '@progress/kendo-react-inputs';
 import type { SurfaceProps } from './types';
 import { search, catalog, type CatalogResult, type CatalogCard } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
-import { DocumentDrawer } from '../components/DocumentDrawer';
+import { ClickableCard } from '../components/ClickableCard';
 import { Spinner, ErrorBanner, EmptyState } from '../components/States';
 
 interface Hit {
@@ -42,6 +43,8 @@ const prettyLabelset = (id: string) =>
 
 export function SearchSurface({ surface }: SurfaceProps) {
   const hasFacets = surface.capabilities?.includes('facets');
+  const navigate = useNavigate();
+  const openResource = (rid: string) => navigate(`/r/${rid}`);
 
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
@@ -50,7 +53,6 @@ export function SearchSurface({ surface }: SurfaceProps) {
   const [browse, setBrowse] = useState<CatalogResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [openDoc, setOpenDoc] = useState<string | null>(null);
 
   const filterList = useMemo(() => [...filters], [filters]);
 
@@ -197,38 +199,34 @@ export function SearchSurface({ surface }: SurfaceProps) {
                 <EmptyState title="No matches" hint="Try a broader concept or remove a filter." />
               ) : (
                 hits.map((h) => (
-                  <Card
-                    key={h.id}
-                    onClick={() => setOpenDoc(h.id)}
-                    className="cursor-pointer transition hover:shadow-md"
-                  >
-                    <CardBody className="p-4">
-                      <div className="flex items-center gap-2">
-                        <FileText size={14} className="shrink-0 text-ink-400" />
-                        <span className="font-semibold text-ink-900 dark:text-ink-100">{h.title}</span>
-                        <Chip
-                          text={`${Math.round(h.score * 100)}%`}
-                          size="small"
-                          fillMode="outline"
-                          rounded="full"
-                          className="ml-auto"
-                        />
-                      </div>
-                      {h.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{h.snippet}</p>}
-                    </CardBody>
-                  </Card>
+                  <ClickableCard key={h.id} ariaLabel={`Open ${h.title}`} onClick={() => openResource(h.id)}>
+                    <Card className="card-hover transition hover:shadow-md">
+                      <CardBody className="p-4">
+                        <div className="flex items-center gap-2">
+                          <FileText size={14} className="shrink-0 text-ink-400" />
+                          <span className="font-semibold text-ink-900 dark:text-ink-100">{h.title}</span>
+                          <Chip
+                            text={`${Math.round(h.score * 100)}%`}
+                            size="small"
+                            fillMode="outline"
+                            rounded="full"
+                            className="ml-auto"
+                          />
+                        </div>
+                        {h.snippet && <p className="mt-1.5 line-clamp-2 text-sm text-ink-500">{h.snippet}</p>}
+                      </CardBody>
+                    </Card>
+                  </ClickableCard>
                 ))
               )}
             </>
           )}
 
           {!loading && !showingSearch && (
-            <BrowseGrid items={browse?.items || []} total={browse?.total} onOpen={setOpenDoc} />
+            <BrowseGrid items={browse?.items || []} total={browse?.total} onOpen={openResource} />
           )}
         </div>
       </div>
-
-      {openDoc && <DocumentDrawer id={openDoc} onClose={() => setOpenDoc(null)} />}
     </div>
   );
 }
@@ -248,32 +246,30 @@ function BrowseGrid({
       <p className="text-xs text-ink-500">{total ?? items.length} documents in the corpus</p>
       <div className="grid gap-3 sm:grid-cols-2">
         {items.map((c) => (
-          <Card
-            key={c.id}
-            onClick={() => onOpen(c.id)}
-            className="cursor-pointer transition hover:shadow-md"
-          >
-            <CardBody className="p-4">
-              <div className="flex items-center gap-2">
-                <Chip
-                  text={c.docType}
-                  size="small"
-                  rounded="full"
-                  style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)', borderColor: 'transparent' }}
-                />
-                {c.durationMinutes != null && (
+          <ClickableCard key={c.id} ariaLabel={`Open ${c.title}`} onClick={() => onOpen(c.id)} className="hover:-translate-y-0.5">
+            <Card className="card-hover h-full transition hover:shadow-md">
+              <CardBody className="p-4">
+                <div className="flex items-center gap-2">
                   <Chip
-                    text={`${c.durationMinutes}m`}
+                    text={c.docType}
                     size="small"
-                    fillMode="outline"
                     rounded="full"
+                    style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)', borderColor: 'transparent' }}
                   />
-                )}
-              </div>
-              <p className="mt-2 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
-              {c.summary && <p className="mt-1 line-clamp-2 text-sm text-ink-500">{c.summary}</p>}
-            </CardBody>
-          </Card>
+                  {c.durationMinutes != null && (
+                    <Chip
+                      text={`${c.durationMinutes}m`}
+                      size="small"
+                      fillMode="outline"
+                      rounded="full"
+                    />
+                  )}
+                </div>
+                <p className="mt-2 font-semibold text-ink-900 dark:text-ink-100">{c.title}</p>
+                {c.summary && <p className="mt-1 line-clamp-2 text-sm text-ink-500">{c.summary}</p>}
+              </CardBody>
+            </Card>
+          </ClickableCard>
         ))}
       </div>
     </>

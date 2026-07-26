@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SendHorizontal, Square, RotateCcw } from 'lucide-react';
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Card, CardBody } from '@progress/kendo-react-layout';
@@ -7,7 +8,6 @@ import { ask, type Citation } from '../lib/arag';
 import { renderMarkdown } from '../lib/markdown';
 import { PageHeader } from '../components/PageHeader';
 import { Citations } from '../components/Citations';
-import { DocumentDrawer } from '../components/DocumentDrawer';
 import { TypingDots, ErrorBanner, UngroundedWarning } from '../components/States';
 
 const REFUSAL_MARKERS = [
@@ -27,12 +27,12 @@ function suggestionsFromScript(steps: SurfaceProps['config']['demoScript']): str
 }
 
 export function AskSurface({ surface, config }: SurfaceProps) {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [answer, setAnswer] = useState('');
   const [citations, setCitations] = useState<Citation[] | null>(null);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [openDoc, setOpenDoc] = useState<string | null>(null);
   const abortRef = useRef<null | (() => void)>(null);
   const answerRef = useRef<HTMLDivElement>(null);
 
@@ -110,7 +110,7 @@ export function AskSurface({ surface, config }: SurfaceProps) {
                 }
               }}
               rows={1}
-              placeholder="e.g. How do impact mills compare with chaff lining for ryegrass control?"
+              placeholder={suggestions[0] ? `e.g. ${suggestions[0]}` : 'Ask a question about the knowledge base…'}
               className="field max-h-40 min-h-[46px] flex-1 resize-none border-0 bg-transparent shadow-none focus:shadow-none"
             />
             {streaming ? (
@@ -187,15 +187,13 @@ export function AskSurface({ surface, config }: SurfaceProps) {
 
           <aside className="lg:sticky lg:top-4 lg:self-start">
             {citations && citations.length > 0 ? (
-              <Citations citations={citations} onOpen={setOpenDoc} />
+              <Citations citations={citations} onOpen={(rid) => navigate(`/r/${rid}`)} />
             ) : streaming ? (
               <Card className="card-flat"><CardBody className="p-4 text-sm text-ink-400">Resolving sources…</CardBody></Card>
             ) : null}
           </aside>
         </div>
       )}
-
-      {openDoc && <DocumentDrawer id={openDoc} onClose={() => setOpenDoc(null)} />}
     </div>
   );
 }
