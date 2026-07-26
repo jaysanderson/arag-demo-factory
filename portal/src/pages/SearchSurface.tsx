@@ -142,7 +142,7 @@ export function SearchSurface({ surface }: SurfaceProps) {
         </CardBody>
       </Card>
 
-      <div className={`mt-6 grid gap-6 ${hasFacets ? 'lg:grid-cols-[16rem_1fr]' : ''}`}>
+      <div className={`mt-6 grid grid-cols-1 gap-6 ${hasFacets ? 'lg:grid-cols-[16rem_1fr]' : ''}`}>
         {/* Facets */}
         {hasFacets && (
           <aside className="space-y-4">
@@ -244,7 +244,7 @@ function BrowseGrid({
   return (
     <>
       <p className="text-xs text-ink-500">{total ?? items.length} documents in the corpus</p>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {items.map((c) => (
           <ClickableCard key={c.id} ariaLabel={`Open ${c.title}`} onClick={() => onOpen(c.id)} className="hover:-translate-y-0.5">
             <Card className="card-hover h-full transition hover:shadow-md">

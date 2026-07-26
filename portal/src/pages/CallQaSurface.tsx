@@ -60,7 +60,7 @@ export function CallQaSurface({ surface }: SurfaceProps) {
             <Stat label="Coverage" value="100%" />
             <Stat label="Sampled (old way)" value="2%" muted />
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {calls.map((c) => (
               <ClickableCard key={c.id} ariaLabel={`Open ${c.title}`} onClick={() => navigate(`/r/${c.id}`)} className="hover:-translate-y-0.5">
                 <Card className="card-hover h-full transition hover:shadow-md">

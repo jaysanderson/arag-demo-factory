@@ -158,7 +158,7 @@ export function GraphSurface({ surface }: SurfaceProps) {
       ) : (
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
-            <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-[560px] w-full min-w-[680px]">
+            <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-[420px] w-full min-w-[560px] sm:h-[560px] sm:min-w-[680px]">
               {links.map((link, i) => {
                 const hot = hover && (link.source.id === hover || link.target.id === hover);
                 return (

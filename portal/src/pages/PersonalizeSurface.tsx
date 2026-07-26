@@ -81,7 +81,7 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
         {loading ? (
           <Spinner label="Personalising…" />
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {(recs || []).map((r) => (
               <ClickableCard key={r.id} ariaLabel={`Open ${r.title}`} onClick={() => navigate(`/r/${r.id}`)} className="hover:-translate-y-0.5">
                 <Card className="card-hover h-full transition hover:shadow-md">

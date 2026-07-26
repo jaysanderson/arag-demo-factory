@@ -162,6 +162,12 @@ requirement, not a nice-to-have.** Rules:
 - **Layouts stack below `lg`.** Two-pane surfaces use `lg:grid-cols-[…]` so they become a single
   column on mobile (watch page, Ask answer+sources, Search facets+results, Doc Studio). Card grids
   cap at 2 columns on phones (`grid-cols-2 sm:grid-cols-4 …`).
+- **Every responsive grid MUST declare a base single column** — write
+  `grid grid-cols-1 lg:grid-cols-[…]`, never bare `grid lg:grid-cols-[…]`. Without a base, the
+  mobile grid has an implicit `auto` column with no `minmax(0,1fr)` floor, so wide content (a
+  streamed answer, a long line) can't shrink and **overflows horizontally on phones**. `grid-cols-1`
+  gives the `minmax(0,1fr)` that constrains it. (This silently broke every two-pane surface on
+  mobile until fixed.)
 - **Fluid type.** Hero/section headings use `clamp()` display sizes (see `tailwind.config.js`) so
   they scale down instead of overflowing.
 - **Wide content scrolls in its own container**, never the page: the graph SVG, code/`<pre>`

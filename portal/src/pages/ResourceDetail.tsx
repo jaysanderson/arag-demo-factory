@@ -141,7 +141,7 @@ export function ResourceDetail({ config }: { config: DemoConfig }) {
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
       {r && (
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <MainColumn resource={r} id={id} navigate={navigate} />
           <UpNextRail seedId={id} seedTitle={r.title} labels={r.labels} navigate={navigate} />
         </div>
@@ -402,7 +402,7 @@ function AskAboutThis({ title, navigate }: { title: string; navigate: (to: strin
         {error && <div className="mt-4"><ErrorBanner>{error}</ErrorBanner></div>}
 
         {(answer || streaming) && (
-          <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_16rem]">
+          <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_16rem]">
             <div>
               <div
                 className="answer-prose"

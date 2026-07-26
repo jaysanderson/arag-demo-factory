@@ -159,7 +159,7 @@ export function AskSurface({ surface, config }: SurfaceProps) {
 
       {/* Answer + sources */}
       {(answer || streaming) && (
-        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_20rem]">
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_20rem]">
           <Card>
             <CardBody className="p-5">
               <div className="mb-3 flex items-center justify-between">

@@ -132,7 +132,7 @@ export function VisibilitySurface({ surface, config }: SurfaceProps) {
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
       {/* Scorecards */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Scorecard
           icon={<ShieldCheck size={16} />}
           title="Grounded coverage"

@@ -143,7 +143,7 @@ export function RelatedSurface({ surface }: SurfaceProps) {
       {loading && <div className="text-sm text-ink-500">Finding related titles…</div>}
 
       {seed && !loading && (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Similar by meaning */}
           <section>
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold" style={{ color: 'var(--brand)' }}>

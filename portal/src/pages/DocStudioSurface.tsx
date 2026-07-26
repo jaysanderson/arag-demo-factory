@@ -237,7 +237,7 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
         ) : items.length === 0 ? (
           <p className="text-sm text-ink-500">No documents available from the Knowledge Box.</p>
         ) : (
-          <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((d) => {
               const active = d.id === selectedId;
               return (
@@ -325,13 +325,13 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
             </Button>
           </div>
           <CardBody className="p-5">
-            <div className="grid gap-5 lg:grid-cols-[1fr_18rem]">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_18rem]">
               <div className="min-w-0">
                 <pre className="scroll-slim max-h-[26rem] overflow-auto rounded-xl bg-ink-950/90 p-4 text-xs leading-relaxed text-emerald-200 dark:bg-black/60">
                   <code>{json.pretty}</code>
                 </pre>
                 {typeof json.data === 'object' && json.data && (
-                  <dl className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                  <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
                     {Object.entries(json.data as Record<string, unknown>).map(([k, v]) => (
                       <div key={k} className="min-w-0 border-b pb-1.5" style={{ borderColor: 'var(--hairline)' }}>
                         <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">{k}</dt>

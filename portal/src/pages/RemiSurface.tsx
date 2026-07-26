@@ -143,7 +143,7 @@ export function RemiSurface({ surface, config }: SurfaceProps) {
 
       {error && <div className="mb-4"><ErrorBanner>{error}</ErrorBanner></div>}
 
-      <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[18rem_1fr]">
         {/* Quality chart */}
         <Card>
           <CardBody className="flex flex-col items-center justify-center p-6">
