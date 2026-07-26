@@ -5,6 +5,7 @@ import type { DemoConfig, Surface } from '../lib/config';
 import { getHealth, catalog } from '../lib/arag';
 import { groupSurfaces } from '../lib/nav';
 import { surfaceIcon } from '../lib/icons';
+import { useReveal, useCountUp } from '../lib/motion';
 
 /**
  * The command center — the front door of the product. A cinematic hero, a live
@@ -90,48 +91,71 @@ function Hero({
   onAsk: () => void;
 }) {
   return (
-    <section className="card-elevated relative overflow-hidden rounded-3xl px-6 py-14 sm:px-12 sm:py-20">
+    <section className="card-elevated ring-hairline relative overflow-hidden rounded-[1.75rem] px-6 py-12 sm:px-12 sm:py-16">
       {/* Ambient light + technical grid */}
       <div className="absolute inset-0 bg-grid" aria-hidden />
+
+      {/* Horizon arc: a wide, low light bloom + a hairline arc rising behind the
+          headline — the "sun cresting a control-room horizon" motif. */}
       <div
-        className="hero-orb -left-24 -top-28 h-[26rem] w-[26rem] animate-drift"
+        className="pointer-events-none absolute inset-x-0 -bottom-1/2 top-1/3 mx-auto animate-pulse-glow"
+        style={{
+          background:
+            'radial-gradient(60% 100% at 50% 0%, color-mix(in srgb, var(--brand) 34%, transparent) 0%, transparent 70%)',
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute left-1/2 top-[46%] aspect-square w-[130%] max-w-none -translate-x-1/2 rounded-[50%] border"
+        style={{
+          borderColor: 'color-mix(in srgb, var(--brand) 34%, transparent)',
+          boxShadow: '0 -14px 60px -20px color-mix(in srgb, var(--brand) 55%, transparent)',
+        }}
+        aria-hidden
+      />
+
+      <div
+        className="hero-orb -left-24 -top-28 h-[26rem] w-[26rem] animate-drift-a"
         style={{ background: 'var(--brand)' }}
         aria-hidden
       />
       <div
-        className="hero-orb -right-20 -top-16 h-[22rem] w-[22rem] animate-drift"
+        className="hero-orb -right-20 -top-16 h-[22rem] w-[22rem] animate-drift-b"
         style={{ background: 'var(--accent)', animationDelay: '-6s' }}
         aria-hidden
       />
 
       <div className="relative mx-auto max-w-4xl text-center">
-        <div className="flex items-center justify-center gap-2 animate-fade-up">
-          <span className="chip !border-transparent" style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)' }}>
+        <div className="flex items-center justify-center gap-2.5 animate-fade-up">
+          <span
+            className="chip !border-transparent shadow-sm"
+            style={{ background: 'var(--brand-soft)', color: 'var(--brand-strong)' }}
+          >
             <Sparkles size={12} />
             {config.theme.brandName}
           </span>
-          <span className="text-eyebrow uppercase tracking-[0.18em] text-ink-500">{eyebrow}</span>
+          <span className="text-eyebrow uppercase tracking-[0.2em] text-ink-500">{eyebrow}</span>
         </div>
 
         <h1
-          className="mx-auto mt-6 max-w-3xl font-display text-display-lg text-ink-900 dark:text-ink-50 animate-fade-up"
-          style={{ animationDelay: '60ms', textWrap: 'balance' } as CSSProperties}
+          className="mx-auto mt-6 max-w-4xl font-display text-display-lg animate-fade-up"
+          style={{ animationDelay: '80ms', textWrap: 'balance' } as CSSProperties}
         >
-          {headline}
+          <span className="text-shimmer animate-sheen">{headline}</span>
         </h1>
 
         {subcopy && (
           <p
             className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-500 sm:text-lg animate-fade-up"
-            style={{ animationDelay: '120ms' }}
+            style={{ animationDelay: '150ms' }}
           >
             {subcopy}
           </p>
         )}
 
         <div
-          className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row animate-fade-up"
-          style={{ animationDelay: '180ms' }}
+          className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row animate-fade-up"
+          style={{ animationDelay: '220ms' }}
         >
           {hasTour && (
             <button onClick={onStartTour} className="btn btn-brand shadow-glow-lg">
@@ -146,7 +170,7 @@ function Hero({
         </div>
       </div>
 
-      <div className="relative mt-12">
+      <div className="relative mt-14 animate-fade-up" style={{ animationDelay: '300ms' }}>
         <StatusStrip />
       </div>
     </section>
@@ -191,7 +215,10 @@ function useStats(): Stats {
 
 function StatusStrip() {
   const { loading, connected, documents, categories } = useStats();
-  const fmt = (n: number | null) => (n == null ? '—' : n.toLocaleString());
+  // Count numeric figures up once they land — a small moment of life on mount.
+  const docsAnim = useCountUp(documents, !loading);
+  const catsAnim = useCountUp(categories, !loading);
+  const citedAnim = useCountUp(100, !loading);
 
   return (
     <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
@@ -202,9 +229,22 @@ function StatusStrip() {
         tone={connected ? 'live' : 'muted'}
         live
       />
-      <Stat icon={<Database size={15} />} label="Documents" value={loading ? '…' : fmt(documents)} />
-      <Stat icon={<Layers size={15} />} label="Content facets" value={loading ? '…' : fmt(categories)} />
-      <Stat icon={<ShieldCheck size={15} />} label="Answers" value="100% cited" tone="brand" />
+      <Stat
+        icon={<Database size={15} />}
+        label="Documents"
+        value={loading ? '…' : documents == null ? '—' : docsAnim.toLocaleString()}
+      />
+      <Stat
+        icon={<Layers size={15} />}
+        label="Content facets"
+        value={loading ? '…' : categories == null ? '—' : catsAnim.toLocaleString()}
+      />
+      <Stat
+        icon={<ShieldCheck size={15} />}
+        label="Answers"
+        value={loading ? '…' : `${citedAnim}% cited`}
+        tone="brand"
+      />
     </div>
   );
 }
@@ -225,10 +265,13 @@ function Stat({
   const valueColor =
     tone === 'brand' ? 'var(--brand)' : tone === 'live' ? '#16a34a' : tone === 'muted' ? undefined : undefined;
   return (
-    <div className="card flex items-center gap-3 rounded-xl px-3.5 py-3 text-left">
+    <div className="card card-hover ring-hairline flex items-center gap-3 rounded-xl px-3.5 py-3 text-left">
       <span
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-        style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}
+        style={{
+          background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 20%, transparent), color-mix(in srgb, var(--brand) 7%, transparent))',
+          color: 'var(--brand)',
+        }}
       >
         {icon}
       </span>
@@ -263,24 +306,35 @@ function GroupBento({
   items: Surface[];
   onOpen: (route: string) => void;
 }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <div>
+    <div ref={ref}>
       <div className="mb-5 flex items-baseline gap-3">
         <h3 className="font-display text-xl font-semibold text-ink-900 dark:text-ink-50">{group}</h3>
-        <span className="h-px flex-1" style={{ background: 'var(--hairline)' }} />
+        <span
+          className="h-px flex-1"
+          style={{ background: 'linear-gradient(90deg, var(--hairline-strong), transparent)' }}
+        />
         {intro && <p className="hidden max-w-md text-sm text-ink-500 md:block">{intro}</p>}
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {items.map((s, idx) => (
-          <CapabilityCard
+          <div
             key={s.route}
-            surface={s}
-            // A little bento rhythm: the first card of a multi-item area is wide.
-            wide={items.length > 1 && idx === 0}
-            full={items.length === 1}
-            onOpen={onOpen}
-          />
+            className={`reveal ${visible ? 'is-visible' : ''} ${
+              items.length === 1 ? 'md:col-span-3' : items.length > 1 && idx === 0 ? 'md:col-span-2' : ''
+            }`}
+            style={{ transitionDelay: `${idx * 70}ms` }}
+          >
+            <CapabilityCard
+              surface={s}
+              // A little bento rhythm: the first card of a multi-item area is wide.
+              wide={items.length > 1 && idx === 0}
+              full={items.length === 1}
+              onOpen={onOpen}
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -299,16 +353,24 @@ function CapabilityCard({
   onOpen: (route: string) => void;
 }) {
   const Icon = surfaceIcon(surface.icon);
-  const span = full ? 'md:col-span-3' : wide ? 'md:col-span-2' : '';
   return (
     <button
       onClick={() => onOpen(surface.route)}
-      className={`card card-hover group relative flex flex-col overflow-hidden rounded-2xl p-5 text-left ${span}`}
+      className="card card-hover ring-hairline group relative flex h-full w-full flex-col overflow-hidden rounded-2xl p-5 text-left"
     >
-      <div className="flex items-center justify-between">
+      {/* Brand light that blooms from the corner on hover. */}
+      <span
+        className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: 'color-mix(in srgb, var(--brand) 40%, transparent)' }}
+        aria-hidden
+      />
+      <div className="relative flex items-center justify-between">
         <span
-          className="flex h-11 w-11 items-center justify-center rounded-xl transition-transform group-hover:scale-105"
-          style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}
+          className="flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 22%, transparent), color-mix(in srgb, var(--brand) 8%, transparent))',
+            color: 'var(--brand)',
+          }}
         >
           <Icon size={20} />
         </span>
@@ -346,9 +408,10 @@ function DemoFlow({
   onStartTour: () => void;
 }) {
   const beats = config.demoScript || [];
+  const { ref, visible } = useReveal<HTMLElement>();
   return (
-    <section className="card-elevated relative overflow-hidden rounded-3xl p-6 sm:p-10">
-      <div className="hero-orb -right-16 top-0 h-64 w-64" style={{ background: 'var(--accent)' }} aria-hidden />
+    <section ref={ref} className="card-elevated ring-hairline relative overflow-hidden rounded-[1.75rem] p-6 sm:p-10">
+      <div className="hero-orb -right-16 top-0 h-64 w-64 animate-drift-b" style={{ background: 'var(--accent)' }} aria-hidden />
       <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="eyebrow">How the demo flows</p>
@@ -363,12 +426,16 @@ function DemoFlow({
       </div>
 
       <ol className="relative mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {beats.map((b) => {
+        {beats.map((b, bi) => {
           const surface = surfaces.find(
             (s) => (b.show || '').toLowerCase().startsWith(s.label.toLowerCase())
           );
           return (
-            <li key={b.step} className="card rounded-2xl p-5">
+            <li
+              key={b.step}
+              className={`card card-hover reveal ${visible ? 'is-visible' : ''} rounded-2xl p-5`}
+              style={{ transitionDelay: `${bi * 60}ms` }}
+            >
               <div className="flex items-center gap-3">
                 <span
                   className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold"

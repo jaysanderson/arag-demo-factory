@@ -14,6 +14,7 @@ import {
 import type { SurfaceProps } from './types';
 import { ask, type Citation } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
+import { chartPalette } from '../lib/chartTheme';
 import { ErrorBanner } from '../components/States';
 
 // Groundedness dashboard (REMi surface). Every answer either cites documents or
@@ -194,22 +195,41 @@ function StateGlyph({ state }: { state: Probe['state'] }) {
   return <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-ink-300" />;
 }
 
-// Groundedness as a Kendo donut chart. Grounded vs ungrounded share of the
-// scored probes, with the rate rendered in the middle.
+// Groundedness as a KendoReact donut chart — the vendor control, themed to the
+// demo's brand/accent and animated in on data. A soft brand glow sits AROUND
+// the chart (CSS only) so it reads as a luminous score dial while the chart
+// itself stays a Kendo component. Grounded vs ungrounded share of scored probes.
 function GroundedDonut({ grounded, ungrounded, rate }: { grounded: number; ungrounded: number; rate: number | null }) {
+  const { brand, accent, track } = chartPalette();
   const data =
     rate == null
-      ? [{ category: 'Not run', value: 1, color: '#cbd5e1' }]
+      ? [{ category: 'Not run', value: 1, color: track }]
       : [
-          { category: 'Grounded', value: grounded, color: '#10b981' },
-          { category: 'Ungrounded', value: ungrounded, color: '#ef4444' },
+          { category: 'Grounded', value: grounded, color: brand },
+          { category: 'Ungrounded', value: ungrounded, color: accent },
         ];
   return (
-    <div className="relative h-40 w-40">
-      <Chart style={{ height: 160, width: 160 }} transitions={false}>
+    <div className="relative h-44 w-44">
+      {/* Brand light bloom behind the vendor chart. */}
+      {rate != null && (
+        <div
+          className="pointer-events-none absolute inset-4 rounded-full blur-2xl"
+          style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--brand) 42%, transparent), transparent 70%)' }}
+          aria-hidden
+        />
+      )}
+      <Chart style={{ height: 176, width: 176 }} className="relative" transitions>
         <ChartLegend visible={false} />
         <ChartSeries>
-          <ChartSeriesItem type="donut" data={data} field="value" categoryField="category" colorField="color" holeSize={54}>
+          <ChartSeriesItem
+            type="donut"
+            data={data}
+            field="value"
+            categoryField="category"
+            colorField="color"
+            holeSize={58}
+            startAngle={90}
+          >
             <ChartSeriesLabels visible={false} />
           </ChartSeriesItem>
         </ChartSeries>

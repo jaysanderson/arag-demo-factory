@@ -60,7 +60,7 @@ export function GroupedNav({ surfaces }: { surfaces: Surface[] }) {
 
             {isOpen && (
               <div
-                className="card-elevated absolute left-0 top-[calc(100%+8px)] z-40 w-80 overflow-hidden p-1.5 animate-scale-in"
+                className="glass card-elevated absolute left-0 top-[calc(100%+10px)] z-40 w-80 overflow-hidden rounded-2xl p-1.5 shadow-xl animate-scale-in"
                 style={{ transformOrigin: 'top left' }}
               >
                 {intro && (

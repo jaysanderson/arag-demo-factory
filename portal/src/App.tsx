@@ -12,6 +12,7 @@ import { GroupedNav } from './components/GroupedNav';
 import { GuidedTour } from './components/GuidedTour';
 import { StatusChip } from './components/StatusChip';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
+import { AmbientBackground } from './components/AmbientBackground';
 
 export default function App() {
   const [config, setConfig] = useState<DemoConfig | null>(null);
@@ -48,6 +49,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-full flex-col">
+      <AmbientBackground dark={dark} />
       <DisclaimerBanner text={config.safety?.disclaimer || ''} />
 
       <header className="glass sticky top-0 z-30 border-b">

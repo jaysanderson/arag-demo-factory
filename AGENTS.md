@@ -196,13 +196,19 @@ Factory tooling (removed from generated projects):
 
 - **Plain JavaScript in factory tooling; TypeScript in the portal** (matches the shipped
   portfolio — research-portal, capstones).
-- **UI components: KendoReact (Progress's own React library) is the default.** Build every
-  portal surface with KendoReact components — `@progress/kendo-react-{layout,buttons,inputs,
-  grid,charts,indicators,notification,…}` on `@progress/kendo-theme-default`, themed per demo
-  from `demo.config.json.theme`. Reach for a non-Kendo component only where Kendo has no fit
-  and it makes the demo materially better (e.g. the force-directed graph canvas, a custom
-  streaming-answer pane); keep those to a minimum. Tailwind is layout/spacing glue, not the
-  component system. Installs resolve through HAR (`.npmrc`) — see `docs/UI-KENDO.md`.
+- **UI components: use the Progress vendor controls (KendoReact) wherever possible.** This is a
+  brand requirement, not a preference — a Progress Agentic RAG demo must visibly run on
+  Progress's own UI stack. Build every surface with KendoReact — `@progress/kendo-react-{layout,
+  buttons,inputs,grid,charts,indicators,gauges,progressbars,notification,dropdowns,dialogs,…}` on
+  `@progress/kendo-theme-default`, themed per demo from `demo.config.json.theme`. If a piece of UI
+  *can* be a Kendo control (chart, grid, gauge, progress, card, tile layout, menu, drawer, chip,
+  input), use the Kendo control and theme it beautifully — **do not hand-roll it.** Custom code is
+  allowed ONLY where Kendo has no equivalent: the ambient/atmospheric background, the
+  force-directed knowledge-graph canvas, and the token-by-token streaming answer pane. Tailwind is
+  layout/spacing glue, not the component system. **The KendoReact trial banner (shown without a
+  licence key) is acceptable — a key is applied at build time (`KENDO_UI_LICENSE` /
+  `telerik-license.txt`, see `docs/UI-KENDO.md`); never avoid or replace a Kendo control just to
+  suppress the banner.** Installs resolve through HAR (`.npmrc`).
 - **FastTrack (`ml-fasttrack`) is intentionally NOT used.** It is a MarkLogic-bound accelerator
   (its `MarkLogicProvider` speaks MarkLogic's `/v1/search`), it is not on HAR, and no ARAG demo
   uses it. Its look is reproduced with KendoReact directly — which is what FastTrack is built on.

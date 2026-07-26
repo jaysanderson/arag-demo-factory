@@ -79,6 +79,20 @@ No SASS build is needed — the shipped `all.css` reads these variables.
 | Errors / toasts | `Notification` (`kendo-react-notification`) |
 | Document detail drawer | `Drawer` (`kendo-react-layout`) or `Dialog` (`kendo-react-dialogs`) |
 
+## Vendor-first (a brand requirement)
+
+Use the Progress vendor controls **wherever possible** — a Progress Agentic RAG demo must
+visibly run on Progress's own UI stack. If a piece of UI *can* be a Kendo control, it **is** a
+Kendo control, themed to look bespoke — never hand-rolled. Prefer, e.g., Kendo `Chart` over a
+custom SVG chart, Kendo `CircularGauge`/`RadialGauge` (`@progress/kendo-react-gauges`) or
+`ProgressBar` (`@progress/kendo-react-progressbars`) over a custom ring, Kendo `Grid`/`TileLayout`
+over a hand-built table/bento, Kendo `Menu`/`Drawer` over a custom dropdown. Style them with the
+theme vars and Kendo's own animation/config to make them stunning.
+
+**The trial banner is not a reason to avoid Kendo.** A licence key is applied at build time (see
+Licensing above); until then the banner is acceptable. Never replace or drop a Kendo control to
+suppress it.
+
 ## Where non-Kendo is allowed (keep short)
 
 - **Knowledge-graph canvas** (`GraphSurface`, `RelatedSurface` graph column) — the force-directed

@@ -99,6 +99,27 @@ export default {
           '0%,100%': { transform: 'translate3d(0,0,0) scale(1)' },
           '50%': { transform: 'translate3d(0,-3%,0) scale(1.06)' },
         },
+        // Wandering orb paths for the ambient layer — two distinct routes so the
+        // light sources never move in lockstep.
+        'drift-a': {
+          '0%,100%': { transform: 'translate3d(0,0,0) scale(1)' },
+          '33%': { transform: 'translate3d(4%,-4%,0) scale(1.08)' },
+          '66%': { transform: 'translate3d(-3%,3%,0) scale(0.96)' },
+        },
+        'drift-b': {
+          '0%,100%': { transform: 'translate3d(0,0,0) scale(1.02)' },
+          '50%': { transform: 'translate3d(-5%,4%,0) scale(1.12)' },
+        },
+        // Slow position sweep for gradient text — the headline sheen.
+        'sheen': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '200% 50%' },
+        },
+        // Aurora mesh: a slow, breathing hue/position drift for the backdrop.
+        'aurora': {
+          '0%,100%': { transform: 'translate3d(0,0,0) rotate(0deg) scale(1.1)', opacity: '0.9' },
+          '50%': { transform: 'translate3d(2%,-2%,0) rotate(8deg) scale(1.25)', opacity: '1' },
+        },
         shimmer: { '100%': { transform: 'translateX(100%)' } },
       },
       animation: {
@@ -108,6 +129,10 @@ export default {
         'scale-in': 'scale-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both',
         'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
         'drift': 'drift 18s ease-in-out infinite',
+        'drift-a': 'drift-a 26s ease-in-out infinite',
+        'drift-b': 'drift-b 32s ease-in-out infinite',
+        'sheen': 'sheen 8s ease-in-out infinite alternate',
+        'aurora': 'aurora 34s ease-in-out infinite',
       },
     },
   },

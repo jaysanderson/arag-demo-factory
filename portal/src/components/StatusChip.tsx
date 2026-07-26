@@ -25,14 +25,26 @@ export function StatusChip() {
   const label =
     state === 'connected' ? 'Knowledge Box connected' : state === 'down' ? 'Knowledge Box unreachable' : 'Checking…';
 
+  // Vendor KendoReact Chip, themed via the Kendo colour vars. A soft glow sits
+  // AROUND the chip (CSS only) when the KB is live so it reads as a status pill
+  // without hand-rolling the control itself.
   return (
-    <Chip
-      text={label}
-      themeColor={themeColor}
-      fillMode="outline"
-      rounded="full"
-      size="small"
-      className={state === 'checking' ? 'animate-pulse' : undefined}
-    />
+    <span className="relative inline-flex">
+      {state === 'connected' && (
+        <span
+          className="pointer-events-none absolute -inset-1 rounded-full blur-md animate-pulse-glow"
+          style={{ background: 'color-mix(in srgb, #22c55e 45%, transparent)' }}
+          aria-hidden
+        />
+      )}
+      <Chip
+        className={`relative ${state === 'checking' ? 'animate-pulse' : undefined}`}
+        text={label}
+        themeColor={themeColor}
+        fillMode="outline"
+        rounded="full"
+        size="small"
+      />
+    </span>
   );
 }

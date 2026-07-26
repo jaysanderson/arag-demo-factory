@@ -15,17 +15,22 @@ export function PageHeader({
 }) {
   const Icon = surfaceIcon(icon);
   return (
-    <div className="mb-6 flex items-start justify-between gap-4">
-      <div className="flex items-start gap-3">
+    <div className="reveal is-visible mb-7 flex items-start justify-between gap-4">
+      <div className="flex items-start gap-3.5">
         <span
-          className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-          style={{ background: 'var(--brand-soft)', color: 'var(--brand)' }}
+          className="ring-hairline mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+          style={{
+            background: 'linear-gradient(160deg, color-mix(in srgb, var(--brand) 18%, transparent), color-mix(in srgb, var(--brand) 6%, transparent))',
+            color: 'var(--brand)',
+          }}
         >
           <Icon size={20} />
         </span>
         <div>
-          <h1 className="font-display text-2xl font-semibold text-ink-900 dark:text-ink-50">{title}</h1>
-          {children && <p className="mt-1 max-w-2xl text-sm text-ink-500">{children}</p>}
+          <h1 className="font-display text-[1.7rem] font-semibold tracking-tight text-ink-900 dark:text-ink-50">
+            {title}
+          </h1>
+          {children && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-500">{children}</p>}
         </div>
       </div>
       {actions && <div className="shrink-0">{actions}</div>}

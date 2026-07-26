@@ -155,21 +155,72 @@
     color: transparent;
   }
 
+  /* Living headline: a brand→accent→brand ramp that slowly sweeps a brighter
+     band across the letterforms. Falls back to a static gradient for
+     reduced-motion (see the guard in the utilities layer). On dark the mix
+     pushes toward light so the type stays luminous against near-black. */
+  .text-shimmer {
+    background-image: linear-gradient(
+      100deg,
+      var(--brand) 0%,
+      color-mix(in srgb, var(--brand) 50%, var(--accent)) 25%,
+      color-mix(in srgb, var(--accent) 70%, white) 50%,
+      color-mix(in srgb, var(--brand) 50%, var(--accent)) 75%,
+      var(--brand) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  html.dark .text-shimmer {
+    background-image: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--brand) 70%, white) 0%,
+      color-mix(in srgb, var(--accent) 60%, white) 30%,
+      #ffffff 50%,
+      color-mix(in srgb, var(--accent) 60%, white) 70%,
+      color-mix(in srgb, var(--brand) 70%, white) 100%
+    );
+    background-size: 200% auto;
+  }
+
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(0.5px) scale(0.985);
   }
   .btn-brand {
-    background: var(--brand);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 92%, white) 0%, var(--brand) 60%, var(--brand-strong) 100%);
     color: var(--brand-contrast);
+    box-shadow: 0 1px 0 0 color-mix(in srgb, white 30%, transparent) inset,
+      0 10px 24px -12px color-mix(in srgb, var(--brand) 70%, transparent);
   }
   .btn-brand:hover:not(:disabled) {
-    background: var(--brand-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 1px 0 0 color-mix(in srgb, white 34%, transparent) inset,
+      0 16px 34px -12px color-mix(in srgb, var(--brand) 85%, transparent);
   }
   .btn-ghost {
-    @apply border border-ink-200 bg-white text-ink-700 hover:bg-ink-50;
+    @apply border border-ink-200 bg-white/80 text-ink-700;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    @apply bg-white;
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--brand) 40%, var(--hairline));
   }
   html.dark .btn-ghost {
-    @apply border-ink-700 bg-ink-900 text-ink-200 hover:bg-ink-800;
+    @apply border-ink-700 text-ink-200;
+    background: color-mix(in srgb, var(--brand) 8%, rgba(20, 20, 28, 0.6));
+  }
+  html.dark .btn-ghost:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--brand) 14%, rgba(28, 28, 38, 0.75));
+    border-color: color-mix(in srgb, var(--brand) 55%, var(--hairline-strong));
   }
 
   .field {
@@ -259,13 +310,84 @@
     opacity: 0.7;
   }
 
+  /* ── Ambient atmosphere layer ───────────────────────────────────────────
+     Cinematic depth behind every page: a drifting gradient mesh, fine film
+     grain and a soft vignette. Fixed + pointer-events-none so it never
+     interferes with the product. Colours derive from the theme vars. */
+  .ambient-grain {
+    /* Tiled fractal noise as a data-URI so there's no network request and it
+       stays crisp at any zoom. Very low opacity — texture, not visible dots. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+  html.dark .ambient-grain {
+    opacity: 0.05;
+    mix-blend-mode: soft-light;
+  }
+  .ambient-vignette {
+    background: radial-gradient(120% 120% at 50% 0%, transparent 55%, color-mix(in srgb, var(--app-bg) 88%, black) 100%);
+  }
+  html:not(.dark) .ambient-vignette {
+    background: radial-gradient(130% 130% at 50% -10%, transparent 60%, color-mix(in srgb, var(--brand) 6%, transparent) 100%);
+  }
+
+  /* ── Scroll reveal ──────────────────────────────────────────────────────
+     Elements start slightly lowered + transparent; adding .is-visible (via an
+     IntersectionObserver) settles them in. Stagger with an inline delay. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Gradient-hairline border for bento cards — a faint brand-tinted edge that
+     brightens on hover. Sits under content via a masked pseudo-border. */
+  .ring-hairline {
+    position: relative;
+  }
+  .ring-hairline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(140deg, color-mix(in srgb, var(--brand) 40%, transparent), transparent 45%, color-mix(in srgb, var(--accent) 28%, transparent));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .ring-hairline:hover::before {
+    opacity: 1;
+  }
+
   /* Respect reduced-motion for all entrance/ambient animation. */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-up,
     .animate-scale-in,
     .animate-pulse-glow,
-    .animate-drift {
+    .animate-ping,
+    .animate-drift,
+    .animate-drift-a,
+    .animate-drift-b,
+    .animate-sheen,
+    .animate-aurora {
       animation: none !important;
+    }
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
     .card-hover:hover {
       transform: none;

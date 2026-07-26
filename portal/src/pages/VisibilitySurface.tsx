@@ -6,6 +6,7 @@ import { Chart, ChartSeries, ChartSeriesItem, ChartSeriesLabels, ChartLegend } f
 import type { SurfaceProps } from './types';
 import { ask, type Citation } from '../lib/arag';
 import { PageHeader } from '../components/PageHeader';
+import { chartPalette } from '../lib/chartTheme';
 import { ErrorBanner } from '../components/States';
 
 // Coverage & Governance. A live readiness probe over the SAME grounded /ask path
@@ -209,20 +210,38 @@ function Scorecard({
   );
 }
 
+// Pass rate as a KendoReact donut — the vendor control, themed to brand/accent
+// and animated in, with a soft brand glow around it (CSS only).
 function Donut({ pass, fail, pct }: { pass: number; fail: number; pct: number | null }) {
+  const { brand, accent, track } = chartPalette();
   const data =
     pct == null
-      ? [{ category: 'Not run', value: 1, color: '#cbd5e1' }]
+      ? [{ category: 'Not run', value: 1, color: track }]
       : [
-          { category: 'Pass', value: pass, color: '#10b981' },
-          { category: 'Fail', value: fail, color: '#ef4444' },
+          { category: 'Pass', value: pass, color: brand },
+          { category: 'Fail', value: fail, color: accent },
         ];
   return (
     <div className="relative h-24 w-24 shrink-0">
-      <Chart style={{ height: 96, width: 96 }} transitions={false}>
+      {pct != null && (
+        <div
+          className="pointer-events-none absolute inset-2 rounded-full blur-xl"
+          style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--brand) 40%, transparent), transparent 70%)' }}
+          aria-hidden
+        />
+      )}
+      <Chart style={{ height: 96, width: 96 }} className="relative" transitions>
         <ChartLegend visible={false} />
         <ChartSeries>
-          <ChartSeriesItem type="donut" data={data} field="value" categoryField="category" colorField="color" holeSize={40}>
+          <ChartSeriesItem
+            type="donut"
+            data={data}
+            field="value"
+            categoryField="category"
+            colorField="color"
+            holeSize={40}
+            startAngle={90}
+          >
             <ChartSeriesLabels visible={false} />
           </ChartSeriesItem>
         </ChartSeries>
