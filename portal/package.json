@@ -22,7 +22,6 @@
     "@progress/kendo-react-charts": "^15.1.0",
     "@progress/kendo-react-dialogs": "^15.1.0",
     "@progress/kendo-react-dropdowns": "^15.1.0",
-    "@progress/kendo-react-gauges": "^15.1.0",
     "@progress/kendo-react-grid": "^15.1.0",
     "@progress/kendo-react-indicators": "^15.1.0",
     "@progress/kendo-react-inputs": "^15.1.0",
