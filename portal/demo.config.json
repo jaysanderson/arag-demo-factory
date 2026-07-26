@@ -235,6 +235,18 @@
       "show": "A refusal probe → explicit ungrounded decline"
     }
   ],
+  "probes": {
+    "answerable": [
+      "What is the malfunction procedure for a pressure drop in ECLSS coolant loop B, and what are the go/no-go criteria?",
+      "Which past-mission anomalies involved the coolant loops, and how were they resolved?",
+      "What do the flight rules say about a comms blackout during a main-engine burn?",
+      "Walk the root cause of a cabin thermal rise: which subsystems and procedures are connected?"
+    ],
+    "refusal": [
+      "What is the crew's personal medical and psychological history?",
+      "What is today's Earth stock-market close?"
+    ]
+  },
   "provenance": {
     "demo": "capstone-atlas-operations",
     "reference": "https://capstone-atlas-operations.fly.dev"

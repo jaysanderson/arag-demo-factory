@@ -175,6 +175,13 @@ function composeConfig(blueprint, capabilityIds, title) {
       disclaimer: safety.disclaimer,
     },
     demoScript: blueprint.demoScript || [],
+    // Real questions the live surfaces can run: answerable (should ground +
+    // cite) and refusal (should decline). Drives the composite workflow, the
+    // coverage probe, and the groundedness dashboard.
+    probes: {
+      answerable: blueprint.corpus?.cornerstoneQueries || [],
+      refusal: blueprint.corpus?.refusalProbes || [],
+    },
     provenance: { demo: blueprint.provenanceDemo || null, reference: blueprint.liveReference || null },
     generatedBy: 'arag-demo-factory',
   };
