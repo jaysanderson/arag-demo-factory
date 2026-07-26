@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SendHorizontal, Square, RotateCcw } from 'lucide-react';
-import { Button, Chip } from '@progress/kendo-react-buttons';
+import { Button } from '@progress/kendo-react-buttons';
+import { Pill } from '../components/Pill';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { ask, type Citation } from '../lib/arag';
@@ -136,7 +137,7 @@ export function AskSurface({ surface, config }: SurfaceProps) {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="self-center text-xs font-medium text-ink-400">Try:</span>
           {suggestions.map((s) => (
-            <Chip key={s} text={s} onClick={() => run(s)} fillMode="outline" rounded="full" size="small" />
+            <Pill key={s} text={s} onClick={() => run(s)} />
           ))}
         </div>
       )}

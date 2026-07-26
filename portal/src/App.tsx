@@ -14,6 +14,7 @@ import { GuidedTour } from './components/GuidedTour';
 import { StatusChip } from './components/StatusChip';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
 import { AmbientBackground } from './components/AmbientBackground';
+import { BrandMark } from './components/BrandMark';
 
 export default function App() {
   const [config, setConfig] = useState<DemoConfig | null>(null);
@@ -54,7 +55,11 @@ export default function App() {
       <DisclaimerBanner text={config.safety?.disclaimer || ''} />
 
       <header className="glass sticky top-0 z-30 border-b">
-        <AppBar positionMode="static" className="mx-auto h-16 max-w-7xl bg-transparent px-4 sm:px-6">
+        <AppBar
+          positionMode="static"
+          className="mx-auto h-16 max-w-7xl bg-transparent px-4 sm:px-6"
+          style={{ overflow: 'visible' }}
+        >
           <AppBarSection>
             <Brand config={config} />
           </AppBarSection>
@@ -128,12 +133,7 @@ export default function App() {
 function Brand({ config }: { config: DemoConfig }) {
   return (
     <NavLink to="/" className="flex items-center gap-2.5">
-      <span
-        className="flex h-9 w-9 items-center justify-center rounded-xl font-display text-lg font-bold shadow-glow"
-        style={{ background: 'var(--brand)', color: 'var(--brand-contrast)' }}
-      >
-        {config.theme.brandName?.[0] || 'A'}
-      </span>
+      <BrandMark size={38} />
       <div className="leading-tight">
         <p className="font-display text-base font-semibold text-ink-900 dark:text-ink-50">
           {config.theme.brandName}

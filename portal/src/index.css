@@ -134,6 +134,14 @@
     backdrop-filter: saturate(140%) blur(14px);
   }
 
+  /* KendoReact AppBar ships overflow:hidden, which clips the grouped-nav
+     dropdown menus. Kendo's all.css is unlayered, so it beats a layered rule on
+     specificity alone — !important (which reverses layer order) is required to
+     let the bar overflow freely so menus can escape. */
+  header .k-appbar {
+    overflow: visible !important;
+  }
+
   .chip {
     @apply inline-flex items-center gap-1 rounded-full border border-ink-200 bg-ink-50 px-2.5 py-0.5 text-xs font-medium text-ink-600;
   }

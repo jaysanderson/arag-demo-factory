@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, FileText } from 'lucide-react';
-import { Chip } from '@progress/kendo-react-buttons';
+import { Pill } from '../components/Pill';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
 import { search, catalog } from '../lib/arag';
@@ -69,16 +69,7 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
       {interests.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {interests.map((it) => (
-            <Chip
-              key={it}
-              text={it}
-              selected={active === it}
-              onClick={() => setActive(it)}
-              rounded="full"
-              size="small"
-              fillMode={active === it ? 'solid' : 'outline'}
-              style={active === it ? { background: 'var(--brand)', color: 'var(--brand-contrast)', borderColor: 'var(--brand)' } : undefined}
-            />
+            <Pill key={it} text={it} selected={active === it} onClick={() => setActive(it)} />
           ))}
         </div>
       )}

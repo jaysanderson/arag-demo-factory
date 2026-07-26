@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shuffle, Sparkles, Share2, Play } from 'lucide-react';
-import { Button, Chip } from '@progress/kendo-react-buttons';
+import { Button } from '@progress/kendo-react-buttons';
+import { Pill } from '../components/Pill';
 import { Input } from '@progress/kendo-react-inputs';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import type { SurfaceProps } from './types';
@@ -119,13 +120,11 @@ export function RelatedSurface({ surface }: SurfaceProps) {
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-ink-500">Try:</span>
           {picks.map((p) => (
-            <Chip
+            <Pill
               key={p.id}
               text={p.title.length > 46 ? p.title.slice(0, 46) + '…' : p.title}
+              title={p.title}
               onClick={() => { setPending(p.title); run(p.title); }}
-              fillMode="outline"
-              rounded="full"
-              size="small"
             />
           ))}
         </div>
@@ -177,13 +176,10 @@ export function RelatedSurface({ surface }: SurfaceProps) {
                 <div className="text-sm text-ink-400">No shared-entity connections found for this title.</div>
               )}
               {graphRes?.nodes.slice(0, 20).map((n) => (
-                <Chip
+                <Pill
                   key={n.id}
                   text={`${n.label} · ${n.degree}`}
                   onClick={() => { setPending(n.label); run(n.label); }}
-                  rounded="full"
-                  size="small"
-                  style={{ borderColor: 'transparent', color: 'var(--brand)', background: 'var(--brand-soft)' }}
                 />
               ))}
             </div>
