@@ -147,6 +147,30 @@ These bit us hard and are easy to reintroduce. Every one has a ready-made fix in
    blueprint gets a distinct, non-generic logo for free. Don't fall back to a plain first-letter
    tile.
 
+## Responsive / mobile — every demo must work on a phone
+
+SEs demo from phones and share links that open on phones. **Fully responsive is a package
+requirement, not a nice-to-have.** Rules:
+
+- **Never gate responsive layout on CSS display utilities inside a Kendo component.** Kendo's
+  unlayered `all.css` sets `display` on `.k-appbar-section` (and others), which beats Tailwind's
+  `hidden`/`lg:flex` — so a "hidden on mobile" nav stays visible and you get the classic
+  double-nav overlap. Drive the breakpoint in **JS** instead: `useIsDesktop()` /
+  `useMediaQuery()` (`src/lib/useMediaQuery.ts`) and conditionally *render* the desktop vs. mobile
+  variant. The header does this: desktop = inline `GroupedNav`; mobile = `MobileNav` (a hamburger
+  + full-width sheet built from plain elements + native buttons).
+- **Layouts stack below `lg`.** Two-pane surfaces use `lg:grid-cols-[…]` so they become a single
+  column on mobile (watch page, Ask answer+sources, Search facets+results, Doc Studio). Card grids
+  cap at 2 columns on phones (`grid-cols-2 sm:grid-cols-4 …`).
+- **Fluid type.** Hero/section headings use `clamp()` display sizes (see `tailwind.config.js`) so
+  they scale down instead of overflowing.
+- **Wide content scrolls in its own container**, never the page: the graph SVG, code/`<pre>`
+  blocks, and Kendo `Grid` sit in `overflow-x-auto`. `body { overflow-x: clip }` is a global
+  backstop so no decorative/absolute element can cause horizontal scroll (`clip`, not `hidden`, so
+  the sticky header still works).
+- **Preview the mobile layout** at any width with `?vp=mobile` (or `?vp=desktop`) — it forces the
+  JS breakpoint. Still do a real-device check before sharing.
+
 ## Verify clicks, don't assume them
 
 Because of pitfalls 1–2, **every clickable element must be exercised**, not eyeballed. A card can

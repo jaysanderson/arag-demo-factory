@@ -69,6 +69,10 @@
     @apply text-ink-800 antialiased;
     background: var(--app-bg);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    /* Never let a decorative/absolute element cause horizontal scroll on mobile.
+       `clip` (not `hidden`) does this without creating a scroll container, so the
+       sticky header keeps working. */
+    overflow-x: clip;
   }
 
   html.dark body {

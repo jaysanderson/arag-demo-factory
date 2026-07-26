@@ -15,11 +15,14 @@ import { StatusChip } from './components/StatusChip';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
 import { AmbientBackground } from './components/AmbientBackground';
 import { BrandMark } from './components/BrandMark';
+import { MobileNav } from './components/MobileNav';
+import { useIsDesktop } from './lib/useMediaQuery';
 
 export default function App() {
   const [config, setConfig] = useState<DemoConfig | null>(null);
   const [dark, setDark] = useState<boolean>(() => document.documentElement.classList.contains('dark'));
   const [tourOpen, setTourOpen] = useState(false);
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     loadConfig().then((cfg) => {
@@ -64,10 +67,15 @@ export default function App() {
             <Brand config={config} />
           </AppBarSection>
 
-          {/* Grouped console nav lives in the bar itself on desktop. */}
-          <AppBarSection className="ml-4 hidden lg:flex">
-            <GroupedNav surfaces={surfaces} />
-          </AppBarSection>
+          {/* Desktop: grouped dropdown nav in the bar. Mobile: a hamburger sheet
+              (below). We switch on a JS media-query, not CSS `hidden`/`lg:flex`,
+              because Kendo's unlayered stylesheet overrides Tailwind display
+              utilities on `AppBarSection`. */}
+          {isDesktop && (
+            <AppBarSection className="ml-4">
+              <GroupedNav surfaces={surfaces} />
+            </AppBarSection>
+          )}
 
           <AppBarSpacer />
 
@@ -88,14 +96,9 @@ export default function App() {
             >
               {dark ? <Sun size={16} /> : <Moon size={16} />}
             </Button>
+            {!isDesktop && <MobileNav surfaces={surfaces} />}
           </AppBarSection>
         </AppBar>
-
-        {/* On smaller screens the grouped nav gets its own full-width row so it
-            never crowds the brand or actions. */}
-        <div className="mx-auto max-w-7xl border-t px-3 py-1.5 lg:hidden" style={{ borderColor: 'var(--hairline)' }}>
-          <GroupedNav surfaces={surfaces} />
-        </div>
       </header>
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">

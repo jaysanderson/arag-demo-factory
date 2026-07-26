@@ -95,6 +95,10 @@ delegated.
   dead-onClick gotchas (see `docs/UI-KENDO.md`) mean a card can look perfect and do nothing, so
   interaction must be exercised, not eyeballed. The demo must survive an "idiot walkthrough": an
   SE clicking anything visible should always get a working result.
+  **Also verify mobile** — SEs demo and share links from phones. Check the layout at a phone width
+  (`?vp=mobile` forces the JS breakpoint) and on a real device: the hamburger `MobileNav` replaces
+  the desktop nav (no double-nav), panes stack, nothing scrolls horizontally. Fully responsive is a
+  package requirement — see `docs/UI-KENDO.md` → "Responsive / mobile".
 - **Phase 6 — Deliver.** Print the local URL, a one-paragraph "what to show" from the demo
   script, and (if asked) deploy to Fly (`<slug>.fly.dev`). Print a timing summary.
 
