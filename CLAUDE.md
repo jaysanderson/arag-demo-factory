@@ -25,6 +25,7 @@ of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule
   over corpus content. All retrieval + generation is ARAG (`/ask`, `/find`, `/catalog`,
   `/graph`). See `docs/ARAG-API.md`.
 - **UI components: KendoReact by default.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, themed per demo. Use a non-Kendo component only where Kendo has no fit and it makes the demo materially better (graph canvas, streaming pane). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. See docs/UI-KENDO.md.
+- **KendoReact gotchas that produce silently-broken UI** (full list + fixes in docs/UI-KENDO.md → "Known KendoReact pitfalls"): `<Card onClick>` and `<Chip onClick>` do NOT fire — use `ClickableCard` / `Pill` for anything clickable; `AppBar` has `overflow:hidden` that clips dropdown menus — fix inline (`style={{overflow:'visible'}}`), not via CSS (Kendo's unlayered `all.css` beats `@layer` rules, even with `!important`). **Verify every clickable element by actually clicking it** — a dead card looks identical to a working one.
 - **Never rewrite the portal shell — configure it** via `demo.config.json` (blueprint,
   theme, enabled surfaces). Same principle as the reference package's "never rewrite App.js".
 - **Answers must render citations.** An ungrounded answer is surfaced as a warning, never as

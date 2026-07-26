@@ -110,3 +110,48 @@ Converting a surface to Kendo is **presentational only**. Do NOT touch the ARAG 
 elements for Kendo, keep every data path and the config-driven surface model exactly as-is. An
 answer must still always render its citations; an ungrounded answer is still surfaced as a
 warning.
+
+## Known KendoReact pitfalls (read before you debug a dead click or a hidden menu)
+
+These bit us hard and are easy to reintroduce. Every one has a ready-made fix in the codebase.
+
+1. **`<Card onClick>` does not fire.** KendoReact's layout `Card` does not forward `onClick`
+   to the DOM, so a card used as a click target is silently dead. **Fix:** wrap the card in
+   `components/ClickableCard.tsx` (a native `role="button"` element with keyboard support). Every
+   resource card (Search, Assets, Calls, For You, Related, Overview bento) goes through it.
+
+2. **`<Chip onClick>` does not fire either.** Same failure class — an interactive `Chip` never
+   calls its handler on a real click. **Fix:** use `components/Pill.tsx` (a Kendo `Button` styled
+   as a pill; its `onClick` is rock-solid) for anything a user clicks — Ask suggestions, Related
+   picks and graph-pivot pills, For You interest selectors. Keep plain `Chip` only for
+   **display-only** badges (media type, doc type, duration).
+
+3. **`AppBar` clips dropdown menus.** KendoReact `AppBar` ships `overflow: hidden`, which clips
+   any absolutely-positioned dropdown launched from inside it (the grouped nav menus). **Fix:**
+   an inline `style={{ overflow: 'visible' }}` on the `AppBar` (see `App.tsx`). A CSS rule alone
+   does **not** work — see pitfall 4.
+
+4. **Kendo's `all.css` is unlayered, so it beats your `@layer` rules on the cascade.** A Tailwind
+   `@layer components` rule loses to an unlayered Kendo rule *even with higher specificity, even
+   with `!important`* (unlayered `!important` outranks layered `!important`). **Fix:** override
+   Kendo with an **inline style** (wins over any stylesheet normal rule) or, if you must use CSS,
+   accept that only inline reliably wins. This is why the AppBar fix is inline.
+
+5. **Don't gate visibility on an entrance animation.** A dropdown/panel that starts at
+   `opacity: 0` via an animation with `fill-mode: both` stays invisible if the tab throttles
+   animations (background tab, some automation). Let the resting state be visible; animate only as
+   an enhancement.
+
+6. **Brand emblem.** The brand mark is `components/BrandMark.tsx` — a constellation /
+   knowledge-graph SVG painted in the demo's `theme.primary → theme.accent` gradient, so every
+   blueprint gets a distinct, non-generic logo for free. Don't fall back to a plain first-letter
+   tile.
+
+## Verify clicks, don't assume them
+
+Because of pitfalls 1–2, **every clickable element must be exercised**, not eyeballed. A card can
+look perfect and be dead. The repo's convention: after any UI change, click through every surface
+— each result/asset/citation opens the `/r/:id` watch page, each menu opens and navigates, each
+suggestion/pill runs. An automation harness that drives the real React handlers in-page (rather
+than screenshot-clicking, which is confounded by window-focus artifacts) is the reliable way to
+run this repeatedly.

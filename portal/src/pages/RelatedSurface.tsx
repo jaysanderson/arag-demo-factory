@@ -66,33 +66,36 @@ export function RelatedSurface({ surface }: SurfaceProps) {
     catalog({ query: '', pageSize: 6 }).then((r) => setPicks(r.items || [])).catch(() => {});
   }, []);
 
-  const run = (title: string) => {
+  const run = async (title: string) => {
     const t = title.trim();
     if (!t) return;
     setSeed(t);
     setSeedTitle(t);
     setLoading(true);
-    // Graph: try the seed directly (works when it's an entity, e.g. after a pivot),
-    // else fall back to a document code lifted from the title.
-    const graphSeed = async (): Promise<GraphResult | null> => {
-      const g = await graph({ entity: t, topK: 24 }).catch(() => null);
-      if (g && g.nodes.length > 0) return g;
-      const code = codeFrom(t);
-      if (code && code.toLowerCase() !== t.toLowerCase()) {
-        return graph({ entity: code, topK: 24 }).catch(() => null);
+    try {
+      const s = await search({ query: t, pageSize: 8, features: ['keyword', 'semantic'] });
+      const sim = toSimilar(s, t);
+      setSimilar(sim);
+
+      // Graph: try the seed as an entity (works after a pivot), then a document
+      // code lifted from the title, then codes lifted from the semantic
+      // neighbours — so even a title with no entity of its own (e.g. a voice
+      // loop) still surfaces the graph neighbourhood it sits next to.
+      const tryEntities = [t, codeFrom(t), ...sim.map((x) => codeFrom(x.title))].filter(
+        (v, i, a): v is string => !!v && a.indexOf(v) === i
+      );
+      let g: GraphResult | null = null;
+      for (const ent of tryEntities) {
+        g = await graph({ entity: ent, topK: 24 }).catch(() => null);
+        if (g && g.nodes.length > 0) break;
       }
-      return g;
-    };
-    Promise.all([
-      search({ query: t, pageSize: 8, features: ['keyword', 'semantic'] }),
-      graphSeed(),
-    ])
-      .then(([s, g]) => {
-        setSimilar(toSimilar(s, t));
-        setGraphRes(g);
-      })
-      .catch(() => { setSimilar([]); setGraphRes(null); })
-      .finally(() => setLoading(false));
+      setGraphRes(g);
+    } catch {
+      setSimilar([]);
+      setGraphRes(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

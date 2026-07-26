@@ -90,6 +90,11 @@ delegated.
   rewrite the portal shell; configure it** (see Conventions).
 - **Phase 5 — Verify.** `@tester` runs the blueprint's `cornerstoneQueries` (must answer,
   cited) and `refusalProbes` (must refuse, not confabulate). Grounded + cited or it's a bug.
+  **Also click through the whole app** — every nav menu opens and navigates, every suggestion/pill
+  runs, every result/asset/citation opens the `/r/:id` watch page, the graph pivots. Kendo's
+  dead-onClick gotchas (see `docs/UI-KENDO.md`) mean a card can look perfect and do nothing, so
+  interaction must be exercised, not eyeballed. The demo must survive an "idiot walkthrough": an
+  SE clicking anything visible should always get a working result.
 - **Phase 6 — Deliver.** Print the local URL, a one-paragraph "what to show" from the demo
   script, and (if asked) deploy to Fly (`<slug>.fly.dev`). Print a timing summary.
 
@@ -209,6 +214,12 @@ Factory tooling (removed from generated projects):
   licence key) is acceptable — a key is applied at build time (`KENDO_UI_LICENSE` /
   `telerik-license.txt`, see `docs/UI-KENDO.md`); never avoid or replace a Kendo control just to
   suppress the banner.** Installs resolve through HAR (`.npmrc`).
+- **KendoReact has silent-failure gotchas — read `docs/UI-KENDO.md` → "Known KendoReact
+  pitfalls" before building or debugging UI.** The big ones: `<Card onClick>` and `<Chip onClick>`
+  never fire (use `components/ClickableCard` and `components/Pill` for anything clickable);
+  `AppBar` clips dropdown menus with `overflow:hidden` (override inline — Kendo's unlayered CSS
+  beats layered `@layer`/`!important` rules). **A dead card looks identical to a working one, so
+  the Verify phase MUST click through every interactive element**, not just screenshot it.
 - **FastTrack (`ml-fasttrack`) is intentionally NOT used.** It is a MarkLogic-bound accelerator
   (its `MarkLogicProvider` speaks MarkLogic's `/v1/search`), it is not on HAR, and no ARAG demo
   uses it. Its look is reproduced with KendoReact directly — which is what FastTrack is built on.
