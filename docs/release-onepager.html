@@ -1,0 +1,247 @@
+<title>ARAG Demo Factory — Release</title>
+<style>
+  :root {
+    --ground: #0E1512;
+    --panel: #16201B;
+    --panel-2: #1B2620;
+    --text: #ECE7DB;
+    --muted: #9FB0A5;
+    --faint: #6E8076;
+    --hair: rgba(236, 231, 219, 0.12);
+    --hair-strong: rgba(236, 231, 219, 0.22);
+    --forest: #4FB483;
+    --gold: #E0AE52;
+    --gold-ink: #0E1512;
+    --good: #10B981;
+    --warn: #F0A81E;
+    --crit: #EF6A4D;
+    --shadow: 0 24px 60px -30px rgba(0,0,0,0.7);
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #F6F4EE;
+      --panel: #FFFFFF;
+      --panel-2: #FBFAF6;
+      --text: #1A1D1A;
+      --muted: #57655C;
+      --faint: #8A968D;
+      --hair: rgba(20, 30, 24, 0.10);
+      --hair-strong: rgba(20, 30, 24, 0.18);
+      --forest: #14543F;
+      --gold: #B0741A;
+      --gold-ink: #FFFFFF;
+      --shadow: 0 20px 50px -30px rgba(20,40,30,0.35);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0E1512; --panel: #16201B; --panel-2: #1B2620; --text: #ECE7DB;
+    --muted: #9FB0A5; --faint: #6E8076; --hair: rgba(236,231,219,0.12); --hair-strong: rgba(236,231,219,0.22);
+    --forest: #4FB483; --gold: #E0AE52; --gold-ink: #0E1512; --shadow: 0 24px 60px -30px rgba(0,0,0,0.7);
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --ground: #F6F4EE; --panel: #FFFFFF; --panel-2: #FBFAF6; --text: #1A1D1A;
+    --muted: #57655C; --faint: #8A968D; --hair: rgba(20,30,24,0.10); --hair-strong: rgba(20,30,24,0.18);
+    --forest: #14543F; --gold: #B0741A; --gold-ink: #FFFFFF; --shadow: 0 20px 50px -30px rgba(20,40,30,0.35);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Menlo", monospace; }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: clamp(28px, 5vw, 72px) clamp(20px, 5vw, 56px) 80px; }
+
+  /* ── masthead ── */
+  header { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start;
+           padding-bottom: 30px; border-bottom: 1px solid var(--hair-strong); }
+  .eyebrow { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+             font-weight: 600; margin: 0 0 18px; }
+  h1 { font-size: clamp(2.2rem, 5.4vw, 3.7rem); line-height: 1.02; letter-spacing: -0.03em;
+       font-weight: 800; margin: 0; text-wrap: balance; }
+  h1 .fade { color: var(--muted); }
+  .dek { margin: 20px 0 0; max-width: 54ch; color: var(--muted); font-size: 1.06rem; }
+  .dek b { color: var(--text); font-weight: 600; }
+
+  /* confidence-ring motif — echoes the product's own ConfidenceRing */
+  .ring { position: relative; width: 132px; height: 132px; flex: none; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .track { stroke: var(--hair-strong); }
+  .ring .val { stroke: var(--good); stroke-linecap: round;
+    stroke-dasharray: 358; stroke-dashoffset: 358; animation: draw 1.4s cubic-bezier(.22,1,.36,1) .3s forwards; }
+  .ring .cap { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; }
+  .ring .pct { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .ring .lab { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--good); font-weight: 700; }
+  @keyframes draw { to { stroke-dashoffset: 136; } }
+  @media (prefers-reduced-motion: reduce) { .ring .val { animation: none; stroke-dashoffset: 136; } }
+
+  /* ── the trail of changes ── */
+  .trail { margin: 46px 0 0; position: relative; }
+  .rail-title { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint);
+                font-weight: 600; margin: 0 0 22px; }
+  .item { position: relative; padding: 0 0 30px 46px; }
+  .item::before { content: ""; position: absolute; left: 9px; top: 22px; bottom: -8px; width: 2px; background: var(--hair); }
+  .item:last-child::before { display: none; }
+  .node { position: absolute; left: 0; top: 5px; width: 20px; height: 20px; border-radius: 50%;
+          border: 3px solid var(--ground); box-shadow: 0 0 0 2px var(--hair-strong); }
+  .item h3 { margin: 0 0 6px; font-size: 1.22rem; letter-spacing: -0.015em; font-weight: 700; }
+  .item p { margin: 0; color: var(--muted); font-size: 0.99rem; }
+  .item p code { font-family: ui-monospace, "SF Mono", monospace; font-size: 0.85em;
+    background: var(--panel); border: 1px solid var(--hair); border-radius: 5px; padding: 1px 5px; color: var(--text); }
+  .item .kicker { display: inline-block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; margin: 0 0 5px; }
+
+  /* ── proof strip ── */
+  .proof { margin: 40px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--hair); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+  .card .tag { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--forest); font-weight: 700; }
+  .card .big { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
+  .card .sub { color: var(--muted); font-size: 0.9rem; }
+
+  /* ── footer ── */
+  footer { margin: 40px 0 0; padding-top: 26px; border-top: 1px solid var(--hair); }
+  footer h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  footer ul { margin: 0; padding: 0 0 0 20px; color: var(--muted); }
+  footer li { margin: 0 0 6px; }
+  .sig { margin-top: 28px; font-size: 12px; color: var(--faint); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .sig .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  @media (max-width: 680px) {
+    header { grid-template-columns: 1fr; }
+    .ring { order: -1; }
+    .proof { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow mono">Release · Progress Agentic RAG · July 2026</p>
+      <h1>The demo factory learned<br><span class="fade">to be an artist.</span></h1>
+      <p class="dek">One prompt in; a <b>stunning, grounded, cited</b> ARAG application out. The
+        package became a <b>palette</b> — the SE is the artist, each demo an original masterpiece —
+        with the truth guarantees pushed <i>into the materials</i>, so composition is free but can
+        never fabricate.</p>
+    </div>
+    <div class="ring" role="img" aria-label="Grounding confidence: strong match">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle class="track" cx="66" cy="66" r="57" fill="none" stroke-width="9"></circle>
+        <circle class="val" cx="66" cy="66" r="57" fill="none" stroke-width="9"></circle>
+      </svg>
+      <div class="cap">
+        <span class="pct">62%</span>
+        <span class="lab">Strong match</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="trail">
+    <p class="rail-title mono">What shipped</p>
+
+    <div class="item">
+      <span class="node" style="background:var(--gold)"></span>
+      <span class="kicker mono">The headline · new architecture</span>
+      <h3>The factory became a palette, not a template kit</h3>
+      <p>The portal is no longer a fixed shell toggling prebuilt panels. It's a <b>palette</b> the SE
+        paints with: grounded <b>pigments</b> (hooks like <code>useAsk</code>, <code>useSearch</code>,
+        <code>useGraph</code>), a design <b>medium</b> (<code>Hero</code>, <code>Section</code>,
+        <code>TileGrid</code> on the demo's own colours), and a <b>composition seam</b> to paint a
+        bespoke home + pages. Crucially, <b>the guarantees live in the materials</b>:
+        <code>&lt;GroundedAnswer&gt;</code> can't render an uncited claim, <code>&lt;CitedMetric&gt;</code>
+        can't render a number without KB provenance, and a build-time lint rejects hardcoded metrics
+        and external fetches. Free composition, incorruptible materials.</p>
+    </div>
+
+    <div class="item">
+      <span class="node" style="background:var(--good)"></span>
+      <span class="kicker mono">Quality bar</span>
+      <h3>A mandatory bar, set from the live portfolio</h3>
+      <p>Walked ~20 deployed ARAG apps end-to-end — Atlas, Meridian Codex, Document Intelligence
+        Studio, Research Portal, Ironbark, Racing WA and more. The bar: a <b>real application</b>
+        (app shell, live status, auth where it fits), the <b>whole ARAG product</b> woven in, and
+        <b>bespoke design craft</b> — never four disconnected tiles or a component dump.</p>
+    </div>
+
+    <div class="item">
+      <span class="node" style="background:var(--gold)"></span>
+      <span class="kicker mono">Signature surface</span>
+      <h3>“Journey through the context” — now built in</h3>
+      <p>Below any cited answer, a cinematic, auto-playing walk through the grounding: strongest
+        match first, each source with an animated <b>confidence ring</b>, classification chips, a
+        <i>cited-in-the-answer</i> badge, the supporting passage, and a live, resource-scoped
+        <b>“how does this relate?”</b> answer — with narration and a replayable trail. Proof that an
+        answer is <b>grounded, not generated</b>. Typechecks and builds clean.</p>
+    </div>
+
+    <div class="item">
+      <span class="node" style="background:var(--forest)"></span>
+      <span class="kicker mono">Creative mandate</span>
+      <h3>Creativity is now the critical rule</h3>
+      <p><b>“We provide the colours; the package is the artist.”</b> Every build must be a bespoke,
+        believable product with its own identity — never a recoloured template or
+        “random React everywhere.” Baked into the session hook, <code>AGENTS.md</code>,
+        <code>CLAUDE.md</code>, and the Copilot instructions.</p>
+    </div>
+
+    <div class="item">
+      <span class="node" style="background:var(--gold)"></span>
+      <span class="kicker mono">Inspiration, not replicas</span>
+      <h3>Blueprints became cues, not a catalogue</h3>
+      <p>The reference library is a source of ideas — never a menu, never copied. The factory now
+        invents a fresh, realistic use case per prompt: a new fictional company that merely rhymes
+        with the exemplars. Every document, number and name is believable — synthetic, never fake.</p>
+    </div>
+
+    <div class="item">
+      <span class="node" style="background:var(--good)"></span>
+      <span class="kicker mono">Provisioning · verified live</span>
+      <h3>NUA-key auto-provisioning</h3>
+      <p>Hand the factory a <b>NUA key</b> and it creates and manages its <b>own</b> ARAG assets with
+        no setup by hand. Proven end-to-end against a real account: <b>create → mint token → ingest →
+        cited answers</b>, one credential, zero manual steps. The exact regional recipe is pinned into
+        <code>create-kb.mjs</code>.</p>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="card">
+      <div class="tag mono">Supply chain</div>
+      <div class="big">304 packages · ~3s</div>
+      <div class="sub">Portal installs from the Progress HAR registry — the public npm registry is never used.</div>
+    </div>
+    <div class="card">
+      <div class="tag mono">Build</div>
+      <div class="big">3,240 modules · clean</div>
+      <div class="sub">Portal typechecks and builds green <i>with</i> the new Journey feature wired into Ask.</div>
+    </div>
+    <div class="card">
+      <div class="tag mono">Provisioning</div>
+      <div class="big">1 key · 0 steps</div>
+      <div class="sub">Live run: NUA key → KB + token → ingest → grounded, cited answers through every route.</div>
+    </div>
+    <div class="card">
+      <div class="tag mono">Guard</div>
+      <div class="big">Can't ship a lie</div>
+      <div class="sub">A groundedness lint gates every build — hardcoded metrics and external data fetches fail it.</div>
+    </div>
+  </section>
+
+  <footer>
+    <h4 class="mono">Open / next</h4>
+    <ul>
+      <li>Port more signature surfaces (REMi gauge, agentic trace panel); add the Journey walk to Search.</li>
+      <li>Add a guard for the stray <code>portal/.env</code> that can shadow the root <code>.env</code> the provisioner writes.</li>
+    </ul>
+    <div class="sig mono"><span class="dot"></span> ARAG Demo Factory · github.com/jaysanderson/arag-demo-factory</div>
+  </footer>
+</div>
