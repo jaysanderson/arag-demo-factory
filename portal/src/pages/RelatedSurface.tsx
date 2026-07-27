@@ -44,8 +44,8 @@ function toSimilar(result: any, seedText: string): RelItem[] {
   return out.sort((a: any, b: any) => (b._s ?? 0) - (a._s ?? 0)).slice(0, 6);
 }
 
-// HELIOS-style document codes (ANOM-HAL-011, MAL-ECLSS-07, P-204) are first-class
-// entities in the knowledge graph, so a title that carries one can seed the graph.
+// Document reference codes (e.g. ANOM-HAL-011, INV-2024-0912, CASE-4471) are often
+// first-class entities in the knowledge graph, so a title carrying one can seed it.
 function codeFrom(text: string): string | null {
   const m = text.match(/\b[A-Z]{1,5}-[A-Z0-9]+(?:-[A-Z0-9.]+)*\b/);
   return m ? m[0] : null;

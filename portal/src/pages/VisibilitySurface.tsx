@@ -14,7 +14,7 @@ import { ErrorBanner } from '../components/States';
 // be trusted: does it ANSWER what it should (grounded + cited), and does it
 // DECLINE what it must (refuse rather than invent)? This sweep runs both sets of
 // probes live and scores each — coverage and governance, the numbers an exec
-// governs against. Works for any KB; on HELIOS it reads as mission readiness.
+// governs against. Works for any KB, whatever the domain.
 
 const REFUSAL_MARKERS = [
   'not enough data', 'does not contain', 'no information', 'not provided', 'cannot answer',

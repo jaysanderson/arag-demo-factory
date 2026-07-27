@@ -134,8 +134,8 @@ export default function App() {
 }
 
 // A product descriptor under the wordmark — the product's own identity, not the
-// vendor tech category. Derived from the title (e.g. "HELIOS — Mission
-// Intelligence" → "Mission Intelligence"), never "Agentic RAG platform".
+// vendor tech category. Derived from the title (e.g. "Meridian — Matter
+// Intelligence" → "Matter Intelligence"), never "Agentic RAG platform".
 function brandDescriptor(config: DemoConfig): string {
   const brand = config.theme.brandName || '';
   const title = (config.title || '').trim();
