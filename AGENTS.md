@@ -46,13 +46,17 @@ Use `node create-app.js --output ../my-demo` to copy elsewhere instead.
    `matchTags`.
 
 2. **Design a bespoke blueprint × capability set for the prompt.**
-   - **You are the artist — creativity is the point (critical).** The prospect gives you a
-     theme and a palette; you compose a stunning, believable *product* from it. The shipped
-     blueprints are **inspiration only** — take cues from their structure and quality bar, then
-     **invent something fresh**. Do **not** reproduce a reference demo's company, domain, copy or
-     layout: the output must be a NEW use case that merely rhymes with the exemplars. Even for a
-     close match (e.g. "insurance claims and fraud" ≈ `insurance-claims-workbench`), reskin it
-     into a distinct, named fictional company with its own identity — never a carbon copy.
+   - **This package is a palette; you are the artist; the demo is an original masterpiece
+     (critical).** The prospect hands you a theme and a set of colours, and you paint a stunning,
+     believable *product* from the palette of ARAG capabilities. The shipped blueprints and the
+     whole `catalog/` exist only to show the **range** the palette can paint — they are **never**
+     templates to match, clone or reproduce. Glance at them for range, then **invent something
+     genuinely new**: a new company, domain, copy, and layout of your own design. Even for a close
+     match (e.g. "insurance claims and fraud" ≈ `insurance-claims-workbench`), do not reskin it —
+     paint a distinct, named fictional company with its own identity and information architecture.
+   - **The guarantees live in the materials, not in a frame.** Grounding, citations, and
+     no-invented-data are properties of the components you paint with, so compose with total
+     freedom — the materials keep every demo truthful no matter how boldly you arrange them.
    - **Author a blueprint that fits the prompt** — the vertical/story, a named fictional company,
      persona, a distinctive visual identity (typography, a coherent brand+accent palette, editorial
      hero, motion), and a corpus brief (docTypes, a shared entity pool, `cornerstoneQueries`,

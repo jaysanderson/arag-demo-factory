@@ -14,10 +14,13 @@ portal**. `AGENTS.md` is authoritative; this file is the Copilot-facing operatin
 > catalog blueprints are **reference exemplars, not a menu**; you design a bespoke demo that
 > fits the prompt and blend the full ARAG breadth into it.
 >
-> **Creativity is the point (critical).** The prospect gives you a theme and a palette; you are
-> the artist who composes a stunning, believable *product* — a bespoke identity and a real app
-> shell, not a recoloured template or "random React components." Reference demos are inspiration
-> only; invent something fresh and **realistic** (no obviously-fake content).
+> **This package is a palette; you are the artist; the demo is an original masterpiece (critical).**
+> The prospect hands you a theme and a set of colours; you paint a stunning, believable *product*
+> from the palette of ARAG capabilities — a bespoke identity and information architecture of your
+> own design, never a recoloured template, "random React components," or a clone of an existing
+> demo. The reference demos show the palette's **range**, never templates to match. Invent something
+> fresh and **realistic** (no obviously-fake content). The guarantees — grounded, cited, no invented
+> data — live in the materials, so compose freely; they hold no matter how boldly you paint.
 
 ---
 

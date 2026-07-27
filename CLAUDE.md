@@ -20,14 +20,20 @@ question if the prompt has zero domain signal (bare "hi") — then one open ques
 This is the deliberate inverse
 of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule here.
 
-**Creativity is the point (critical).** The prospect hands you a theme and a palette; **you are
-the artist** who composes a stunning, believable product from it. Every build must look and feel
-like a real application a customer already uses daily — a bespoke visual identity (typography, a
-coherent brand+accent palette, editorial hero, motion, a real app shell), **not** a template with
-the colours swapped and **not** "random React components everywhere." The reference demos are
-**inspiration only** — take cues, then invent something fresh; never reproduce an exemplar's
-company, domain or copy. **Everything must be realistic:** believable company, documents, numbers,
-names and copy — synthetic but never obviously fake, never lorem-ipsum.
+**This package is a palette; the SE is the artist; each demo is an original masterpiece.** The
+prospect hands you a theme and a set of colours, and you paint a stunning, believable product from
+the palette of ARAG capabilities. So: invent a bespoke visual identity and information architecture
+of your own design — **not** a template with the colours swapped, **not** "random React components
+everywhere," and **not** a clone of any existing demo. The reference demos and the `catalog/` exist
+only to show the **range** the palette can paint; they are **never** templates to match or reproduce
+— glance at them for range, then invent something genuinely new (new company, domain, copy, layout).
+**Everything must be realistic:** believable company, documents, numbers, names and copy — synthetic
+but never obviously fake, never lorem-ipsum.
+
+**The guarantees live in the materials, not in a frame.** Grounding, citations, and no-invented-data
+are properties of the *pigments* — a grounded answer cannot render an uncited claim; a metric can
+only show a number computed from the Knowledge Box. That is exactly what lets you compose with total
+freedom: the materials keep the demo truthful no matter how boldly you paint.
 
 ## Key Rules
 
@@ -46,8 +52,14 @@ names and copy — synthetic but never obviously fake, never lorem-ipsum.
 - **UI components: KendoReact by default — but craft is what hits the bar.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, **themed distinctively per demo** (the `brand`/`accent` CSS variables are yours to set — that is the "we provide the colours, you're the artist" contract). Kendo is the substrate; the *design* — layout, hierarchy, motion, a coherent identity — is what makes it stunning. Use a non-Kendo/bespoke component where it makes the demo materially better (graph canvas, the streaming Ask pane, the cinematic **"Journey through the context"** walk on the Ask surface). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. See docs/UI-KENDO.md.
 - **KendoReact gotchas that produce silently-broken UI** (full list + fixes in docs/UI-KENDO.md → "Known KendoReact pitfalls"): `<Card onClick>` and `<Chip onClick>` do NOT fire — use `ClickableCard` / `Pill` for anything clickable; `AppBar` has `overflow:hidden` that clips dropdown menus — fix inline (`style={{overflow:'visible'}}`), not via CSS (Kendo's unlayered `all.css` beats `@layer` rules, even with `!important`). **Verify every clickable element by actually clicking it** — a dead card looks identical to a working one.
 - **Fully responsive is required — every demo must work on a phone.** Don't gate responsive layout on CSS display utilities inside Kendo components (Kendo's unlayered CSS overrides `hidden`/`lg:flex` → double-nav overlap); drive breakpoints in JS with `useIsDesktop()`/`useMediaQuery()` and render desktop vs. mobile variants (header uses `MobileNav`). Stack panes below `lg`, use `clamp()` type, keep wide content in `overflow-x-auto`. Preview with `?vp=mobile`. See docs/UI-KENDO.md → "Responsive / mobile".
-- **Never rewrite the portal shell — configure it** via `demo.config.json` (blueprint,
-  theme, enabled surfaces). Same principle as the reference package's "never rewrite App.js".
+- **What's sacred is the guarantees, not the shell.** The invariants are grounding, citations,
+  no-invented-data, responsive, and every-control-works — properties carried by the components
+  themselves. *Today* the reliable way to keep them is the config-driven shell (theme + enabled
+  surfaces via `demo.config.json`), so configure it rather than hand-hacking it. But the shell is
+  scaffolding, not the ceiling: the roadmap (see `RELEASE.md` → open items) is to lower the
+  deliverable to composable **grounded primitives** the artist arranges freely — freedom of
+  composition, incorruptible materials. Never sacrifice a guarantee for a layout, or a layout for
+  the shell's convenience.
 - **Answers must render citations.** An ungrounded answer is surfaced as a warning, never as
   bare text.
 - **Hard Rules are non-negotiable** (AGENTS.md): synthetic only, no real brands, anonymise
