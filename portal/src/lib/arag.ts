@@ -132,7 +132,7 @@ export interface AskHandlers {
  * panel populates while the answer is still being written. Returns an abort fn.
  */
 export function ask(
-  body: { query: string; filters?: string[]; searchConfig?: string },
+  body: { query: string; filters?: string[]; searchConfig?: string; resourceId?: string },
   { onToken, onCitations, onDone, onError }: AskHandlers
 ): () => void {
   const controller = new AbortController();

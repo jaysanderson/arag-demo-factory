@@ -17,7 +17,8 @@ it builds it.
 chmod +x setup.sh && ./setup.sh          # Windows: .\setup.ps1
 
 # 2. Add your Nuclia credentials
-cp .env.example .env                      # then paste your KB service-account token + KB URL
+cp .env.example .env                      # then paste your NUA key + account + zone (the
+                                          # factory provisions its own KB), or bind an existing KB
 
 # 3. Open the factory in your AI coding tool and fire ONE prompt, e.g.
 #    "Build me an insurance claims and fraud workbench, no graph, add call QA"
@@ -96,7 +97,7 @@ Every demo is customer-facing, so every build honours these — enforced by `cre
 
 - **Node.js 20+**
 - **Git**
-- A **Nuclia** account + **account key** — the factory creates its own Knowledge Box (Option A in `.env.example`). Or bind an existing KB (Option B).
+- A **Nuclia** account + **NUA key** — the factory creates and manages its own Knowledge Box and agents (Option A in `.env.example`). Or bind an existing KB (Option B).
 - Network access to the npm registry for the portal build (`setup.sh` warns if it's blocked)
 
 ## Ports

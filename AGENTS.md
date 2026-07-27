@@ -46,13 +46,22 @@ Use `node create-app.js --output ../my-demo` to copy elsewhere instead.
    `matchTags`.
 
 2. **Design a bespoke blueprint × capability set for the prompt.**
-   - **Author a blueprint that fits the prompt** — the vertical/story, persona, theme, and a
-     corpus brief (docTypes, a shared entity pool, `cornerstoneQueries`, `refusalProbes`, a
-     synthetic-only disclaimer). Model it on the shipped `catalog/blueprints/*.json` — same
-     schema and quality bar. **If a reference blueprint is a genuinely strong match** (e.g.
-     "insurance claims and fraud" ≈ `insurance-claims-workbench`), reuse or adapt it; otherwise
-     write a new one to `catalog/blueprints/<slug>.json` (the `/add-blueprint` flow). **Never
-     tell the user a domain isn't in the catalog** — invent it.
+   - **You are the artist — creativity is the point (critical).** The prospect gives you a
+     theme and a palette; you compose a stunning, believable *product* from it. The shipped
+     blueprints are **inspiration only** — take cues from their structure and quality bar, then
+     **invent something fresh**. Do **not** reproduce a reference demo's company, domain, copy or
+     layout: the output must be a NEW use case that merely rhymes with the exemplars. Even for a
+     close match (e.g. "insurance claims and fraud" ≈ `insurance-claims-workbench`), reskin it
+     into a distinct, named fictional company with its own identity — never a carbon copy.
+   - **Author a blueprint that fits the prompt** — the vertical/story, a named fictional company,
+     persona, a distinctive visual identity (typography, a coherent brand+accent palette, editorial
+     hero, motion), and a corpus brief (docTypes, a shared entity pool, `cornerstoneQueries`,
+     `refusalProbes`, a synthetic-only disclaimer). Model the *schema and quality bar* on the
+     shipped `catalog/blueprints/*.json`; write the new one to `catalog/blueprints/<slug>.json`
+     (the `/add-blueprint` flow). **Never tell the user a domain isn't in the catalog** — invent it.
+   - **Everything must be realistic.** Believable company, documents, numbers, names, dates and
+     copy — synthetic but never obviously fake, and never lorem-ipsum. The result should read as a
+     tool the customer already uses, not a demo.
    - **Blend the full breadth of capabilities into ONE impressive demo.** The capability
      vocabulary in `catalog/capabilities/` is the fixed set of real ARAG surfaces — **default to
      using ALL of them that make sense for the domain** (Ask, Voice, Search, Facets, Assets,
@@ -88,10 +97,11 @@ delegated.
   **Never tell the user to run it themselves.** This writes `demo.config.json`, themes the
   portal, and removes factory-only files.
 - **Phase 1 — Knowledge Box.** If a KB is already bound (`NUCLIA_KB_URL` +
-  `NUCLIA_SERVICEACCOUNT` in `.env`), verify it. **Otherwise, if an account key is present
-  (`NUCLIA_ACCOUNT` + `NUCLIA_ACCOUNT_TOKEN`), AUTO-PROVISION — do NOT make the user create a KB
-  by hand:** run `node scripts/create-kb.mjs --title "<Title>" --slug <slug>`. It creates a fresh
-  KB, mints a service-account token, and writes `NUCLIA_KB_URL` / `NUCLIA_KB_ID` / `NUCLIA_ZONE`
+  `NUCLIA_SERVICEACCOUNT` in `.env`), verify it. **Otherwise, if a NUA key is present
+  (`NUCLIA_NUA_KEY` + `NUCLIA_ACCOUNT` + `NUCLIA_ZONE`), AUTO-PROVISION — the factory creates and
+  manages its own ARAG assets; do NOT make the user create a KB by hand:** run
+  `node scripts/create-kb.mjs --title "<Title>" --slug <slug>`. It creates a fresh KB, mints a
+  service-account token, and writes `NUCLIA_KB_URL` / `NUCLIA_KB_ID` / `NUCLIA_ZONE`
   (+ `NUCLIA_SERVICEACCOUNT`) into `.env`. If it exits 3 (KB made, token needs a one-click
   dashboard key), relay that single step to the user. Then verify reachability (`/counters` via
   MCP or the `nuclia` tools).
@@ -298,5 +308,5 @@ Factory tooling (removed from generated projects):
 | `NUCLIA_SERVICEACCOUNT` | KB service-account token (JWT / `kb-…`) — `X-NUCLIA-SERVICEACCOUNT: Bearer`. Server-side only. |
 | `NUCLIA_KB_URL` | Full KB base, `https://<zone>.rag.progress.cloud/api/v1/kb/<id>` (doc-processing KBs use `dp.progress.cloud`). |
 | `NUCLIA_ZONE` | e.g. `europe-1`, `aws-eu-1`. Server-side only — never rendered. |
-| `NUCLIA_ACCOUNT` / `NUCLIA_ACCOUNT_TOKEN` | Account slug + PAT — only needed to *create* KBs (Account API). |
+| `NUCLIA_NUA_KEY` / `NUCLIA_ACCOUNT` | NUA key + account slug — lets the factory create and manage its own ARAG assets (Option A auto-provisioning). |
 | `PORT` | Portal server port (default 8080 in container, 4000 local). |

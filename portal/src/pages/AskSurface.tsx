@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SendHorizontal, Square, RotateCcw } from 'lucide-react';
+import { SendHorizontal, Square, RotateCcw, Compass } from 'lucide-react';
 import { Button } from '@progress/kendo-react-buttons';
 import { Pill } from '../components/Pill';
 import { Card, CardBody } from '@progress/kendo-react-layout';
@@ -10,6 +10,7 @@ import { renderMarkdown } from '../lib/markdown';
 import { PageHeader } from '../components/PageHeader';
 import { Citations } from '../components/Citations';
 import { TypingDots, ErrorBanner, UngroundedWarning } from '../components/States';
+import { AnswerJourney } from '../components/journey/AnswerJourney';
 
 const REFUSAL_MARKERS = [
   'not enough data', 'does not contain', 'no information', 'not provided',
@@ -34,6 +35,7 @@ export function AskSurface({ surface, config }: SurfaceProps) {
   const [citations, setCitations] = useState<Citation[] | null>(null);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [journeyOpen, setJourneyOpen] = useState(false);
   const abortRef = useRef<null | (() => void)>(null);
   const answerRef = useRef<HTMLDivElement>(null);
 
@@ -201,13 +203,32 @@ export function AskSurface({ surface, config }: SurfaceProps) {
 
           <aside className="lg:sticky lg:top-4 lg:self-start">
             {citations && citations.length > 0 ? (
-              <Citations citations={citations} onOpen={(rid) => navigate(`/r/${rid}`)} />
+              <>
+                <Citations citations={citations} onOpen={(rid) => navigate(`/r/${rid}`)} />
+                {done && (
+                  <Button
+                    fillMode="outline"
+                    onClick={() => setJourneyOpen(true)}
+                    startIcon={<Compass size={15} />}
+                    className="mt-3 w-full justify-center"
+                  >
+                    Journey through the context
+                  </Button>
+                )}
+              </>
             ) : streaming ? (
               <Card className="card-flat"><CardBody className="p-4 text-sm text-ink-400">Resolving sources…</CardBody></Card>
             ) : null}
           </aside>
         </div>
       )}
+
+      <AnswerJourney
+        open={journeyOpen}
+        query={query}
+        citedIds={(citations || []).map((c) => c.resourceId)}
+        onClose={() => setJourneyOpen(false)}
+      />
     </div>
   );
 }

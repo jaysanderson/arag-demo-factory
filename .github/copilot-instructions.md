@@ -13,6 +13,11 @@ portal**. `AGENTS.md` is authoritative; this file is the Copilot-facing operatin
 > menu, no list of options, no blocking confirmation, no pausing between phases.** The
 > catalog blueprints are **reference exemplars, not a menu**; you design a bespoke demo that
 > fits the prompt and blend the full ARAG breadth into it.
+>
+> **Creativity is the point (critical).** The prospect gives you a theme and a palette; you are
+> the artist who composes a stunning, believable *product* — a bespoke identity and a real app
+> shell, not a recoloured template or "random React components." Reference demos are inspiration
+> only; invent something fresh and **realistic** (no obviously-fake content).
 
 ---
 
@@ -50,7 +55,10 @@ portal**. `AGENTS.md` is authoritative; this file is the Copilot-facing operatin
   does the opposite on purpose — do not copy that rule here.)
 - Do NOT pause for "shall I proceed?" between phases. One shot means one shot.
 - Do NOT tell the user to run `create-app.js` — run it for them in Phase 0.
-- Do NOT invent a use case when a catalog blueprint fits — always start from the shopping list.
+- Do NOT copy a reference blueprint's company, domain or copy. The blueprints are **inspiration
+  only** — invent a fresh, realistic use case that merely rhymes with them. You are the artist.
+- Do NOT ship a template with the colours swapped, "random React components everywhere," or
+  obviously-fake (lorem-ipsum) content. Every build must look like a real, in-use product.
 - Do NOT ship anything that violates the **Hard Rules** below.
 
 ---
@@ -93,7 +101,10 @@ code-generation phases may be delegated to the specialist in brackets.
   ```
   This writes `demo.config.json`, themes the portal, and removes factory-only files.
   **Never tell the user to run it themselves.**
-- **Phase 1 — Knowledge Box.** Bind or create the KB. Verify reachability via the `nuclia`
+- **Phase 1 — Knowledge Box.** Bind an existing KB, or — when a NUA key is present
+  (`NUCLIA_NUA_KEY` + `NUCLIA_ACCOUNT` + `NUCLIA_ZONE`) — AUTO-PROVISION with
+  `node scripts/create-kb.mjs --title "<Title>" --slug <slug>` (the factory creates and manages
+  its own ARAG assets; never make the user do it by hand). Verify reachability via the `nuclia`
   MCP tools (or `/counters`). Report only failures.
 - **Phase 2 — Corpus.** If the blueprint has a live reference KB already seeded (e.g.
   `grains-research`), bind it. Otherwise `[@knowledge-engineer]` generates a synthetic
@@ -282,7 +293,7 @@ Generated demo portal (Vite + React + TypeScript, one shell, config-driven)
   → demo.config.json  — blueprint × capabilities → which surfaces render, theme, KB binding, script
 
 Factory tooling (removed from generated projects):
-  catalog/       — the shopping list (blueprints × capabilities)
+  catalog/       — reference exemplars (inspiration) × capability vocabulary
   create-app.js  — composer/scaffolder (zero-dep Node)
   scripts/       — corpus generation, ingest, verify, build-catalog (zero-dep Node)
 ```

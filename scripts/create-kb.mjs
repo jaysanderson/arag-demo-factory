@@ -10,7 +10,8 @@
 //   3. writes NUCLIA_KB_URL / NUCLIA_KB_ID / NUCLIA_ZONE (+ NUCLIA_SERVICEACCOUNT
 //      when the token was minted) back into .env.
 //
-// Reads from .env (or real env): NUCLIA_ACCOUNT, NUCLIA_ACCOUNT_TOKEN, NUCLIA_ZONE.
+// Reads from .env (or real env): NUCLIA_NUA_KEY (preferred) or
+// NUCLIA_ACCOUNT_TOKEN, plus NUCLIA_ACCOUNT and NUCLIA_ZONE.
 // Zero dependencies — Node 20+ (global fetch).
 //
 //   node scripts/create-kb.mjs --title "Meridian — Matter Intelligence" --slug meridian
@@ -64,17 +65,18 @@ async function req(url, { token, method = 'GET', body, header = 'Authorization' 
 async function main() {
   const env = readEnv();
   const account = env.NUCLIA_ACCOUNT;
-  const token = env.NUCLIA_ACCOUNT_TOKEN;
+  // A NUA key is the preferred credential (it can create + manage assets under
+  // the account); an account token still works as a fallback.
+  const token = env.NUCLIA_NUA_KEY || env.NUCLIA_ACCOUNT_TOKEN;
   const zone = env.NUCLIA_ZONE || 'aws-eu-1';
   if (!account || !token) {
-    fail('Set NUCLIA_ACCOUNT (slug/id) and NUCLIA_ACCOUNT_TOKEN (account key) in .env first.\n' +
-         '  These are what let the factory create its own Knowledge Box.');
+    fail('Set NUCLIA_ACCOUNT (slug/id) and NUCLIA_NUA_KEY (your NUA key) in .env first.\n' +
+         '  These are what let the factory create and manage its own ARAG assets.');
   }
 
   const title = arg('--title', 'ARAG Demo Knowledge Box');
   const slug = slugify(arg('--slug', title)) || `arag-demo-${Date.now().toString(36)}`;
   const zbase = `https://${zone}.rag.progress.cloud/api/v1`;
-  const gbase = `https://rag.progress.cloud/api/v1`;
 
   console.log(`\n  Provisioning a Knowledge Box in account ${account} (zone ${zone})…`);
 
@@ -89,28 +91,29 @@ async function main() {
   console.log(`  ✓ Knowledge Box created: ${kbId}`);
   writeEnvVars({ NUCLIA_KB_ID: kbId, NUCLIA_KB_URL: kbUrl, NUCLIA_ZONE: zone });
 
-  // 2) Mint a KB service-account token (best-effort — needs SA permission).
+  // 2) Mint a KB service-account token (VERIFIED live against Progress ARAG with
+  //    a NUA key that has allow_kb_management). Two steps, both on the REGIONAL
+  //    API (NUA keys are rejected by the global API):
+  //      a. create the service account — KB-scoped, PLURAL collection route;
+  //      b. mint a key — SINGULAR `service_account/{id}/keys` route, with an
+  //         `expires` epoch (the server caps expiry at 1095 days).
+  //    The minted token authenticates the data plane via `X-NUCLIA-SERVICEACCOUNT: Bearer`.
   let saToken = null;
   try {
-    // Service account, then a key. Try the account-management shapes in order.
-    const saCandidates = [
-      { base: gbase, path: `/account/${account}/service_accounts` },
-      { base: zbase, path: `/account/${account}/kb/${kbId}/service_accounts` },
-    ];
-    for (const c of saCandidates) {
-      const sa = await req(`${c.base}${c.path}`, { token, method: 'POST', body: { title: `factory-${slug}`, role: 'SMEMBER' } });
-      const saId = sa.ok && (sa.json.id);
-      if (!saId) continue;
-      const keyCandidates = [
-        `${c.base}${c.path}/${saId}/keys`,
-        `${gbase}/account/${account}/service_accounts/${saId}/keys`,
-      ];
-      for (const ku of keyCandidates) {
-        const k = await req(ku, { token, method: 'POST', body: {} });
-        const t = k.ok && (k.json.token || k.json.key);
-        if (t) { saToken = t; break; }
-      }
-      if (saToken) break;
+    // SCONTRIBUTOR (not SMEMBER): the same provisioned token must both INGEST the
+    // generated corpus during the build and serve the portal's read calls, so the
+    // factory is self-sufficient from one credential. (Verified: SMEMBER is refused
+    // on writes; the NUA key has no data-plane access at all.) Server-side only.
+    const sa = await req(`${zbase}/account/${account}/kb/${kbId}/service_accounts`, {
+      token, method: 'POST', body: { title: `factory-${slug}`, role: 'SCONTRIBUTOR' },
+    });
+    const saId = sa.ok && sa.json.id;
+    if (saId) {
+      const expires = Math.floor(Date.now() / 1000) + 1080 * 24 * 60 * 60; // ~1080d, under the 1095-day cap
+      const k = await req(`${zbase}/account/${account}/kb/${kbId}/service_account/${saId}/keys`, {
+        token, method: 'POST', body: { expires },
+      });
+      saToken = (k.ok && (k.json.token || k.json.key)) || null;
     }
   } catch { /* fall through to manual step */ }
 
@@ -119,7 +122,7 @@ async function main() {
     console.log(`  ✓ Service-account token minted and written to .env`);
     console.log(`\n  Knowledge Box fully provisioned — ready to ingest. NUCLIA_KB_URL / _ID / _ZONE / _SERVICEACCOUNT are set.\n`);
   } else {
-    console.log(`  ⚠ Could not mint a service-account token automatically (the account key may lack`);
+    console.log(`  ⚠ Could not mint a service-account token automatically (the NUA key may lack`);
     console.log(`    service-account permission). The KB IS created and its coordinates are in .env.`);
     console.log(`\n  One step to finish: create a KB service-account key in the Nuclia dashboard`);
     console.log(`    → Account ${account} → Knowledge Box "${slug}" → Service accounts → add key`);

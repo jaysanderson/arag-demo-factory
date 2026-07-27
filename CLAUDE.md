@@ -20,6 +20,15 @@ question if the prompt has zero domain signal (bare "hi") — then one open ques
 This is the deliberate inverse
 of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule here.
 
+**Creativity is the point (critical).** The prospect hands you a theme and a palette; **you are
+the artist** who composes a stunning, believable product from it. Every build must look and feel
+like a real application a customer already uses daily — a bespoke visual identity (typography, a
+coherent brand+accent palette, editorial hero, motion, a real app shell), **not** a template with
+the colours swapped and **not** "random React components everywhere." The reference demos are
+**inspiration only** — take cues, then invent something fresh; never reproduce an exemplar's
+company, domain or copy. **Everything must be realistic:** believable company, documents, numbers,
+names and copy — synthetic but never obviously fake, never lorem-ipsum.
+
 ## Key Rules
 
 - **Read `AGENTS.md`** for the full flow, catalog schema, and Hard Rules — follow them exactly.
@@ -34,7 +43,7 @@ of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule
   over corpus content. All retrieval + generation is ARAG (`/ask`, `/find`, `/catalog`,
   `/graph`). See `docs/ARAG-API.md`.
 - **The demo IS the product, not a pitch.** The prospect must feel they've opened *their own* working tool and could be tremendously productive in it right now — never a Progress/sales-enablement brochure. So: the landing is a **working home** (a prominent ask bar + real starter questions from `probes.answerable` + live KB status + a quiet tool launcher), NOT a marketing hero. No "showcase" framing, no "one solution / N capability areas", no "how the demo flows", no capability-selling copy in the UI. Product chrome uses the product's own identity (title/brand), not "Agentic RAG platform"; vendor attribution is a quiet footer credit only. The `sells` field is **talk-track only — never rendered in the product** (the UI uses the functional `tagline`). Value is shown by *using* the tool, not claimed in copy. See `OverviewSurface.tsx`.
-- **UI components: KendoReact by default.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, themed per demo. Use a non-Kendo component only where Kendo has no fit and it makes the demo materially better (graph canvas, streaming pane). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. See docs/UI-KENDO.md.
+- **UI components: KendoReact by default — but craft is what hits the bar.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, **themed distinctively per demo** (the `brand`/`accent` CSS variables are yours to set — that is the "we provide the colours, you're the artist" contract). Kendo is the substrate; the *design* — layout, hierarchy, motion, a coherent identity — is what makes it stunning. Use a non-Kendo/bespoke component where it makes the demo materially better (graph canvas, the streaming Ask pane, the cinematic **"Journey through the context"** walk on the Ask surface). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. See docs/UI-KENDO.md.
 - **KendoReact gotchas that produce silently-broken UI** (full list + fixes in docs/UI-KENDO.md → "Known KendoReact pitfalls"): `<Card onClick>` and `<Chip onClick>` do NOT fire — use `ClickableCard` / `Pill` for anything clickable; `AppBar` has `overflow:hidden` that clips dropdown menus — fix inline (`style={{overflow:'visible'}}`), not via CSS (Kendo's unlayered `all.css` beats `@layer` rules, even with `!important`). **Verify every clickable element by actually clicking it** — a dead card looks identical to a working one.
 - **Fully responsive is required — every demo must work on a phone.** Don't gate responsive layout on CSS display utilities inside Kendo components (Kendo's unlayered CSS overrides `hidden`/`lg:flex` → double-nav overlap); drive breakpoints in JS with `useIsDesktop()`/`useMediaQuery()` and render desktop vs. mobile variants (header uses `MobileNav`). Stack panes below `lg`, use `clamp()` type, keep wide content in `overflow-x-auto`. Preview with `?vp=mobile`. See docs/UI-KENDO.md → "Responsive / mobile".
 - **Never rewrite the portal shell — configure it** via `demo.config.json` (blueprint,

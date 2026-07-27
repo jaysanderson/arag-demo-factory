@@ -214,11 +214,14 @@ app.get('/api/config', (_req, res) => {
  * paragraphs + citations) is applied here, server-side.
  */
 app.post('/api/ask', async (req, res) => {
-  const { query, filters, searchConfig } = req.body || {};
+  const { query, filters, searchConfig, resourceId } = req.body || {};
   if (!query || !String(query).trim()) return res.status(400).json({ error: 'query is required' });
 
   const body = { query, ...askBody({ persona: PERSONA, generativeModel: GEN_MODEL }) };
   if (filters && filters.length) body.filters = filters;
+  // Scope the answer to a single resource — used by the "journey through the
+  // context" walk to ask each source how it relates, grounded only in itself.
+  if (resourceId) body.resource_filters = [String(resourceId)];
   // A named search configuration is authoritative — it carries its own strategy
   // and prompt, so local overrides would silently fight it.
   if (searchConfig) {
@@ -273,6 +276,61 @@ app.post('/api/search', async (req, res) => {
   try {
     const result = await jsonOf('/find', { method: 'POST', body });
     res.json({ ...result, latencyMs: Date.now() - started });
+  } catch (err) {
+    res.status(err.status || 502).json({ error: err.message });
+  }
+});
+
+// Nuclia relevance scores come back 0–5 (sometimes already 0–1). Fold to 0–1.
+const norm01 = (v) => {
+  const n = Number(v) || 0;
+  const s = n > 1 ? n / 5 : n;
+  return Math.max(0, Math.min(1, s));
+};
+const tidyQuote = (t) => String(t || '').replace(/\s+/g, ' ').replace(/^[•\-–\s]+/, '').trim();
+
+/** Rank a /find payload into ordered "journey" stops (strongest match first). */
+function journeyStops(raw, cited) {
+  const resources = raw.resources || {};
+  const stops = [];
+  for (const [rid, r] of Object.entries(resources)) {
+    const paras = [];
+    for (const field of Object.values(r.fields || {})) {
+      for (const p of Object.values(field.paragraphs || {})) {
+        if (p && typeof p.text === 'string') paras.push({ text: p.text, score: Number(p.score) || 0 });
+      }
+    }
+    paras.sort((a, b) => b.score - a.score);
+    const card = toCard(rid, r);
+    const labels = Object.values(card.labels || {}).flat().slice(0, 4);
+    // Skip the title-as-paragraph (Nuclia indexes the title as its own, often
+    // top-scoring, paragraph) so the quote is real supporting prose.
+    const titleNorm = tidyQuote(card.title).toLowerCase();
+    const isTitle = (t) => { const q = tidyQuote(t).toLowerCase(); return q === titleNorm || q.length < 25; };
+    const quote = tidyQuote((paras.find((p) => !isTitle(p.text)) || paras[0])?.text || r.summary || '');
+    stops.push({
+      resourceId: rid,
+      title: card.title,
+      url: card.sourceUrl,
+      score: norm01(r.score ?? paras[0]?.score ?? 0),
+      quote,
+      labels,
+      cited: cited.has(rid),
+    });
+  }
+  stops.sort((a, b) => b.score - a.score);
+  return stops.slice(0, 8);
+}
+
+/** POST /api/journey — ranked grounding for the "journey through the context" walk. */
+app.post('/api/journey', async (req, res) => {
+  const { query, filters, citedIds = [], pageSize = 8 } = req.body || {};
+  if (!query || !String(query).trim()) return res.status(400).json({ error: 'query is required' });
+  const body = { query, page_size: pageSize, features: ['keyword', 'semantic'], show: ['basic', 'origin'] };
+  if (filters && filters.length) body.filters = filters;
+  try {
+    const raw = await jsonOf('/find', { method: 'POST', body });
+    res.json({ stops: journeyStops(raw, new Set((citedIds || []).filter(Boolean))) });
   } catch (err) {
     res.status(err.status || 502).json({ error: err.message });
   }
