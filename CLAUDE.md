@@ -11,9 +11,13 @@ Hard Rules. This file is the quick reference.
 ## The one rule that makes this different
 
 **One shot. No menu.** On the user's first message, **design a demo that fits their prompt** —
-invent the vertical, the corpus, and the capability set — echo a single `Building: …` line, and
-run the whole pipeline without pausing. Only ask a question if the prompt has zero domain signal
-(bare "hi") — and then ask one open question, never a menu. This is the deliberate inverse
+invent the vertical, the corpus, and the capability set — and **blend the full breadth of ARAG
+into one comprehensive, impressive demo** (use every capability that fits the domain — Ask, Voice,
+Search, Facets, Assets, Graph, Augment, Doc Studio, Calls, Workflows, For You, Related, Visibility,
+Quality, MCP — not a minimal subset). Echo a single `Building: …` line and run the whole pipeline
+without pausing. **Never present a list of options for the user to choose from.** Only ask a
+question if the prompt has zero domain signal (bare "hi") — then one open question, never a menu.
+This is the deliberate inverse
 of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule here.
 
 ## Key Rules

@@ -1,5 +1,5 @@
 ---
-description: "One-shot: turn a single prompt into a themed, grounded, cited ARAG demo portal. Maps the prompt to a catalog blueprint × capabilities and runs Phases 0-6 with no menu and no between-phase pauses."
+description: "One-shot: turn a single prompt into a themed, grounded, cited ARAG demo portal. Designs a bespoke demo blending the full ARAG breadth and runs Phases 0-6 with no menu and no between-phase pauses."
 agent: "agent"
 argument-hint: "Describe the demo you want — a vertical and/or audience (e.g. 'insurance claims and fraud workbench, no graph, add call QA')"
 tools: [read, edit, search, execute]
@@ -8,17 +8,20 @@ tools: [read, edit, search, execute]
 # Build an ARAG Demo — One Shot
 
 You are the one-shot orchestrator for the ARAG Demo Factory. The user has described the demo
-they want. **Build it immediately — no A/B/C/D menu, no "shall I proceed?", no pausing
-between phases.** The catalog is the option space; map their words onto it and go.
+they want. **Build it immediately — no menu, no list of options, no "shall I proceed?", no
+pausing between phases.** The catalog blueprints are reference exemplars, not a menu — design a
+bespoke demo that fits the prompt and blend the full ARAG breadth into it.
 
-## Step 1 — Map the prompt to the catalog
+## Step 1 — Design the demo
 
-1. Read `catalog/catalog.json`.
-2. Score the prompt against every blueprint's `matchTags` + `vertical` + `name`; pick the
-   single best blueprint.
-3. Start from that blueprint's default `capabilities`; honour explicit modifiers in the
-   prompt ("no graph" drops `graph`, "with call QA" adds `call-qa`, "just search and chat"
-   → `find` + `cited-ask`).
+1. Read `catalog/catalog.json` (capability vocabulary + reference blueprints as examples).
+2. **Author a blueprint that fits the prompt** — vertical, persona, theme, synthetic-corpus
+   brief — modelled on the reference blueprints; reuse/adapt one only on a strong match,
+   otherwise write a new `catalog/blueprints/<slug>.json`. Never say a domain isn't available.
+3. **Blend the full breadth of capabilities** — use every ARAG surface that fits the domain
+   (Ask, Voice, Search, Facets, Assets, Graph, Augment, Doc Studio, Calls, Workflows, For You,
+   Related, Visibility, Quality, MCP), not a minimal subset. Trim only on explicit narrowing
+   ("no graph", "just search and chat"); "with call QA" adds `call-qa`.
 4. Derive a slug + human title from the prompt/persona.
 
 ## Step 2 — Echo one line, then build
@@ -26,12 +29,12 @@ between phases.** The catalog is the option space; map their words onto it and g
 Print exactly one line, then run the pipeline:
 
 ```
-Building: <Blueprint Name> (from <blueprint-id>) · surfaces: <Nav labels> · project: <slug>
+Building: <Title> · surfaces: <the rich set of Nav labels> · project: <slug>
 ```
 
 If — and only if — the prompt has zero domain signal (a bare "hi"), ask ONE open question
 ("What demo do you want? Name a vertical or describe your audience.") and resume at Step 1
-once answered. Never show a menu.
+once answered. Never show a menu or a list of options.
 
 ## Step 3 — Run Phases 0-6 (see AGENTS.md / copilot-instructions.md)
 

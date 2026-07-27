@@ -96,7 +96,7 @@ Every demo is customer-facing, so every build honours these — enforced by `cre
 
 - **Node.js 20+**
 - **Git**
-- A **Nuclia** account + **service-account token** and a **Knowledge Box** (URL, zone, id)
+- A **Nuclia** account + **account key** — the factory creates its own Knowledge Box (Option A in `.env.example`). Or bind an existing KB (Option B).
 - Network access to the npm registry for the portal build (`setup.sh` warns if it's blocked)
 
 ## Ports

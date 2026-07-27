@@ -53,11 +53,15 @@ Use `node create-app.js --output ../my-demo` to copy elsewhere instead.
      "insurance claims and fraud" ≈ `insurance-claims-workbench`), reuse or adapt it; otherwise
      write a new one to `catalog/blueprints/<slug>.json` (the `/add-blueprint` flow). **Never
      tell the user a domain isn't in the catalog** — invent it.
-   - Choose the **capability set** from the fixed vocabulary in `catalog/capabilities/` (that
-     list is closed — it's the real ARAG surfaces). Default to a sensible mix for the vertical,
-     then **honour explicit modifiers**: "no graph" drops `graph`; "with call QA" adds `call-qa`;
-     "just search and chat" restricts to `find` + `cited-ask`; "show data augmentation" adds
-     `augment`.
+   - **Blend the full breadth of capabilities into ONE impressive demo.** The capability
+     vocabulary in `catalog/capabilities/` is the fixed set of real ARAG surfaces — **default to
+     using ALL of them that make sense for the domain** (Ask, Voice, Search, Facets, Assets,
+     Graph, Augment [Labeler/Graph/Generator agents], Doc Studio, Calls, Workflows, For You,
+     Related, Visibility, Quality/REMi, MCP), so the demo showcases the whole platform woven into
+     a coherent story — **not** a minimal three-surface subset, and **never** a menu of options
+     for the user to choose from. Only **trim** when the user explicitly narrows scope: "no graph"
+     drops `graph`; "just search and chat" restricts to `find` + `cited-ask`. Modifiers add too:
+     "with call QA" adds `call-qa`; "show data augmentation" adds `augment`.
    - Derive a **slug** and **title** from the prompt/persona (e.g. "Meridian legal demo" →
      slug `meridian-legal`, title `"Meridian — Matter Intelligence"`).
 
@@ -83,8 +87,14 @@ delegated.
   `node create-app.js --name <slug> --title "<Title>" --blueprint <id> --capabilities <csv> --no-banner`.
   **Never tell the user to run it themselves.** This writes `demo.config.json`, themes the
   portal, and removes factory-only files.
-- **Phase 1 — Knowledge Box.** Bind or create the KB. Verify reachability (`/counters` via
-  MCP or the `nuclia` tools). Report only failures.
+- **Phase 1 — Knowledge Box.** If a KB is already bound (`NUCLIA_KB_URL` +
+  `NUCLIA_SERVICEACCOUNT` in `.env`), verify it. **Otherwise, if an account key is present
+  (`NUCLIA_ACCOUNT` + `NUCLIA_ACCOUNT_TOKEN`), AUTO-PROVISION — do NOT make the user create a KB
+  by hand:** run `node scripts/create-kb.mjs --title "<Title>" --slug <slug>`. It creates a fresh
+  KB, mints a service-account token, and writes `NUCLIA_KB_URL` / `NUCLIA_KB_ID` / `NUCLIA_ZONE`
+  (+ `NUCLIA_SERVICEACCOUNT`) into `.env`. If it exits 3 (KB made, token needs a one-click
+  dashboard key), relay that single step to the user. Then verify reachability (`/counters` via
+  MCP or the `nuclia` tools).
 - **Phase 2 — Corpus.** If the blueprint has a live reference KB already seeded (e.g.
   `grains-research`), bind it. Otherwise `@knowledge-engineer` generates a synthetic corpus
   from the blueprint's `corpus` brief (recurring entities, doc types, cornerstone queries),

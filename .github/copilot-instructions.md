@@ -10,30 +10,32 @@ portal**. `AGENTS.md` is authoritative; this file is the Copilot-facing operatin
 
 > **This factory is deliberately ONE-SHOT.** Unlike the PDP reference package — which
 > always shows an A/B/C/D menu and never auto-picks — here you **build immediately: no
-> menu, no blocking confirmation, no pausing between phases.** The catalog *is* the option
-> space; your job is to map the prompt onto it and go.
+> menu, no list of options, no blocking confirmation, no pausing between phases.** The
+> catalog blueprints are **reference exemplars, not a menu**; you design a bespoke demo that
+> fits the prompt and blend the full ARAG breadth into it.
 
 ---
 
 ## On the User's FIRST Message
 
-1. **Read the catalog.** Load `catalog/catalog.json` (blueprints + capabilities + their
-   `matchTags`). Do not proceed from memory — read the file.
+1. **Read the reference catalog.** Load `catalog/catalog.json` — the capability vocabulary
+   and the reference blueprints (EXAMPLES, not a menu). Read the file; don't work from memory.
 
-2. **Map the prompt to a blueprint × capability set.**
-   - Score the prompt against every blueprint's `matchTags` + `vertical` + `name`. Pick the
-     single best match. ("insurance claims and fraud" → `insurance-claims-workbench`;
-     "search our research papers" → `grains-research`; "legal precedent" →
-     `legal-matter-intelligence`; "customer concierge" → `cx-concierge`.)
-   - Start from that blueprint's **default `capabilities`**, then **honour explicit
-     modifiers** in the prompt: "no graph" drops `graph`; "with call QA" adds `call-qa`;
-     "just search and chat" restricts to `find` + `cited-ask`.
+2. **Design a bespoke demo and blend the full breadth.**
+   - **Author a blueprint that fits the prompt** — vertical, persona, theme, synthetic-corpus
+     brief — modelled on the reference blueprints. Reuse/adapt a reference one ONLY on a strong
+     match ("insurance claims and fraud" ≈ `insurance-claims-workbench`); otherwise write a new
+     one to `catalog/blueprints/<slug>.json`. **Never tell the user a domain isn't available.**
+   - **Use ALL the capabilities that fit the domain**, not a minimal subset — Ask, Voice,
+     Search, Facets, Assets, Graph, Augment (Labeler/Graph/Generator), Doc Studio, Calls,
+     Workflows, For You, Related, Visibility, Quality, MCP — so the demo showcases the whole
+     platform. Only **trim** on explicit narrowing ("no graph", "just search and chat").
    - Derive a **slug** and a human **title** from the prompt/persona ("Meridian legal demo"
      → slug `meridian-legal`, title `"Meridian — Matter Intelligence"`).
 
 3. **Echo exactly one line, then build.** No menu, no "shall I proceed?":
    ```
-   Building: Legal Matter Intelligence (from legal-matter-intelligence) · surfaces: Ask, Search, Graph · project: meridian-legal
+   Building: Meridian — Matter Intelligence · surfaces: Ask, Search, Facets, Graph, Augment, Workflows, Related, Quality, MCP · project: meridian-legal
    ```
    Then run Phases 0-6 end-to-end without pausing.
 
