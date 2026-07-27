@@ -48,6 +48,18 @@ The factory now asks for a **NUA key** and creates + manages its **own** ARAG as
 Box, service account, labelsets, retrieval agents — with no setup by hand. Updated `.env.example`
 (Option A), `scripts/create-kb.mjs`, and all orchestration docs.
 
+### 6. The factory became a palette, not a template kit
+The package is now a **palette** the SE paints with — `portal/src/palette/`: grounded data hooks
+(`useAsk`, `useSearch`, `useCatalog`, `useGraph`, `useEntities`, `useHealth`), guaranteed components
+(`<GroundedAnswer>` can't show an uncited claim; `<CitedMetric>` can't show a number without KB
+provenance; `<JourneyThroughContext>`, `<ConfidenceRing>`), and a layout medium (`<Hero>`,
+`<Section>`, `<Panel>`, `<TileGrid>`). A **composition seam** lets a demo paint its own home + pages
+(`portal/src/demo/composition.tsx`) with the config shell as a safe fallback. A **groundedness lint**
+(`scripts/lint-groundedness.mjs`, wired into `prebuild`) fails the build on any hardcoded metric or
+external data fetch — so *the guarantees live in the materials, and fabrication cannot ship*. Known
+violations fixed (Call QA's hardcoded `100%/2%`; the rendered `sells` line). See
+`docs/PALETTE-ARCHITECTURE.md` and `portal/src/palette/README.md`.
+
 ---
 
 ## Verified (live)
@@ -66,5 +78,8 @@ Box, service account, labelsets, retrieval agents — with no setup by hand. Upd
   access; the global API rejects them.)
 
 ## Open / next
-- Port more signature surfaces (REMi gauge, agentic trace panel); add the Journey walk to Search.
+- **Parity:** finish porting the remaining legacy surfaces onto the palette (Ask is done; the rest
+  still call `lib/arag` directly and stay valid). Grow the pigment set (coverage/REMi dials, a graph
+  canvas wrapper).
+- Optional: let a composition override the nav, not just Home + routes.
 - Minor: a stray `portal/.env` shadows the root `.env` the provisioner writes — worth a guard.

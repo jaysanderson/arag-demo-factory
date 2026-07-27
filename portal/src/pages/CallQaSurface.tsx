@@ -9,6 +9,7 @@ import { PageHeader } from '../components/PageHeader';
 import { ClickableCard } from '../components/ClickableCard';
 import { SurfaceNotice } from '../components/SurfaceNotice';
 import { Spinner } from '../components/States';
+import { CitedMetric } from '../palette';
 
 // Call & media analytics. Transcribed calls are just resources with a media_type
 // and a duration — so QA that used to sample 2% now covers 100%. We surface the
@@ -37,8 +38,8 @@ export function CallQaSurface({ surface }: SurfaceProps) {
   return (
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="Calls & Media">
-        Every transcribed call scored and searchable — resolution, compliance and themes across 100% of conversations,
-        not a 2% sample.
+        Every transcribed call in the corpus is scored and searchable — resolution, compliance and themes across
+        whole conversations, not a hand-sampled few.
       </PageHeader>
 
       {items === null ? (
@@ -46,7 +47,6 @@ export function CallQaSurface({ surface }: SurfaceProps) {
       ) : calls.length === 0 ? (
         <SurfaceNotice
           title="Call & Media Analytics"
-          sells="Every call auto-scored for compliance, first-call resolution and cross-sell — QA that used to sample 2% now covers 100%."
           bullets={['Transcribe & index every call', 'Score compliance & resolution', 'Surface themes & objections', 'Ask across all conversations']}
         >
           This corpus has no media resources yet. Ingest transcripts with a <code className="font-mono">media_type</code> and
@@ -54,11 +54,14 @@ export function CallQaSurface({ surface }: SurfaceProps) {
         </SurfaceNotice>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Stat label="Conversations" value={String(calls.length)} />
-            <Stat label="Total minutes" value={String(calls.reduce((s, c) => s + (c.durationMinutes || 0), 0))} />
-            <Stat label="Coverage" value="100%" />
-            <Stat label="Sampled (old way)" value="2%" muted />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <CitedMetric label="Conversations" value={String(calls.length)} source="media resources in the corpus" />
+            <CitedMetric
+              label="Total minutes"
+              value={String(calls.reduce((s, c) => s + (c.durationMinutes || 0), 0))}
+              source="sum of resource durations"
+            />
+            <CitedMetric label="Distinct topics" value={String(new Set(calls.map((c) => c.docType)).size)} source="call/media doc types" />
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {calls.map((c) => (
@@ -87,16 +90,5 @@ export function CallQaSurface({ surface }: SurfaceProps) {
         </>
       )}
     </div>
-  );
-}
-
-function Stat({ label, value, muted }: { label: string; value: string; muted?: boolean }) {
-  return (
-    <Card>
-      <CardBody className="p-4">
-        <p className={`font-display text-2xl font-semibold ${muted ? 'text-ink-400' : 'text-ink-900 dark:text-ink-50'}`}>{value}</p>
-        <p className="mt-0.5 text-xs text-ink-500">{label}</p>
-      </CardBody>
-    </Card>
   );
 }

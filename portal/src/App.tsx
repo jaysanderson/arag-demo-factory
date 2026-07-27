@@ -9,6 +9,7 @@ import { applyTheme, initColorScheme, setColorScheme } from './lib/theme';
 import { SURFACES } from './pages/registry';
 import { OverviewSurface } from './pages/OverviewSurface';
 import { ResourceDetail } from './pages/ResourceDetail';
+import { loadComposition } from './palette/compose';
 import { GroupedNav } from './components/GroupedNav';
 import { GuidedTour } from './components/GuidedTour';
 import { StatusChip } from './components/StatusChip';
@@ -51,6 +52,8 @@ export default function App() {
 
   const surfaces = config.surfaces.filter((s) => SURFACES[s.component]);
   const hasTour = (config.demoScript?.length || 0) > 0;
+  // If the demo painted its own experience, use it; otherwise the config shell.
+  const composition = loadComposition();
 
   return (
     <div className="flex min-h-full flex-col">
@@ -108,8 +111,18 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<OverviewSurface config={config} surfaces={surfaces} onStartTour={() => setTourOpen(true)} />}
+              element={
+                composition?.Home ? (
+                  <composition.Home config={config} surfaces={surfaces} onStartTour={() => setTourOpen(true)} />
+                ) : (
+                  <OverviewSurface config={config} surfaces={surfaces} onStartTour={() => setTourOpen(true)} />
+                )
+              }
             />
+            {/* Bespoke painted pages the demo composed from the palette. */}
+            {composition?.routes?.map((r) => (
+              <Route key={r.path} path={r.path} element={<r.Component config={config} surfaces={surfaces} />} />
+            ))}
             {surfaces.map((s) => {
               const Component = SURFACES[s.component];
               return <Route key={s.route} path={s.route} element={<Component surface={s} config={config} />} />;

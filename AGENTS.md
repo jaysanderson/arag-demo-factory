@@ -117,11 +117,19 @@ delegated.
 - **Phase 3 — Retrieval & agent config.** Set the RAG strategy, prompt, and citation policy
   (see `docs/RETRIEVAL.md`). Grounding is mandatory: neighbouring-paragraph context on,
   citations on. Enable any agent/workflow surfaces the capability set needs.
-- **Phase 4 — Portal.** `@ui-developer` themes and wires the portal from `demo.config.json`
-  — enable the resolved surfaces, apply the theme tokens, load the demo script. **Never
-  rewrite the portal shell; configure it** (see Conventions).
+- **Phase 4 — Portal.** `@ui-developer` themes the portal and gives it life. Two ways to paint,
+  both valid: (a) the **config shell** — set theme tokens + enabled surfaces in `demo.config.json`
+  (the reliable quick sketch); or (b) **paint bespoke** — compose an original home + pages from
+  **the palette** (`portal/src/palette/`, see `docs/PALETTE-ARCHITECTURE.md`) by adding
+  `portal/src/demo/composition.tsx`. Prefer painting when the demo deserves a distinctive identity.
+  Whichever you choose, use the palette's grounded pigments (`useAsk`+`<GroundedAnswer>`,
+  `<CitedMetric>`, `<JourneyThroughContext>`, …) so the guarantees hold — never hand-hack an
+  uncited answer or a hardcoded metric.
 - **Phase 5 — Verify.** `@tester` runs the blueprint's `cornerstoneQueries` (must answer,
   cited) and `refusalProbes` (must refuse, not confabulate). Grounded + cited or it's a bug.
+  **The groundedness lint runs automatically on every `npm run build`** (`scripts/lint-groundedness.mjs`,
+  wired into `prebuild`): it fails the build on any hardcoded metric literal or external data fetch,
+  so fabricated data cannot ship. If it fails, derive the number from the KB or use `<CitedMetric>`.
   **Also click through the whole app** — every nav menu opens and navigates, every suggestion/pill
   runs, every result/asset/citation opens the `/r/:id` watch page, the graph pivots. Kendo's
   dead-onClick gotchas (see `docs/UI-KENDO.md`) mean a card can look perfect and do nothing, so

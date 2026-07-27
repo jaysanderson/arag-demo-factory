@@ -10,12 +10,10 @@ import { Card } from '@progress/kendo-react-layout';
 export function SurfaceNotice({
   title,
   children,
-  sells,
   bullets,
 }: {
   title: string;
   children?: ReactNode;
-  sells?: string;
   bullets?: string[];
 }) {
   return (
@@ -25,7 +23,6 @@ export function SurfaceNotice({
           <Lightbulb size={18} />
           <span className="text-sm font-semibold">{title}</span>
         </div>
-        {sells && <p className="mt-2 max-w-2xl text-sm" style={{ color: 'var(--brand-strong)' }}>{sells}</p>}
       </div>
       <div className="space-y-4 px-6 py-6">
         {children && <div className="text-sm leading-relaxed text-ink-600 dark:text-ink-300">{children}</div>}
