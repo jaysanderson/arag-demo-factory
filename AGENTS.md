@@ -4,13 +4,13 @@
 
 This repo is a **demo factory** for **Progress Agentic RAG (ARAG)** — the Nuclia-based
 platform. A sales engineer opens it, fires **one prompt**, and the factory agentically
-selects a use case from the catalog, generates a synthetic corpus, binds a Knowledge Box,
+designs a fitting use case (modelled on the catalog exemplars), generates a synthetic corpus, binds a Knowledge Box,
 and brings it home as a **fantastic-looking research portal** — themed, grounded, cited,
 and ready to demo.
 
 It is modelled on the PDP Agentic Package's guardrail spine, retargeted from
-MarkLogic/Semaphore to ARAG/Nuclia, and built around a **catalog of shipped use cases**
-(the "shopping list") so every demo starts from something that has actually sold before.
+MarkLogic/Semaphore to ARAG/Nuclia. It ships a **catalog of reference exemplars** drawn from
+shipped demos, so every bespoke build is modelled on something that has actually sold before.
 
 **If the user hasn't generated a demo yet, that is the first thing you do — one shot.**
 
@@ -35,21 +35,29 @@ Use `node create-app.js --output ../my-demo` to copy elsewhere instead.
 
 > **This factory is deliberately ONE-SHOT.** Unlike the PDP reference package — which
 > always shows an A/B/C/D menu and never auto-picks — here the sales engineer fires a
-> single prompt and you **build immediately, no menu, no blocking confirmation.** The
-> catalog *is* the option space; your job is to map their words onto it and go.
+> single prompt and you **build immediately, no menu, no blocking confirmation.** The factory
+> builds *any* domain; the shipped blueprints are **reference exemplars**, not the option
+> space. Your job is to design a demo that fits their words and go.
 
 ### On the user's FIRST message
 
-1. **Read the catalog.** Load `catalog/catalog.json` (blueprints + capabilities + their
-   `matchTags`).
+1. **Read the reference catalog.** Load `catalog/catalog.json` — the shipped blueprints (as
+   **reference exemplars** of well-formed demos) and the capability vocabulary + their
+   `matchTags`.
 
-2. **Map their prompt to a blueprint × capability set.**
-   - Score the prompt against every blueprint's `matchTags` + `vertical` + `name`. Pick the
-     best match. ("insurance claims and fraud" → `insurance-claims-workbench`; "search our
-     research papers" → `grains-research`; "legal precedent" → `legal-matter-intelligence`.)
-   - Start from that blueprint's default `capabilities`, then **honour explicit modifiers in
-     the prompt**: "no graph" drops `graph`; "with call QA" adds `call-qa`; "just search and
-     chat" restricts to `find` + `cited-ask`.
+2. **Design a bespoke blueprint × capability set for the prompt.**
+   - **Author a blueprint that fits the prompt** — the vertical/story, persona, theme, and a
+     corpus brief (docTypes, a shared entity pool, `cornerstoneQueries`, `refusalProbes`, a
+     synthetic-only disclaimer). Model it on the shipped `catalog/blueprints/*.json` — same
+     schema and quality bar. **If a reference blueprint is a genuinely strong match** (e.g.
+     "insurance claims and fraud" ≈ `insurance-claims-workbench`), reuse or adapt it; otherwise
+     write a new one to `catalog/blueprints/<slug>.json` (the `/add-blueprint` flow). **Never
+     tell the user a domain isn't in the catalog** — invent it.
+   - Choose the **capability set** from the fixed vocabulary in `catalog/capabilities/` (that
+     list is closed — it's the real ARAG surfaces). Default to a sensible mix for the vertical,
+     then **honour explicit modifiers**: "no graph" drops `graph`; "with call QA" adds `call-qa`;
+     "just search and chat" restricts to `find` + `cited-ask`; "show data augmentation" adds
+     `augment`.
    - Derive a **slug** and **title** from the prompt/persona (e.g. "Meridian legal demo" →
      slug `meridian-legal`, title `"Meridian — Matter Intelligence"`).
 
@@ -108,15 +116,18 @@ delegated.
   does the opposite on purpose; do not copy that rule here.)
 - Do NOT pause for "shall I proceed?" between phases. One shot means one shot.
 - Do NOT tell the user to run `create-app.js` — run it for them in Phase 0.
-- Do NOT invent a use case when a catalog blueprint fits — always start from the shopping list.
+- DO author a bespoke blueprint that fits the prompt — the catalog blueprints are reference
+  exemplars, not a menu; reuse one only when it is a genuinely strong match. Never limit the
+  user to the catalog.
 - Do NOT ship anything that violates the **Hard Rules** below.
 
 ---
 
-## The Catalog — "The Shopping List"
+## The Catalog — reference exemplars + capability vocabulary
 
-`catalog/` is the source of truth for everything the factory can build. See
-`catalog/README.md` for the full schema. In brief:
+`catalog/` holds **reference blueprints** (exemplars — the factory authors a bespoke one per
+prompt, modelled on these) and the **fixed capability vocabulary**. The factory builds any
+domain. See `catalog/README.md` for the full schema. In brief:
 
 - `catalog/blueprints/*.json` — vertical stories derived from **shipped** ARAG demos
   (legal, insurance, ops, CX, code-intel, doc-processing, sales-enablement, research,
@@ -202,7 +213,7 @@ Generated demo portal (Vite + React + TypeScript, one shell, config-driven)
   → demo.config.json  — blueprint × capabilities → which surfaces render, theme, KB binding, script
 
 Factory tooling (removed from generated projects):
-  catalog/       — the shopping list (blueprints × capabilities)
+  catalog/       — reference blueprints (exemplars) + capability vocabulary
   create-app.js  — composer/scaffolder (zero-dep Node)
   scripts/       — corpus generation, ingest, verify, build-catalog (zero-dep Node)
 ```
@@ -261,7 +272,7 @@ Factory tooling (removed from generated projects):
 | Claude Code entry | `CLAUDE.md` |
 | Copilot orchestrator | `.github/copilot-instructions.md` |
 | Specialist agents | `.github/agents/` and `.claude/agents/` |
-| The shopping list | `catalog/` (`README.md`, `catalog.json`, `blueprints/`, `capabilities/`) |
+| Reference blueprints + capability vocabulary | `catalog/` (`README.md`, `catalog.json`, `blueprints/`, `capabilities/`) |
 | Composer / scaffolder | `create-app.js` |
 | Corpus / ingest / verify | `scripts/` |
 | Portal shell (config-driven) | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |

@@ -39,7 +39,7 @@ Two MCP servers ship with the factory:
 1. Install Claude Code, then run `claude` from the project root.
 2. It reads `CLAUDE.md` on startup (which points to `AGENTS.md`) and connects the `nuclia` +
    `playwright` MCP servers via `.mcp.json`.
-3. Fire one prompt describing the demo — Claude maps it to the catalog and builds.
+3. Fire one prompt describing the demo — Claude designs a fitting demo (referencing the catalog exemplars) and builds.
 
 The `nuclia` MCP tools live in Claude's own runtime. If you spawn subagents, they won't see
 those tools — that's by design; KB work stays in the main loop.

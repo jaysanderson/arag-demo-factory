@@ -1,26 +1,31 @@
 # Project Instructions — ARAG Demo Factory
 
 This is the **ARAG Demo Factory** — a one-shot generator for **Progress Agentic RAG**
-(Nuclia) sales demos. A sales engineer fires one prompt; you select a use case from the
-catalog and build a themed, grounded, cited **research portal** end-to-end.
+(Nuclia) sales demos. A sales engineer fires one prompt; you design a demo that fits it —
+inventing the vertical and corpus, modelled on the catalog exemplars — and build a themed,
+grounded, cited **research portal** end-to-end.
 
 Read `AGENTS.md` — it is authoritative for orchestration, the catalog, the pipeline, and the
 Hard Rules. This file is the quick reference.
 
 ## The one rule that makes this different
 
-**One shot. No menu.** On the user's first message, map their prompt to a
-blueprint × capability set from `catalog/`, echo a single `Building: …` line, and run the
-whole pipeline without pausing. Only ask a question if the prompt has zero domain signal
+**One shot. No menu.** On the user's first message, **design a demo that fits their prompt** —
+invent the vertical, the corpus, and the capability set — echo a single `Building: …` line, and
+run the whole pipeline without pausing. Only ask a question if the prompt has zero domain signal
 (bare "hi") — and then ask one open question, never a menu. This is the deliberate inverse
 of the PDP reference package's "always show A/B/C/D" rule. Do not copy that rule here.
 
 ## Key Rules
 
 - **Read `AGENTS.md`** for the full flow, catalog schema, and Hard Rules — follow them exactly.
-- **The catalog is the option space.** Match prompts against `catalog/catalog.json`
-  (`matchTags`), start from the blueprint's default capabilities, honour explicit
-  add/drop modifiers in the prompt.
+- **The catalog is a REFERENCE library, not a menu.** The factory builds *any* domain. Author a
+  bespoke blueprint for the prompt — modelled on the shipped `catalog/blueprints/*.json` as
+  exemplars (schema, corpus brief, capability mix, cornerstone/refusal queries, the quality bar).
+  Reuse or adapt a reference blueprint only when it's a genuinely strong match; otherwise write a
+  new one. Never constrain the user to the catalog or say a domain "isn't available." Capabilities
+  (`catalog/capabilities/`) ARE the fixed vocabulary of ARAG surfaces — draw the capability set
+  from there and honour add/drop modifiers in the prompt.
 - **Nuclia does the retrieval. The portal does not.** No local vector store, no second index
   over corpus content. All retrieval + generation is ARAG (`/ask`, `/find`, `/catalog`,
   `/graph`). See `docs/ARAG-API.md`.
@@ -67,7 +72,7 @@ Portal (Vite + React + TS, config-driven, one shell)
 | Purpose | Path |
 |---------|------|
 | Orchestration (authoritative) | `AGENTS.md` |
-| The shopping list | `catalog/` (`README.md`, `catalog.json`, `blueprints/`, `capabilities/`) |
+| Reference blueprints + capability vocabulary | `catalog/` (`README.md`, `catalog.json`, `blueprints/`, `capabilities/`) |
 | Composer / scaffolder | `create-app.js` |
 | Portal shell | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
 | Corpus / ingest / verify | `scripts/` |

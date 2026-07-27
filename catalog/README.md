@@ -1,11 +1,13 @@
-# The Use-Case Catalog — "The Shopping List"
+# The Catalog — reference exemplars + capability vocabulary
 
-This directory is the heart of the ARAG Demo Factory. It is a machine-readable catalog of
-**everything the factory knows how to build**, drawn from the real portfolio of Progress
-Agentic RAG (ARAG) demos shipped over time.
+This directory feeds the ARAG Demo Factory. It holds two very different things: a set of
+**reference blueprints** (exemplars drawn from the real Progress Agentic RAG portfolio) and the
+**capability vocabulary** (the fixed set of ARAG surfaces). The factory can build **any** domain —
+the blueprints are patterns and a quality bar, **not** a menu it's limited to.
 
-The orchestrator (see `../AGENTS.md`) reads this catalog on the user's first message, maps
-their one-shot prompt onto it, and assembles a demo from two kinds of building block:
+The orchestrator (see `../AGENTS.md`) reads this catalog on the user's first message, **authors a
+bespoke blueprint that fits the prompt** (modelled on the reference exemplars — reusing one only on
+a strong match), and assembles a demo from two kinds of building block:
 
 ```
         BLUEPRINTS  (what vertical / story)        ×        CAPABILITIES  (which ARAG surfaces)
@@ -19,13 +21,16 @@ their one-shot prompt onto it, and assembles a demo from two kinds of building b
    └────────────────────────────────────┘
 ```
 
-A **blueprint** picks a vertical, a synthetic corpus, a theme, and a *default* set of
-capabilities. The one-shot prompt can add or drop capabilities on top. The orchestrator
-composes the two into a single `demo.config.json`, which `create-app.js` writes into a
-generated portal, and which the portal reads at runtime to decide which surfaces to show.
+A **blueprint** picks a vertical, a synthetic corpus brief, a theme, and a *default* set of
+capabilities. For a given prompt the orchestrator **writes a fitting blueprint** (or adapts a
+close reference one), the one-shot prompt can add or drop capabilities on top, and the two are
+composed into a single `demo.config.json` — which `create-app.js` writes into a generated portal,
+and which the portal reads at runtime to decide which surfaces to show.
 
-Everything here is data, not code. Adding a new demo to the shopping list means adding one
-JSON file to `blueprints/` and (rarely) one to `capabilities/` — no engine changes.
+Everything here is data, not code. The `blueprints/` are **reference exemplars** — the factory is
+not limited to them; it authors a bespoke one per prompt. Capabilities are a **fixed vocabulary**
+of real ARAG surfaces. Add a reference blueprint by dropping a JSON file in `blueprints/` +
+`scripts/build-catalog.mjs`; capabilities change rarely.
 
 ---
 
@@ -35,7 +40,7 @@ JSON file to `blueprints/` and (rarely) one to `capabilities/` — no engine cha
 |------|-----------|
 | `catalog.json` | The index — every blueprint and capability, with tags the orchestrator matches against. Generated from the individual files by `scripts/build-catalog.mjs`; also safe to hand-edit. |
 | `capabilities/<id>.json` | One **capability module** — an ARAG surface (Ask, Find, Graph, Doc pipeline, …), what KB features it needs, and how the portal turns it on. Fixed vocabulary; changes rarely. |
-| `blueprints/<id>.json` | One **vertical blueprint** — a shipped-demo-derived story: persona, corpus spec, theme, default capabilities, demo script, exec pitch. This is where the portfolio lives. |
+| `blueprints/<id>.json` | A **reference blueprint** — a well-formed vertical exemplar (persona, corpus brief, theme, default capabilities, demo script). A pattern to model bespoke demos on, not a fixed menu entry. |
 
 ---
 
@@ -90,8 +95,8 @@ A capability is one composable ARAG surface. Blueprints reference capabilities b
 
 ## Blueprint schema (`blueprints/<id>.json`)
 
-A blueprint is a shipped-demo-derived vertical story. It is the unit a sales engineer picks
-(explicitly or via the one-shot prompt mapping).
+A blueprint is a **reference exemplar** — a shipped-demo-derived vertical story. The factory
+authors a bespoke blueprint per prompt, modelled on these; it is not limited to the set.
 
 ```jsonc
 {
@@ -181,7 +186,7 @@ server-side env (`NUCLIA_SERVICEACCOUNT`), exactly as every shipped demo does it
 
 ---
 
-## Adding a use case to the shopping list
+## Adding a reference blueprint
 
 1. Copy an existing `blueprints/<id>.json`, retarget it to the new vertical, ground it in a
    real (or intended) shipped demo.

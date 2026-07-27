@@ -51,7 +51,7 @@ connect, re-check the four `.env` values — the MCP URL is composed from `NUCLI
 
 ## 4. Pick a Vertical (1 min)
 
-Skim the shopping list so each SE arrives with a prompt in mind:
+Skim the reference catalog so each SE arrives with a prompt in mind:
 
 ```bash
 node scripts/build-catalog.mjs        # (re)build the index if needed

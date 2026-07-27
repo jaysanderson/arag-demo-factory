@@ -1,7 +1,7 @@
 # ARAG Demo Factory
 
 A **one-shot generator** for **Progress Agentic RAG (ARAG / Nuclia)** sales demos. Open it,
-fire **one prompt**, and the factory maps your words onto a catalog of shipped use cases,
+fire **one prompt**, and the factory designs a demo that fits your words (modelled on a catalog of reference exemplars),
 generates a synthetic corpus, binds a Knowledge Box, and brings it home as a **themed,
 grounded, cited research portal** — ready to demo.
 
@@ -23,28 +23,34 @@ cp .env.example .env                      # then paste your KB service-account t
 #    "Build me an insurance claims and fraud workbench, no graph, add call QA"
 ```
 
-That's it — no menu, no wizard. The orchestrator maps the prompt to a blueprint ×
-capabilities and runs the whole pipeline. See `GETTING_STARTED.md` for the bouncing-ball
+That's it — no menu, no wizard. The orchestrator designs a fitting blueprint × capabilities
+(referencing the catalog exemplars) and runs the whole pipeline. See `GETTING_STARTED.md` for the bouncing-ball
 walkthrough and `AGENTIC-TOOLS-GUIDE.md` for per-tool setup.
 
-## The Shopping List (`catalog/`)
+## The Catalog (`catalog/`)
 
-Everything the factory can build is data in `catalog/`, drawn from the real portfolio of
-shipped ARAG demos (see `DEMOS.md`).
+The factory builds **any** domain. The `catalog/` holds two different things:
+
+- **`blueprints/` — reference exemplars, NOT a menu.** ~16 well-formed vertical demos (drawn
+  from the real ARAG portfolio, see `DEMOS.md`) that show the schema, corpus brief and quality
+  bar. For a prompt, the factory **authors a bespoke blueprint that fits** — modelled on these —
+  and only reuses/adapts one when it's a genuinely strong match. You are never limited to the list.
+- **`capabilities/` — the fixed vocabulary.** The real ARAG surfaces a demo can turn on (below);
+  this set is closed.
 
 ```
-        BLUEPRINTS (vertical / story)            ×        CAPABILITIES (ARAG surfaces)
-   legal-matter-intelligence                          cited-ask   find     graph
-   insurance-claims-workbench                          facets      call-qa  workflows
-   enterprise-ops-command  cx-concierge      ×         remi        mcp      personalize
-   doc-intelligence  grains-research                   visibility  personas
-   sales-enablement  ai-visibility …
+        BLUEPRINTS — reference exemplars           ×        CAPABILITIES (ARAG surfaces, fixed)
+   legal-matter-intelligence                          cited-ask   find      graph    facets
+   insurance-claims-workbench                          call-qa     workflows remi     mcp
+   enterprise-ops-command  cx-concierge      ×         personalize visibility personas voice
+   doc-intelligence  grains-research                   assets      related   augment
+   sales-enablement  ai-visibility …                   (Labeler / Graph / Generator agents)
 ```
 
-A demo = **one blueprint × a chosen subset of capabilities**, composed into
-`demo.config.json`. The portal renders itself from that config; it is never rewritten per
-demo. Add a use case by dropping one JSON file into `catalog/blueprints/` and running
-`node scripts/build-catalog.mjs`.
+A demo = **one blueprint (bespoke or adapted) × a chosen subset of capabilities**, composed into
+`demo.config.json`. The portal renders itself from that config; it is never rewritten per demo.
+The reference blueprints are just examples — add more with `catalog/blueprints/*.json` +
+`node scripts/build-catalog.mjs`, or let the factory invent one per prompt.
 
 ## The One-Shot Flow
 
@@ -107,7 +113,7 @@ Every demo is customer-facing, so every build honours these — enforced by `cre
 | Orchestration (authoritative) | `AGENTS.md` |
 | Copilot orchestrator | `.github/copilot-instructions.md` |
 | Specialist agents | `.github/agents/` |
-| The shopping list | `catalog/` |
+| Reference blueprints + capability vocabulary | `catalog/` |
 | Composer / scaffolder | `create-app.js` |
 | Corpus / ingest / verify / build-catalog | `scripts/` |
 | Live portfolio snapshot | `DEMOS.md` |

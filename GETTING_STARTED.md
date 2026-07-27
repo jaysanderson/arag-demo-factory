@@ -3,7 +3,7 @@
 ## What Is This?
 
 A **one-shot demo generator** for **Progress Agentic RAG (ARAG / Nuclia)**. You describe the
-demo you want in one sentence; the factory maps it onto a catalog of shipped use cases,
+demo you want in one sentence; the factory designs a fitting demo (modelled on a catalog of reference exemplars),
 generates a synthetic corpus, binds a Knowledge Box, themes a portal, and verifies it — then
 hands you a live, grounded, cited research portal. No menu, no wizard, no clicking through
 options.
@@ -99,10 +99,11 @@ to **deploy to Fly** and it ships to `<slug>.fly.dev`.
 | KB not reachable | Re-check `.env` — token, KB URL, zone, id — then ask it to re-verify the KB. |
 | An answer shows no citation | That's a bug by our rules — ask the orchestrator to re-run retrieval config (Phase 3). |
 
-## The Shopping List
+## The Reference Catalog
 
-Everything the factory can build lives in `catalog/` (see `catalog/README.md`). To add a new
-use case, drop one JSON file into `catalog/blueprints/` and run
-`node scripts/build-catalog.mjs` (or use the `/add-blueprint` prompt).
+The factory builds **any** domain — `catalog/blueprints/` are **reference exemplars** it models
+a bespoke demo on, not a menu it is limited to (see `catalog/README.md`). To add another
+exemplar, drop one JSON file into `catalog/blueprints/` and run `node scripts/build-catalog.mjs`
+(or use the `/add-blueprint` prompt).
 
 Good luck — one prompt is all it takes.

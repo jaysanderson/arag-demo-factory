@@ -20,16 +20,16 @@ grounded enough to survive a sceptical buyer.
 ## The Big Idea
 
 This is a **one-shot factory**. Unlike the PDP reference package (which always shows an
-A/B/C/D build menu), here the SE describes the demo in a sentence and the factory maps it
-onto a **catalog of shipped use cases** and builds it end-to-end — no menu, no pausing. The
-catalog *is* the option space.
+A/B/C/D build menu), here the SE describes the demo in a sentence and the factory **designs a
+fitting demo** (modelled on a catalog of reference exemplars) and builds it end-to-end — no menu,
+no pausing. The factory builds any domain; the catalog is reference, not a limit.
 
 ## Agenda (~60 min)
 
 | Time | Segment | What happens |
 |------|---------|--------------|
 | 0:00 | Setup check | Run `./setup.sh`; confirm Node 20+, Git, and Nuclia creds in `.env`. See `WORKSHOP-SETUP.md`. |
-| 0:10 | The shopping list | Tour `catalog/` — blueprints (verticals) × capabilities (ARAG surfaces). Ground it in `DEMOS.md`. |
+| 0:10 | The reference catalog | Tour `catalog/` — reference blueprints (verticals) × capabilities (ARAG surfaces). Ground it in `DEMOS.md`. |
 | 0:20 | Fire one prompt | Each SE fires a prompt for their vertical and watches Phases 0-6 run (scaffold → KB → corpus → retrieval → portal → verify). |
 | 0:35 | Prove it's grounded | Run the cornerstone queries (answer + cite) and a refusal probe (must refuse). This is the trust story. |
 | 0:45 | Reskin & extend | Change the brand/capabilities; add a blueprint with `/add-blueprint`; rebuild the catalog. |
