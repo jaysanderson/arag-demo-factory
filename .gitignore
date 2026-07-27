@@ -3,8 +3,9 @@
 .env.*
 !.env.example
 
-# MCP config carries the resolved KB token via env substitution — keep it local
-.mcp.json
+# .mcp.json ships (env-substitution `${NUCLIA_*}` only, no literal token — read
+# at runtime, same as .cursor/.vscode configs). If a tool ever resolves a token
+# into it locally, do NOT commit that change.
 
 # Dependencies
 node_modules/
