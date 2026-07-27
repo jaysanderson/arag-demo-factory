@@ -13,6 +13,7 @@ import { VisibilitySurface } from './VisibilitySurface';
 import { VoiceSurface } from './VoiceSurface';
 import { AssetsSurface } from './AssetsSurface';
 import { RelatedSurface } from './RelatedSurface';
+import { AugmentSurface } from './AugmentSurface';
 
 // Maps the `component` field in demo.config.json (resolved from each capability's
 // portal block) to the React component that renders it. Adding a surface is a
@@ -31,4 +32,5 @@ export const SURFACES: Record<string, ComponentType<SurfaceProps>> = {
   VoiceSurface,
   AssetsSurface,
   RelatedSurface,
+  AugmentSurface,
 };

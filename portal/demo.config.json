@@ -1,6 +1,6 @@
 {
   "blueprint": "helios-mission-control",
-  "title": "HELIOS — Mission Intelligence",
+  "title": "HELIOS — Deep-Space Mission Intelligence",
   "persona": "HELIOS mission-intelligence, flight operations for the crewed vessel Aurelian (fictional deep-space program)",
   "tagline": "Ask the mission record anything.",
   "elevatorPitch": "Procedures, flight rules, anomaly reports and flight-director logs for the vessel Aurelian — searchable in plain language, with every answer cited to its source. Nothing invented.",
@@ -82,6 +82,20 @@
       "sells": "The graph surfaces connections no keyword search would — related matters, people, assets — the 'we didn't know we knew that' moment.",
       "capabilities": [
         "graph"
+      ],
+      "enabled": true
+    },
+    {
+      "id": "augment",
+      "route": "/augment",
+      "label": "Augment",
+      "component": "AugmentSurface",
+      "icon": "wand",
+      "group": "Analyze",
+      "tagline": "Watch the Labeler, Graph and Generator agents enrich content live.",
+      "sells": "The other half of the platform: content doesn't just get retrieved, it gets enriched. Pick a document and watch Nuclia's augmentation agents label it into your taxonomy, extract its entity graph, and generate grounded Q&A — the 'the knowledge base builds itself' moment.",
+      "capabilities": [
+        "augment"
       ],
       "enabled": true
     },

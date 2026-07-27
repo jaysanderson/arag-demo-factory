@@ -98,15 +98,18 @@ $NEED_NODE && BLOCKERS=$((BLOCKERS + 1))
 $NEED_GIT  && BLOCKERS=$((BLOCKERS + 1))
 
 # ── npm registry reachability (WARN only, never a blocker) ───
+# The project resolves npm through the Progress HAR registry (see the .npmrc
+# files; no auth needed for read access). Probe that, not npmjs.org.
 echo ""
-info "Probing npm registry reachability..."
-if curl -sSf -m 8 -o /dev/null https://registry.npmjs.org/ 2>/dev/null; then
-  ok "npm registry reachable — the portal build (npm install in portal/) will work"
+info "Probing npm registry (Progress HAR) reachability..."
+HAR_REGISTRY="https://pkg.harness.io/pkg/ct8onj8YTdaXtKaFsYCRLg/org-marklogic-npm/npm/"
+if curl -sSf -m 8 -o /dev/null "$HAR_REGISTRY" 2>/dev/null; then
+  ok "HAR registry reachable — the portal build (npm ci in portal/) will work"
 else
-  warn "npm registry is UNREACHABLE from this network."
-  warn "  → The portal build (\`cd portal && npm install\`) will fail until network access"
-  warn "    is restored. Everything else — mapping prompts, generating the synthetic corpus,"
-  warn "    binding and reasoning about the Knowledge Box — still works."
+  warn "The Progress HAR npm registry is UNREACHABLE from this network."
+  warn "  → The portal build (\`cd portal && npm ci\`) will fail until network access"
+  warn "    to pkg.harness.io is restored. Everything else — mapping prompts, generating the"
+  warn "    synthetic corpus, binding and reasoning about the Knowledge Box — still works."
   warn "  This is a warning, not a failure. Continuing."
 fi
 

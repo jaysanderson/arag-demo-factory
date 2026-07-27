@@ -141,6 +141,23 @@ listing returns empty entity maps, so each group is fetched individually.
 Full resource by id, used by the document drawer and citation "open source". `show=values`
 is what returns the field **bodies** — without it every document reads as empty.
 
+### Data-augmentation agents (`/api/augment/*` → `{kb}/predict/*`)
+
+The enrichment side of ARAG — the same models Nuclia's **augmentation agents** run at ingest,
+exposed live (KB-scoped `predict`, server-side token only). Powers the `augment` surface.
+
+- `POST /api/augment/label` → `POST {kb}/predict/chat` — **Labeler**: given the content and the
+  KB's own labelset values, returns which labels apply (classification into the real taxonomy).
+- `POST /api/augment/graph` → `GET {kb}/predict/tokens` (typed **NER** entities) + `predict/chat`
+  for subject–relation–object triples — **Graph** agent.
+- `POST /api/augment/generate` → `POST {kb}/predict/chat` — **Generator**: synthetic Q&A pairs
+  grounded strictly in the content.
+- `POST /api/augment/source {id}` → the resource's extracted text (the "extract" step).
+
+`predict/chat` returns plain text with a trailing status byte — strip it (`/\s*\d\s*$/`).
+`predict/tokens?text=` returns `{ tokens: [{ text, ner, start, end }] }`. Both work with the KB
+service-account token; no account NUA key needed.
+
 ### `GET /api/health` → `GET {kb}/counters`
 
 The cheapest reachability probe; powers the KB-connected status chip. Returns

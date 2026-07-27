@@ -12,18 +12,24 @@ the component system.
 > demo uses it. Its look is reproduced with KendoReact directly — which is what FastTrack is
 > built on under the hood.
 
-## Install (via HAR)
+## Install
 
-KendoReact resolves through the Progress **HAR** registry (`.npmrc`). On HAR's 14-day cooldown,
-pin the resolve date:
+npm resolves through the **Progress Harness Artifact Registry (HAR)** — the same corporate
+supply-chain-scanned registry the reference package uses. The `.npmrc` files ship with the project
+(root + `portal/`) and point at HAR; **no authentication is needed for read access**, so there's
+nothing to configure:
 
 ```bash
-npm install --before "$(date -v-15d +%Y-%m-%d)" \
-  @progress/kendo-react-layout @progress/kendo-react-buttons @progress/kendo-react-inputs \
-  @progress/kendo-react-grid @progress/kendo-react-charts @progress/kendo-react-indicators \
-  @progress/kendo-react-notification @progress/kendo-drawing @progress/kendo-svg-icons \
-  @progress/kendo-theme-default @progress/kendo-licensing hammerjs
+cd portal && npm ci     # deterministic, reads the lockfile; use `npm install` only to add/upgrade
 ```
+
+- **Never remove the `.npmrc`** — it's a supply-chain security control, not a workaround.
+- **14-day cooldown**: HAR blocks package versions published in the last 14 days. `npm ci` against
+  the pinned lockfile never trips it. Only when *adding/upgrading* a dependency might you hit an
+  `E403` — then pin an older version or `npm install --before "$(date -v-15d +%Y-%m-%d)" …`.
+- If packages start resolving from `registry.npmjs.org`, delete `node_modules/` +
+  `package-lock.json`, `npm cache clean --force`, then reinstall so the lockfile regenerates against
+  HAR.
 
 The theme CSS is imported once, at the app entry:
 

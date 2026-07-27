@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-25T23:15:30.779Z",
+  "generatedAt": "2026-07-26T08:08:53.473Z",
   "counts": {
     "blueprints": 16,
-    "capabilities": 15
+    "capabilities": 16
   },
   "blueprints": [
     {
@@ -221,6 +221,7 @@
       ],
       "capabilities": [
         "doc-pipeline",
+        "augment",
         "find",
         "cited-ask"
       ],
@@ -293,7 +294,7 @@
     {
       "id": "helios-mission-control",
       "name": "HELIOS — Deep-Space Mission Intelligence",
-      "vertical": "Aerospace / High-Stakes Operations / Showcase",
+      "vertical": "Aerospace · Flight Operations",
       "provenanceDemo": "capstone-atlas-operations",
       "matchTags": [
         "space",
@@ -322,13 +323,14 @@
         "remi",
         "call-qa",
         "doc-pipeline",
+        "augment",
         "assets",
         "personas",
         "personalize",
         "visibility",
         "mcp"
       ],
-      "tagline": "Every mission decision, grounded in the ship's own documentation — because 80 million km from Earth, a hallucinated answer is fatal."
+      "tagline": "Ask the mission record anything."
     },
     {
       "id": "insurance-claims-workbench",
@@ -529,6 +531,12 @@
       "name": "Asset Library (Agentic DAM)",
       "surface": "assets",
       "tagline": "A governed asset library with semantic discovery and Ask-the-Archive."
+    },
+    {
+      "id": "augment",
+      "name": "Data Augmentation Agents",
+      "surface": "augment",
+      "tagline": "Watch the Labeler, Graph and Generator agents enrich content live."
     },
     {
       "id": "call-qa",

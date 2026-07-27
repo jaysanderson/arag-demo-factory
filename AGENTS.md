@@ -123,9 +123,13 @@ delegated.
   personalization, AI-visibility…). Each declares a persona, a synthetic-corpus brief, a
   theme, default capabilities, a demo script, and an exec pitch.
 - `catalog/capabilities/*.json` — composable ARAG surfaces (`cited-ask`, `find`, `facets`,
-  `graph`, `doc-pipeline`, `call-qa`, `workflows`, `remi`, `mcp`, `personalize`,
-  `visibility`, `personas`). Each maps to a portal surface and declares the KB features it
-  needs.
+  `graph`, `doc-pipeline`, `augment`, `call-qa`, `workflows`, `remi`, `mcp`, `personalize`,
+  `visibility`, `personas`, `voice`, `assets`, `related`). Each maps to a portal surface and
+  declares the KB features it needs. **`augment`** is the ingestion-time enrichment story —
+  the Labeler / Graph / Generator **data-augmentation agents** running live via `/predict`
+  (classify into the KB taxonomy, extract the entity graph, generate grounded Q&A). Add it when
+  a prompt asks about labeling/classification, entity/graph extraction, Q&A or synthetic-data
+  generation, or "how the knowledge base builds/enriches itself."
 - `catalog/catalog.json` — the index you match prompts against.
 
 A demo = **one blueprint × a chosen subset of capabilities**, composed into
@@ -229,7 +233,10 @@ Factory tooling (removed from generated projects):
   layout/spacing glue, not the component system. **The KendoReact trial banner (shown without a
   licence key) is acceptable — a key is applied at build time (`KENDO_UI_LICENSE` /
   `telerik-license.txt`, see `docs/UI-KENDO.md`); never avoid or replace a Kendo control just to
-  suppress the banner.** Installs resolve through HAR (`.npmrc`).
+  suppress the banner.** npm resolves through the **Progress HAR registry** — the `.npmrc` files
+  ship with the project and need **no auth for read access**, so `npm ci` against the pinned
+  lockfile just works (deterministic + cooldown-safe; HAR blocks packages published <14 days ago).
+  Never remove the `.npmrc` — it's a supply-chain security control, not a workaround.
 - **KendoReact has silent-failure gotchas — read `docs/UI-KENDO.md` → "Known KendoReact
   pitfalls" before building or debugging UI.** The big ones: `<Card onClick>` and `<Chip onClick>`
   never fire (use `components/ClickableCard` and `components/Pill` for anything clickable);

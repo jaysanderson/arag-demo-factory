@@ -18,6 +18,7 @@ import {
   Mic,
   Image,
   Shuffle,
+  Wand2,
   Circle,
   type LucideIcon,
 } from 'lucide-react';
@@ -38,6 +39,7 @@ const MAP: Record<string, LucideIcon> = {
   mic: Mic,
   image: Image,
   shuffle: Shuffle,
+  wand: Wand2,
 };
 
 export function surfaceIcon(name?: string | null): LucideIcon {

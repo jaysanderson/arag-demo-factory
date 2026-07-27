@@ -23,9 +23,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 // ── env (no dotenv dependency) ───────────────────────────────────────────────
+// Read portal/.env first, then the factory-root .env (the location the docs tell
+// you to fill in). Real environment variables always win over both.
 try {
-  const envPath = join(ROOT, '.env');
-  if (existsSync(envPath)) {
+  for (const envPath of [join(ROOT, '.env'), join(ROOT, '..', '.env')]) {
+    if (!existsSync(envPath)) continue;
     for (const line of readFileSync(envPath, 'utf8').split('\n')) {
       const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
       if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
@@ -351,6 +353,121 @@ app.get('/api/resource/:id', async (req, res) => {
       `/resource/${encodeURIComponent(req.params.id)}?show=basic&show=values&show=origin&show=extra`
     );
     res.json(data);
+  } catch (err) {
+    res.status(err.status || 502).json({ error: err.message });
+  }
+});
+
+// ── Data-augmentation agents (live, via Nuclia predict) ───────────────────────
+// The enrichment side of ARAG: the same models Nuclia's Labeler / Graph /
+// Generator augmentation agents run at ingest, exposed here so a demo can show
+// content being enriched live. All KB-scoped, server-side token only.
+
+// predict/chat streams plain text and appends a status byte; return clean text.
+async function predictChat(question, context) {
+  const res = await kbFetch('/predict/chat', {
+    method: 'POST',
+    body: { question, query_context: (context || []).slice(0, 8), user_id: 'augment-demo' },
+  });
+  const raw = await res.text();
+  return raw.replace(/\s*\d\s*$/, '').trim();
+}
+
+const firstTextOf = (resource) => {
+  const fields = resource?.data?.texts || {};
+  let best = '';
+  for (const f of Object.values(fields)) {
+    const body = f?.value?.body || '';
+    if (body.length > best.length) best = body;
+  }
+  return best || resource?.summary || '';
+};
+
+/** POST /api/augment/source {id} → the resource's extracted text (the "extract" step). */
+app.post('/api/augment/source', async (req, res) => {
+  try {
+    const { id } = req.body || {};
+    if (!id) return res.status(400).json({ error: 'id required' });
+    const data = await jsonOf(`/resource/${encodeURIComponent(id)}?show=basic&show=values`);
+    res.json({ title: data.title || id, text: firstTextOf(data).slice(0, 6000) });
+  } catch (err) {
+    res.status(err.status || 502).json({ error: err.message });
+  }
+});
+
+/** POST /api/augment/label {text, candidates[]} → Labeler agent: applicable labels. */
+app.post('/api/augment/label', async (req, res) => {
+  try {
+    const { text, candidates } = req.body || {};
+    if (!text) return res.status(400).json({ error: 'text required' });
+    const list = (candidates || []).map((c) => `${c.labelset}/${c.label}`);
+    const q = list.length
+      ? `You are a content classifier. From ONLY this candidate label list, return the labels that clearly apply to the content, one per line, exactly as written (format labelset/label). Do not invent labels.\nCandidates:\n${list.join('\n')}`
+      : 'Suggest up to 6 concise topical labels for this content, one per line.';
+    const out = await predictChat(q, [text]);
+    const wanted = new Set(list.map((s) => s.toLowerCase()));
+    const labels = out
+      .split('\n').map((l) => l.replace(/^[-*\d.\s]+/, '').trim()).filter(Boolean)
+      .map((l) => {
+        const [ls, ...rest] = l.split('/');
+        return rest.length ? { labelset: ls.trim(), label: rest.join('/').trim() } : { labelset: 'topic', label: l };
+      })
+      .filter((x) => !wanted.size || wanted.has(`${x.labelset}/${x.label}`.toLowerCase()))
+      .slice(0, 8);
+    res.json({ labels });
+  } catch (err) {
+    res.status(err.status || 502).json({ error: err.message });
+  }
+});
+
+/** POST /api/augment/graph {text} → Graph agent: entities (NER) + relation triples. */
+app.post('/api/augment/graph', async (req, res) => {
+  try {
+    const { text } = req.body || {};
+    if (!text) return res.status(400).json({ error: 'text required' });
+    const snippet = text.slice(0, 1500);
+    const [tok, triples] = await Promise.all([
+      jsonOf(`/predict/tokens?text=${encodeURIComponent(snippet)}`).catch(() => ({ tokens: [] })),
+      predictChat(
+        'Extract up to 6 factual subject | relation | object triples from the content. One per line, pipe-separated. Use only entities present in the text.',
+        [snippet]
+      ).catch(() => ''),
+    ]);
+    const seen = new Set();
+    const entities = (tok.tokens || [])
+      .map((t) => ({ text: t.text, type: t.ner }))
+      .filter((e) => { const k = e.text.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
+      .slice(0, 24);
+    const relations = triples
+      .split('\n').map((l) => l.replace(/^[-*\d.)\s]+/, '').split('|').map((s) => s.trim()))
+      .filter((p) => p.length === 3 && p[0] && p[2])
+      .map(([s, r, o]) => ({ s, r, o })).slice(0, 6);
+    res.json({ entities, relations });
+  } catch (err) {
+    res.status(err.status || 502).json({ error: err.message });
+  }
+});
+
+/** POST /api/augment/generate {text} → Generator agent: synthetic Q&A pairs. */
+app.post('/api/augment/generate', async (req, res) => {
+  try {
+    const { text } = req.body || {};
+    if (!text) return res.status(400).json({ error: 'text required' });
+    const out = await predictChat(
+      'Generate 3 question-and-answer pairs a reader could ask about this content, answerable from it alone. Format strictly as lines "Q: …" then "A: …".',
+      [text]
+    );
+    const qa = [];
+    let cur = null;
+    for (const line of out.split('\n')) {
+      const q = line.match(/^\s*Q[:.)-]\s*(.+)/i);
+      const a = line.match(/^\s*A[:.)-]\s*(.+)/i);
+      if (q) { if (cur) qa.push(cur); cur = { q: q[1].trim(), a: '' }; }
+      else if (a && cur) cur.a = a[1].trim();
+      else if (cur && cur.a) cur.a += ' ' + line.trim();
+    }
+    if (cur) qa.push(cur);
+    res.json({ qa: qa.filter((p) => p.q).slice(0, 4) });
   } catch (err) {
     res.status(err.status || 502).json({ error: err.message });
   }

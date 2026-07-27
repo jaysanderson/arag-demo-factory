@@ -1,0 +1,30 @@
+{
+  "id": "augment",
+  "name": "Data Augmentation Agents",
+  "surface": "augment",
+  "tagline": "Watch the Labeler, Graph and Generator agents enrich content live.",
+  "aragEndpoints": [
+    "/predict/chat",
+    "/predict/tokens",
+    "/resource"
+  ],
+  "requires": [],
+  "kbRequirements": {
+    "resources": true,
+    "vectors": true,
+    "labelsets": true,
+    "graph": true
+  },
+  "portal": {
+    "route": "/augment",
+    "navLabel": "Augment",
+    "component": "AugmentSurface",
+    "icon": "wand"
+  },
+  "sells": "The other half of the platform: content doesn't just get retrieved, it gets enriched. Pick a document and watch Nuclia's augmentation agents label it into your taxonomy, extract its entity graph, and generate grounded Q&A — the 'the knowledge base builds itself' moment.",
+  "provenance": [
+    "arag-doc-processing",
+    "capstone-atlas-operations"
+  ],
+  "group": "Analyze"
+}

@@ -76,6 +76,7 @@ A capability is one composable ARAG surface. Blueprints reference capabilities b
 | `find` | Semantic search + facets | `/find`, `/catalog` | every demo |
 | `graph` | Knowledge graph explorer | `/graph`, `/graph/nodes` | capstone-legal, capstone-atlas, aurora |
 | `doc-pipeline` | Document intelligence studio | ingest, extract, classify | arag-doc-processing |
+| `augment` | Data-augmentation agents (Labeler / Graph / Generator), live | `/predict/chat`, `/predict/tokens` | arag-doc-processing, capstone-atlas |
 | `call-qa` | Call / media analytics | media proxy, `/ask` scoped | call-analysis-arag |
 | `workflows` | Agentic multi-step workflows | retrieval-agent session | capstone-atlas, aurora |
 | `remi` | Groundedness dashboard (REMi) | REMi scores | ironbark, codeintel |

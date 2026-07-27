@@ -42,16 +42,18 @@ if ($git) { Ok ("Git " + ((& git --version) -replace 'git version ', '')) }
 else { Miss "Git  (install: winget install Git.Git)"; $blockers++ }
 
 # ── npm registry reachability (WARN only) ────────────────────
+# The project resolves npm through the Progress HAR registry (see .npmrc; no auth
+# needed for read access). Probe that, not npmjs.org.
 Write-Host ""
-Info "Probing npm registry reachability..."
+Info "Probing npm registry (Progress HAR) reachability..."
 try {
-  $resp = Invoke-WebRequest -Uri "https://registry.npmjs.org/" -Method Head -TimeoutSec 8 -UseBasicParsing
-  Ok "npm registry reachable - the portal build (npm install in portal/) will work"
+  $resp = Invoke-WebRequest -Uri "https://pkg.harness.io/pkg/ct8onj8YTdaXtKaFsYCRLg/org-marklogic-npm/npm/" -Method Head -TimeoutSec 8 -UseBasicParsing
+  Ok "HAR registry reachable - the portal build (npm ci in portal/) will work"
 } catch {
-  Warn "npm registry is UNREACHABLE from this network."
-  Warn "  -> The portal build (cd portal; npm install) will fail until network access is"
-  Warn "     restored. Everything else - mapping prompts, generating the synthetic corpus,"
-  Warn "     binding and reasoning about the Knowledge Box - still works."
+  Warn "The Progress HAR npm registry is UNREACHABLE from this network."
+  Warn "  -> The portal build (cd portal; npm ci) will fail until network access to"
+  Warn "     pkg.harness.io is restored. Everything else - mapping prompts, generating the"
+  Warn "     synthetic corpus, binding and reasoning about the Knowledge Box - still works."
   Warn "  This is a warning, not a failure. Continuing."
 }
 

@@ -30,7 +30,7 @@ const CATALOG = path.join(ROOT, 'catalog');
 
 // Nav order for portal surfaces, regardless of which capabilities enable them.
 const SURFACE_ORDER = [
-  'ask', 'voice', 'search', 'assets', 'graph', 'docproc', 'callqa',
+  'ask', 'voice', 'search', 'assets', 'graph', 'augment', 'docproc', 'callqa',
   'workflows', 'personalize', 'related', 'visibility', 'remi', 'mcp',
 ];
 
@@ -192,7 +192,8 @@ function composeConfig(blueprint, capabilityIds, title) {
 function copyTree(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    // Never carry VCS, deps, build output, or the secret-bearing .env into a copy.
+    if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'dist' || entry.name === '.env') continue;
     const s = path.join(src, entry.name);
     const d = path.join(dest, entry.name);
     if (entry.isDirectory()) copyTree(s, d);
