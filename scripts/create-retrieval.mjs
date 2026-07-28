@@ -65,8 +65,8 @@ async function main() {
     process.exit(1);
   }
   // search_configurations live on the doc-processing host (dp), and creation is an
-  // OWNER-role operation — see docs/ARAG-REFERENCE.md. If the provisioned token is
-  // SCONTRIBUTOR this returns 403; mint an SOWNER token (or run it as the account owner).
+  // OWNER-role operation — see reference/agentic-rag-guide/ (Ch 13, Appendix A). If the
+  // provisioned token is SCONTRIBUTOR this returns 403; mint an SOWNER token instead.
   const DP = KB.replace('.rag.progress.cloud', '.dp.progress.cloud');
   const headers = { 'X-NUCLIA-SERVICEACCOUNT': `Bearer ${TOKEN}`, 'Content-Type': 'application/json' };
   const primary = arg('--primary', 'grounded-hybrid');

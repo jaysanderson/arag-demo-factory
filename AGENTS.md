@@ -117,7 +117,8 @@ delegated.
 - **Phase 3 — Retrieval & agent config.** Set the RAG strategy, prompt, and citation policy
   (see `docs/RETRIEVAL.md`). Grounding is mandatory: neighbouring-paragraph context on,
   citations on. **Every demo also provisions these on its KB — do NOT skip them** (endpoints +
-  auth in `docs/ARAG-REFERENCE.md`, distilled from the practitioner's guide):
+  auth in the bundled product guide — `reference/agentic-rag-guide/`, esp. Ch 8 (ingestion
+  agents), Ch 13 (RAG config), and Appendices A/B):
   - **1+ saved search configurations** (`search_configurations/{name}` on the `dp` host) so the
     demo ships tuned retrieval, and the portal defaults to one via `NUCLIA_SEARCH_CONFIG`
     (`scripts/create-retrieval.mjs`, or via the `nuclia` MCP).
@@ -317,8 +318,7 @@ Factory tooling (removed from generated projects):
 | Composer / scaffolder | `create-app.js` |
 | Corpus / ingest / verify | `scripts/` |
 | Portal shell (config-driven) | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
-| **ARAG knowledge base (distilled guide — read before reverse-engineering)** | **`docs/` — start at `docs/README.md`**: concepts, auth/management, ingestion, retrieval, catalog/graph, agentic, SDKs, observability, full API + schema reference |
-| Provisioning cheat-sheet | `docs/ARAG-REFERENCE.md` |
+| **ARAG product guide (the plain 910-page document — read it to build ANY part of the platform)** | **`reference/agentic-rag-guide/`** — the full practitioner's guide (19 chapters + API appendices A–G + PDF). Open the relevant chapter before reverse-engineering anything. Partners may also ingest these files into their own KB. Index: its `README.md` / `TABLE_OF_CONTENTS.md`. |
 | Retrieval & grounding policy | `docs/RETRIEVAL.md` |
 | Live portfolio snapshot | `DEMOS.md` |
 | MCP config | `.mcp.json`, `opencode.json`, `.vscode/mcp.json`, `.cursor/mcp.json` |

@@ -101,8 +101,7 @@ Portal (Vite + React + TS, config-driven, one shell)
 | Composer / scaffolder | `create-app.js` |
 | Portal shell | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
 | Corpus / ingest / verify | `scripts/` |
-| **ARAG knowledge base (distilled 910-page guide)** | **`docs/` — index at `docs/README.md`** |
-| Provisioning cheat-sheet | `docs/ARAG-REFERENCE.md` |
+| **ARAG product guide (plain 910-page document — read to build any capability)** | **`reference/agentic-rag-guide/`** (19 chapters + API appendices + PDF) |
 | Retrieval & grounding policy | `docs/RETRIEVAL.md` |
 | Live portfolio snapshot | `DEMOS.md` |
 
