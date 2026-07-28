@@ -458,3 +458,20 @@ html.dark .k-button.k-selected {
   border-radius: 0.75rem;
   overflow: hidden;
 }
+/* Pill (interactive Kendo Button) must WRAP its label and never exceed its
+   container — otherwise a long probe/suggestion/filter value forces horizontal
+   page overflow on a phone. Kendo's `.k-button-text` is `white-space:nowrap`;
+   these unlayered rules beat it on specificity (Kendo's all.css is unlayered,
+   so Tailwind utilities can't). Applied via the `.pill` class in Pill.tsx. */
+.pill.k-button {
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+}
+.pill .k-button-text {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  text-align: left;
+}

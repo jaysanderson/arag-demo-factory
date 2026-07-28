@@ -30,6 +30,12 @@ export { Citations } from '../components/Citations';
 // ── medium: layout primitives ──
 export { Section, Hero, Panel, TileGrid } from './layout';
 
+// ── responsive: gate shell breakpoints in JS, never CSS `lg:` on shell structure.
+// Kendo's unlayered stylesheet beats Tailwind display utilities, and only these
+// hooks honour the `?vp=mobile` preview override. A bespoke Shell MUST switch its
+// sidebar/drawer on `useIsDesktop()` so it is testable and Kendo-immune.
+export { useMediaQuery, useIsDesktop } from '../lib/useMediaQuery';
+
 // ── shared building blocks (states, chrome) ──
 export { Spinner, TypingDots, ErrorBanner, EmptyState, UngroundedWarning } from '../components/States';
 export { PageHeader } from '../components/PageHeader';

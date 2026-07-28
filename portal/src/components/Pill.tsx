@@ -20,6 +20,7 @@ export function Pill({
       type="button"
       onClick={onClick}
       title={title}
+      className="pill"
       rounded="full"
       size="small"
       fillMode={selected ? 'solid' : 'outline'}
