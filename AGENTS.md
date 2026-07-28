@@ -317,8 +317,8 @@ Factory tooling (removed from generated projects):
 | Composer / scaffolder | `create-app.js` |
 | Corpus / ingest / verify | `scripts/` |
 | Portal shell (config-driven) | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
-| Canonical Nuclia API surface | `docs/ARAG-API.md` |
-| **Provisioning reference (read before reverse-engineering)** | **`docs/ARAG-REFERENCE.md`** — KB/SA, search configs, DA agents, hosts + auth, distilled from the 910-page guide |
+| **ARAG knowledge base (distilled guide — read before reverse-engineering)** | **`docs/` — start at `docs/README.md`**: concepts, auth/management, ingestion, retrieval, catalog/graph, agentic, SDKs, observability, full API + schema reference |
+| Provisioning cheat-sheet | `docs/ARAG-REFERENCE.md` |
 | Retrieval & grounding policy | `docs/RETRIEVAL.md` |
 | Live portfolio snapshot | `DEMOS.md` |
 | MCP config | `.mcp.json`, `opencode.json`, `.vscode/mcp.json`, `.cursor/mcp.json` |
