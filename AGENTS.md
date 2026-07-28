@@ -122,11 +122,14 @@ delegated.
   - **1+ saved search configurations** (`search_configurations/{name}` on the `dp` host) so the
     demo ships tuned retrieval, and the portal defaults to one via `NUCLIA_SEARCH_CONFIG`
     (`scripts/create-retrieval.mjs`, or via the `nuclia` MCP).
-  - **Core Data-Augmentation agents** (`POST /kb/{kb}/task/start`, NUA key): a **labeler** built
-    from the blueprint's labelsets (→ facets), **llm-graph** (→ graph + related), and
-    **synthetic-questions** (→ richer retrieval), `apply: ALL`. Read `GET /kb/{kb}/tasks` first for
-    each agent's exact config schema, then start them. These run against the SE's OWN KB — no
-    central/shared KB is ever required (the package is distributed; each SE brings their account).
+  - **Core Data-Augmentation agents** — run `node scripts/create-da-agents.mjs --apply ALL`
+    (optionally `--labels '<json>'` from the blueprint's labelsets): **llm-graph** (→ graph +
+    related), **synthetic-questions** (→ richer retrieval), and **labeler** (→ facets, when labels
+    are given). VERIFIED live and baked into the script: the tasks API (`POST /kb/{kb}/task/start`
+    on the `dp` host) is authed with the **KB service-account (SOWNER) token — NOT the NUA key**
+    (which returns 403); tasks run **`on: 1` (field)**; `operations` is a keyed container
+    (`{graph|label|qa|…}`). These run against the SE's OWN KB — no central/shared KB is ever
+    required (the package is distributed; each SE brings their account).
 - **Phase 4 — Portal.** `@ui-developer` themes the portal and gives it life. Two ways to paint,
   both valid: (a) the **config shell** — set theme tokens + enabled surfaces in `demo.config.json`
   (the reliable quick sketch); or (b) **paint bespoke** — compose an original home + pages from
