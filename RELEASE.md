@@ -1,85 +1,73 @@
 # ARAG Demo Factory — Release Notes
 
-**The factory that turns one prompt into a stunning, grounded, cited Progress Agentic RAG demo.**
-This release raises the bar from "a working demo" to "a real application a prospect would swear
-they already use." Three things drove it: a portfolio-wide quality audit, a signature creative
-surface, and a hard turn toward *creativity + realism* as non-negotiables.
+**A one-shot generator for Progress Agentic RAG demos.** A partner sets up three values once,
+fires one prompt, and the factory builds a themed, grounded, cited demo — on their *own* account,
+with a bespoke look fitted to the use case. No central service, no shared Knowledge Box, no
+paint-by-numbers.
 
 ---
 
-## What's new
+## The contract — three inputs, then one prompt
 
-### 1. A mandatory quality bar, set from the live portfolio
-Walked ~20 deployed ARAG apps end-to-end (Atlas Operations, Aurora Concierge, GeoStack, Call
-Analysis, **Document Intelligence Studio**, CiteForge, **Ironbark Mutual**, **Meridian Codex**,
-Tilden & Voss, **Research Portal**, ContentForge, Kestrel, Halyard, Racing WA Intelligence,
-Wildmere, Fenlow, Agentic DAM, GTM Factory, MaintenanceOS, …) to define what "good" means. The bar:
+**One-time setup** (`.env`, ~30 seconds, copied from the Nuclia dashboard):
 
-- **It's an application, not a demo** — real app shell, grouped nav, live status (KB · model ·
-  resource count), a genuine home, auth where it fits. Never four disconnected tiles.
-- **The whole ARAG product, woven in** — cited Ask, Search, facets, graph, related, personalize,
-  voice, workflows, doc-intelligence + augmentation agents, calls, REMi, visibility, MCP.
-- **Bespoke design craft, not a component dump** — the strongest exemplars are hand-crafted
-  (themeable palette, editorial hero, custom SVG gauges, motion), *not* "random React everywhere."
-- **Realistic content** — believable company, documents, numbers and copy. Never obviously fake.
+| | |
+|---|---|
+| `NUCLIA_NUA_KEY` | a NUA key with **Manage Knowledge Boxes** enabled (scoped — the right key to hand to partners) |
+| `NUCLIA_ACCOUNT` | the account id (UUID) — a NUA key can't self-resolve it, so it's captured once |
+| `NUCLIA_ZONE` | the region, e.g. `aws-ap-southeast-2-1` |
 
-### 2. "Journey through the context" — the signature surface, now built in
-The portfolio's most compelling feature is now part of the factory. Below any cited answer, a
-**cinematic, auto-playing walk through the grounding**: strongest match first, each source with an
-animated **confidence ring**, classification chips, a *"cited in the answer"* badge, the supporting
-passage, and a **live, resource-scoped "how does this relate?"** answer — with narration, keyboard
-control, and a replayable trail. It turns RAG grounding into a designed experience — the clearest
-possible proof that an answer is *grounded, not generated*.
-*New:* `lib/journey.ts`, `components/journey/{ConfidenceRing,AnswerJourney}.tsx`, server
-`/api/journey` + resource-scoped `/ask`; wired into the Ask surface. Typechecks + builds clean.
+**Then every demo is a single prompt:** *"Build me a &lt;use case&gt;."* The factory does the rest.
 
-### 3. Creativity is now the critical mandate
-**"We provide the colours; the package is the artist."** Every build must be a bespoke, stunning,
-believable product — a distinct identity and a real app shell, never a recoloured template. Baked
-into the session hook, `AGENTS.md`, `CLAUDE.md`, and the Copilot instructions.
+## What the factory does per demo — automatically, on the partner's own account
 
-### 4. Blueprints are inspiration, not replicas
-The reference catalog is a source of *cues*, never a menu and never to be copied. The factory
-invents a fresh, realistic use case per prompt — a new fictional company that merely rhymes with
-the exemplars. The last "shopping list / don't invent" contradictions were removed.
+1. **Provisions its own Knowledge Box** + a service-account (SOWNER) token — one credential that
+   ingests, serves, and manages assets (`scripts/create-kb.mjs`).
+2. **Generates + ingests a realistic synthetic corpus** for the invented company/domain.
+3. **Creates saved search configurations** (`create-retrieval.mjs`) and **Data-Augmentation agents**
+   — labeler → facets, `llm-graph` → a knowledge graph, `synthetic-questions` → richer retrieval
+   (`create-da-agents.mjs`).
+4. **Paints a bespoke portal** — its OWN shell, navigation, information architecture and layout,
+   composed from the palette and fitted to the domain (a dealership build is an operations console;
+   a legal build is a matter workspace). **Never a recoloured template.**
+5. **Verifies** — cornerstone queries answer *with citations*; refusal probes *decline* grounded.
 
-### 5. NUA-key auto-provisioning
-The factory now asks for a **NUA key** and creates + manages its **own** ARAG assets — Knowledge
-Box, service account, labelsets, retrieval agents — with no setup by hand. Updated `.env.example`
-(Option A), `scripts/create-kb.mjs`, and all orchestration docs.
+## The principles it's built on
 
-### 6. The factory became a palette, not a template kit
-The package is now a **palette** the SE paints with — `portal/src/palette/`: grounded data hooks
-(`useAsk`, `useSearch`, `useCatalog`, `useGraph`, `useEntities`, `useHealth`), guaranteed components
-(`<GroundedAnswer>` can't show an uncited claim; `<CitedMetric>` can't show a number without KB
-provenance; `<JourneyThroughContext>`, `<ConfidenceRing>`), and a layout medium (`<Hero>`,
-`<Section>`, `<Panel>`, `<TileGrid>`). A **composition seam** lets a demo paint its own home + pages
-(`portal/src/demo/composition.tsx`) with the config shell as a safe fallback. A **groundedness lint**
-(`scripts/lint-groundedness.mjs`, wired into `prebuild`) fails the build on any hardcoded metric or
-external data fetch — so *the guarantees live in the materials, and fabrication cannot ship*. Known
-violations fixed (Call QA's hardcoded `100%/2%`; the rendered `sells` line). See
-`docs/PALETTE-ARCHITECTURE.md` and `portal/src/palette/README.md`.
+- **The package is a palette; the SE is the artist; each demo is an original masterpiece.** Every
+  demo is *structurally* unique (its own IA/nav/layout via a bespoke `Shell`), not the same shell
+  recoloured. Theming the config-shell is a throwaway quick-sketch only.
+- **The guarantees live in the materials.** Grounded, cited, no-invented-data are enforced by
+  *incorruptible pigments* — `<GroundedAnswer>` can't render an uncited claim; `<CitedMetric source>`
+  can't render a number without KB provenance — and a **groundedness lint** fails the build on any
+  hardcoded metric or external data fetch. Free composition, incorruptible materials.
+- **Distributable by design.** The NUA key is scoped; each partner brings their own account; there's
+  **no central/shared KB dependency**; the portal installs from the Progress **HAR registry**.
+- **Expert knowledge on board.** The complete **910-page Progress Agentic RAG practitioner's guide**
+  is bundled (`reference/agentic-rag-guide/`) and wired into the build agent, so it works across the
+  whole platform end-to-end — and partners can optionally ingest it too.
+- **Signature surface — "Journey through the context":** a cinematic, per-source grounding walk
+  (animated confidence rings, "cited in the answer" badges, a resource-scoped "how this relates").
 
----
+## Verified (live, this release)
 
-## Verified (live)
-- **Supply chain:** portal installs from the Progress HAR registry (`npm ci` → 304 packages, ~3s).
-- **Build:** portal typechecks clean and builds (3,240 modules) *with* the new Journey feature.
-- **NUA-key auto-provisioning — end to end against a real account:** `create-kb.mjs` creates a KB,
-  mints a service-account token, and writes `.env` with **zero manual steps** (exit 0). The
-  provisioned token then ingested a synthetic corpus, which indexed and answered — grounded and
-  cited — through every portal route (`/api/ask`, `/api/search`, the new `/api/journey`), and the
-  **"Journey through the context"** walk ran in the browser with live confidence rings and
-  resource-scoped relate answers. Throwaway KB deleted afterwards; account left as found.
-- **Provisioning recipe pinned down** (and baked into `create-kb.mjs`): NUA keys work only on the
-  **regional** API; KB create + SA create + key mint are all regional; the key-mint route is the
-  **singular** `service_account/{id}/keys` with an `expires` epoch (≤ 1095 days); the token is
-  minted **SCONTRIBUTOR** so one credential both ingests and serves. (NUA keys have no data-plane
-  access; the global API rejects them.)
+- **Full end-to-end battle test on a real account:** provision → ingest → 3 search configs → 3 DA
+  agents (running) → portal → grounded, cited answers + correctly *grounded refusals*. Throwaway KB
+  cleaned up afterwards.
+- **The exact ARAG provisioning recipe pinned down and baked into the scripts:** NUA keys work only
+  on the **regional** API; KB service-account **key mint** is the singular `service_account/{id}/keys`
+  route (`expires` ≤ 1095 days); **DA-agent tasks use the SOWNER service-account token, not the NUA
+  key** (which is 403), on the `dp` host, `on: 1` (field), keyed operations; a NUA key without
+  `allow_kb_management` now **fails fast** with a clear message.
+- **Supply chain + build:** `npm ci` from HAR (304 packages), portal `tsc` **0 errors**, `npm run
+  build` + groundedness lint green.
+- **A real one-shot demo** (an automotive dealership DMS console) built and reviewed in the browser —
+  bespoke sidebar console, KB-derived KPIs with visible provenance, grounded/cited throughout.
 
 ## Open / next
-- **Parity:** finish porting the remaining legacy surfaces onto the palette (Ask is done; the rest
-  still call `lib/arag` directly and stay valid). Grow the pigment set (coverage/REMi dials, a graph
-  canvas wrapper).
-- Optional: let a composition override the nav, not just Home + routes.
-- Minor: a stray `portal/.env` shadows the root `.env` the provisioner writes — worth a guard.
+
+- Mobile sweep of bespoke shells; grow the pigment set (coverage/REMi dials, richer graph);
+  optional knowledge-graph entity de-duplication.
+
+*Repo: github.com/jaysanderson/arag-demo-factory · the raw guide lives at
+github.com/jaysanderson/building-solutions-progress-agentic-rag (not vendored — the package stays lean).*
