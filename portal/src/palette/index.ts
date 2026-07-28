@@ -36,6 +36,13 @@ export { Section, Hero, Panel, TileGrid } from './layout';
 // sidebar/drawer on `useIsDesktop()` so it is testable and Kendo-immune.
 export { useMediaQuery, useIsDesktop } from '../lib/useMediaQuery';
 
+// ── guided tour: EVERY build ships one. The App frame mounts <GuidedTourLauncher>
+// for bespoke Shells automatically; import it here only to place the launcher in
+// your own chrome (pass floating={false} and drive <GuidedTour> yourself). Both
+// are config-driven off demoScript — always generate a demoScript. ──
+export { GuidedTour } from '../components/GuidedTour';
+export { GuidedTourLauncher } from '../components/GuidedTourLauncher';
+
 // ── shared building blocks (states, chrome) ──
 export { Spinner, TypingDots, ErrorBanner, EmptyState, UngroundedWarning } from '../components/States';
 export { PageHeader } from '../components/PageHeader';

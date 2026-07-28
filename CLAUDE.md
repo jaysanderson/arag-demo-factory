@@ -62,6 +62,11 @@ freedom: the materials keep the demo truthful no matter how boldly you paint.
   any shell** — grounding, citations, no-invented-data, responsive, every-control-works — and they
   are carried by the palette pigments (`<GroundedAnswer>` can't show an uncited claim; `<CitedMetric
   source>` can't show an un-sourced number), so free composition never breaks them.
+- **Every build ships a guided tour — always.** Generate a `demoScript` (an ordered set of
+  narrated beats, each deep-linking a surface) in `demo.config.json` for *every* demo, and the tour
+  renders itself: the config shell shows a "Guided tour" button, and the App frame auto-mounts
+  `<GuidedTourLauncher>` for any bespoke `Shell` (also exported from the palette if you'd rather place
+  it in your own chrome). Never ship a demo without a `demoScript` — an empty tour is a failure.
 - **Answers must render citations.** An ungrounded answer is surfaced as a warning, never as
   bare text.
 - **Hard Rules are non-negotiable** (AGENTS.md): synthetic only, no real brands, anonymise

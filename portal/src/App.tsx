@@ -12,6 +12,7 @@ import { ResourceDetail } from './pages/ResourceDetail';
 import { loadComposition } from './palette/compose';
 import { GroupedNav } from './components/GroupedNav';
 import { GuidedTour } from './components/GuidedTour';
+import { GuidedTourLauncher } from './components/GuidedTourLauncher';
 import { StatusChip } from './components/StatusChip';
 import { DisclaimerBanner, DisclaimerFooter } from './components/Disclaimer';
 import { AmbientBackground } from './components/AmbientBackground';
@@ -68,6 +69,10 @@ export default function App() {
           <Shell config={config} surfaces={surfaces} />
         </div>
         <DisclaimerFooter text={config.safety?.disclaimer || ''} brand={config.theme.brandName} />
+        {/* Universal-frame guarantee: EVERY build ships the guided tour, even a
+            bespoke Shell that didn't wire one. Floating launcher + tour; renders
+            nothing without a demoScript (every build should generate one). */}
+        <GuidedTourLauncher config={config} surfaces={surfaces} />
       </div>
     );
   }

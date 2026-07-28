@@ -142,6 +142,11 @@ delegated.
   (`useAsk`+`<GroundedAnswer>`, `<CitedMetric source>`, `<JourneyThroughContext>`, `useCatalog`
   facets, `useGraph`, `<ResourceDetail>` at `/r/:id`, …) so the guarantees hold by construction —
   never hand-hack an uncited answer or a hardcoded metric. Two demos must never share a layout.
+  **Every build ships a guided tour — always:** generate a `demoScript` (ordered narrated beats,
+  each deep-linking a surface) in `demo.config.json`, and the walkthrough mounts itself — the config
+  shell renders a "Guided tour" button and the App frame auto-mounts `<GuidedTourLauncher>` for any
+  bespoke `Shell` (also exported from the palette to place in your own chrome). A build without a
+  `demoScript` / guided tour is a FAILURE.
 - **Phase 5 — Verify.** `@tester` runs the blueprint's `cornerstoneQueries` (must answer,
   cited) and `refusalProbes` (must refuse, not confabulate). Grounded + cited or it's a bug.
   **The groundedness lint runs automatically on every `npm run build`** (`scripts/lint-groundedness.mjs`,
