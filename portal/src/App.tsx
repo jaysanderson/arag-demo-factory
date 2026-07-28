@@ -55,6 +55,23 @@ export default function App() {
   // If the demo painted its own experience, use it; otherwise the config shell.
   const composition = loadComposition();
 
+  // A bespoke Shell owns the ENTIRE experience — nav, layout, IA, routes — so the
+  // demo is structurally unique, not a recoloured clone of the stock shell. Only
+  // the universal frame (synthetic-data disclaimer + footer) and the applied theme
+  // wrap it. This is the default way to paint a real demo.
+  if (composition?.Shell) {
+    const Shell = composition.Shell;
+    return (
+      <div className="flex min-h-full flex-col">
+        <DisclaimerBanner text={config.safety?.disclaimer || ''} />
+        <div className="flex-1">
+          <Shell config={config} surfaces={surfaces} />
+        </div>
+        <DisclaimerFooter text={config.safety?.disclaimer || ''} brand={config.theme.brandName} />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-full flex-col">
       <AmbientBackground dark={dark} />

@@ -39,6 +39,8 @@ export { StatusChip } from '../components/StatusChip';
 
 // ── composition seam: paint bespoke pages instead of filling the template ──
 export { loadComposition, type DemoComposition, type CompositionContext } from './compose';
+// The record watch/detail page — mount at /r/:id inside a bespoke Shell's own <Routes>.
+export { ResourceDetail } from '../pages/ResourceDetail';
 
 // ── escape hatch: the raw grounded client, for capabilities without a hook yet ──
 export * as arag from '../lib/arag';

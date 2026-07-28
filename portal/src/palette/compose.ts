@@ -24,9 +24,21 @@ export interface CompositionContext {
 }
 
 export interface DemoComposition {
-  /** A bespoke, painted landing that replaces the default home. */
+  /**
+   * FULL bespoke app shell — the demo owns its own navigation, layout, information
+   * architecture and routes. When present it REPLACES the config-driven shell
+   * entirely (no default AppBar / Converse-Explore-Analyze-Extend nav), so the demo
+   * is structurally unique rather than a recoloured clone. It renders inside the
+   * universal frame (synthetic-data disclaimer + footer + applied theme) and owns
+   * everything else — including its own `<Routes>`. Mount the palette's
+   * `<ResourceDetail>` at `/r/:id` if you want the record watch page.
+   * THIS is the default way to paint a real demo; `Home`/`routes` below are the
+   * lighter option that reuses the stock shell.
+   */
+  Shell?: ComponentType<CompositionContext>;
+  /** A bespoke landing inside the DEFAULT shell. Ignored when `Shell` is set. */
   Home?: ComponentType<CompositionContext & { onStartTour: () => void }>;
-  /** Extra painted pages mounted inside the shell (path + a palette-composed component). */
+  /** Extra painted pages mounted inside the DEFAULT shell. Ignored when `Shell` is set. */
   routes?: { path: string; Component: ComponentType<CompositionContext> }[];
 }
 

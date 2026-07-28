@@ -52,14 +52,16 @@ freedom: the materials keep the demo truthful no matter how boldly you paint.
 - **UI components: KendoReact by default — but craft is what hits the bar.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, **themed distinctively per demo** (the `brand`/`accent` CSS variables are yours to set — that is the "we provide the colours, you're the artist" contract). Kendo is the substrate; the *design* — layout, hierarchy, motion, a coherent identity — is what makes it stunning. Use a non-Kendo/bespoke component where it makes the demo materially better (graph canvas, the streaming Ask pane, the cinematic **"Journey through the context"** walk on the Ask surface). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. See docs/UI-KENDO.md.
 - **KendoReact gotchas that produce silently-broken UI** (full list + fixes in docs/UI-KENDO.md → "Known KendoReact pitfalls"): `<Card onClick>` and `<Chip onClick>` do NOT fire — use `ClickableCard` / `Pill` for anything clickable; `AppBar` has `overflow:hidden` that clips dropdown menus — fix inline (`style={{overflow:'visible'}}`), not via CSS (Kendo's unlayered `all.css` beats `@layer` rules, even with `!important`). **Verify every clickable element by actually clicking it** — a dead card looks identical to a working one.
 - **Fully responsive is required — every demo must work on a phone.** Don't gate responsive layout on CSS display utilities inside Kendo components (Kendo's unlayered CSS overrides `hidden`/`lg:flex` → double-nav overlap); drive breakpoints in JS with `useIsDesktop()`/`useMediaQuery()` and render desktop vs. mobile variants (header uses `MobileNav`). Stack panes below `lg`, use `clamp()` type, keep wide content in `overflow-x-auto`. Preview with `?vp=mobile`. See docs/UI-KENDO.md → "Responsive / mobile".
-- **What's sacred is the guarantees, not the shell.** The invariants are grounding, citations,
-  no-invented-data, responsive, and every-control-works — properties carried by the components
-  themselves. *Today* the reliable way to keep them is the config-driven shell (theme + enabled
-  surfaces via `demo.config.json`), so configure it rather than hand-hacking it. But the shell is
-  scaffolding, not the ceiling: the roadmap (see `RELEASE.md` → open items) is to lower the
-  deliverable to composable **grounded primitives** the artist arranges freely — freedom of
-  composition, incorruptible materials. Never sacrifice a guarantee for a layout, or a layout for
-  the shell's convenience.
+- **Paint a bespoke shell per demo — the config-shell is a cookie-cutter trap.** Every real demo
+  must author `portal/src/demo/composition.tsx` with a full **`Shell`** — its OWN navigation,
+  layout, information architecture and routes, composed from the palette (`portal/src/palette/`) and
+  fitted to the domain (a dealership = an operations console; legal = a matter workspace; …) — so it
+  is **structurally unique**, not just recoloured. Merely theming `demo.config.json`'s fixed AppBar +
+  Converse/Explore/Analyze/Extend nav is the config-shell: a throwaway quick-sketch ONLY; shipping it
+  as a real demo is a failure (two demos then share a layout). **What's sacred is the guarantees, not
+  any shell** — grounding, citations, no-invented-data, responsive, every-control-works — and they
+  are carried by the palette pigments (`<GroundedAnswer>` can't show an uncited claim; `<CitedMetric
+  source>` can't show an un-sourced number), so free composition never breaks them.
 - **Answers must render citations.** An ungrounded answer is surfaced as a warning, never as
   bare text.
 - **Hard Rules are non-negotiable** (AGENTS.md): synthetic only, no real brands, anonymise

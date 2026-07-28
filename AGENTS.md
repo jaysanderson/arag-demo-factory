@@ -130,14 +130,18 @@ delegated.
     (which returns 403); tasks run **`on: 1` (field)**; `operations` is a keyed container
     (`{graph|label|qa|…}`). These run against the SE's OWN KB — no central/shared KB is ever
     required (the package is distributed; each SE brings their account).
-- **Phase 4 — Portal.** `@ui-developer` themes the portal and gives it life. Two ways to paint,
-  both valid: (a) the **config shell** — set theme tokens + enabled surfaces in `demo.config.json`
-  (the reliable quick sketch); or (b) **paint bespoke** — compose an original home + pages from
-  **the palette** (`portal/src/palette/`, see `docs/PALETTE-ARCHITECTURE.md`) by adding
-  `portal/src/demo/composition.tsx`. Prefer painting when the demo deserves a distinctive identity.
-  Whichever you choose, use the palette's grounded pigments (`useAsk`+`<GroundedAnswer>`,
-  `<CitedMetric>`, `<JourneyThroughContext>`, …) so the guarantees hold — never hand-hack an
-  uncited answer or a hardcoded metric.
+- **Phase 4 — Portal.** `@ui-developer` **PAINTS A BESPOKE SHELL — this is the default and the
+  point.** Author `portal/src/demo/composition.tsx` exporting a full `Shell`: your OWN navigation,
+  layout, information architecture and routes, composed from **the palette** (`portal/src/palette/`,
+  see its `README.md` + `docs/PALETTE-ARCHITECTURE.md`), fitted to THIS domain — a dealership demo is
+  an operations console (sidebar by function + dashboard + check-in); a legal demo is a matter
+  workspace; etc. The demo must be **structurally unique**, not just recoloured. **Merely theming
+  `demo.config.json`'s fixed AppBar + Converse/Explore/Analyze/Extend nav is the config-shell — a
+  throwaway quick-sketch ONLY; shipping it as a real demo is a FAILURE (every such build is a
+  cookie-cutter clone).** Compose entirely from the palette's grounded pigments
+  (`useAsk`+`<GroundedAnswer>`, `<CitedMetric source>`, `<JourneyThroughContext>`, `useCatalog`
+  facets, `useGraph`, `<ResourceDetail>` at `/r/:id`, …) so the guarantees hold by construction —
+  never hand-hack an uncited answer or a hardcoded metric. Two demos must never share a layout.
 - **Phase 5 — Verify.** `@tester` runs the blueprint's `cornerstoneQueries` (must answer,
   cited) and `refusalProbes` (must refuse, not confabulate). Grounded + cited or it's a bug.
   **The groundedness lint runs automatically on every `npm run build`** (`scripts/lint-groundedness.mjs`,

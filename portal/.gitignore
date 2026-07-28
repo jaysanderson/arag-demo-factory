@@ -8,3 +8,6 @@ npm-debug.log*
 *.tsbuildinfo
 telerik-license.txt
 kendo-ui-license.txt
+
+# Per-demo bespoke composition (the painted Shell) — generated per build, never shipped in the package
+src/demo/composition.tsx
