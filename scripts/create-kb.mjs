@@ -75,6 +75,17 @@ async function main() {
          '  These are what let the factory create and manage its own ARAG assets.');
   }
 
+  // Fast-fail: a NUA key must have KB management ENABLED to create/manage KBs.
+  // Without this check the create call returns an opaque 403 — catch it clearly.
+  try {
+    const claims = JSON.parse(Buffer.from(String(token).split('.')[1] || '', 'base64').toString());
+    if (claims && claims.allow_kb_management === false) {
+      fail('This NUA key has KB management DISABLED (allow_kb_management: false), so it cannot\n' +
+           '  create a Knowledge Box. Re-create the NUA key in the Nuclia dashboard with the\n' +
+           '  "Manage Knowledge Boxes" / KB-management option enabled, then paste the new key.');
+    }
+  } catch { /* not a decodable JWT — let the live API call surface any error */ }
+
   const title = arg('--title', 'ARAG Demo Knowledge Box');
   const slug = slugify(arg('--slug', title)) || `arag-demo-${Date.now().toString(36)}`;
   const zbase = `https://${zone}.rag.progress.cloud/api/v1`;
