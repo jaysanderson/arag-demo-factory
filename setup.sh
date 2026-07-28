@@ -115,22 +115,25 @@ fi
 
 # ── Nuclia credentials in .env ───────────────────────────────
 echo ""
-info "Checking Nuclia credentials..."
+info "Checking Nuclia credentials (the one-time setup)..."
+has() { grep -q "^${1}=.\+" .env 2>/dev/null; }
 if [ -f .env ]; then
-  MISSING_KEYS=()
-  for key in NUCLIA_SERVICEACCOUNT NUCLIA_KB_URL NUCLIA_ZONE NUCLIA_KB_ID; do
-    if ! grep -q "^${key}=.\+" .env 2>/dev/null; then MISSING_KEYS+=("$key"); fi
-  done
-  if [ ${#MISSING_KEYS[@]} -eq 0 ]; then
-    ok ".env present with NUCLIA_SERVICEACCOUNT, NUCLIA_KB_URL, NUCLIA_ZONE, NUCLIA_KB_ID set"
+  if has NUCLIA_NUA_KEY && has NUCLIA_ACCOUNT && has NUCLIA_ZONE; then
+    ok "One-time setup complete: NUA key + account + zone are set."
+    ok "Every demo is now a single prompt — Phase 1 provisions the KB automatically."
+  elif has NUCLIA_SERVICEACCOUNT && has NUCLIA_KB_URL; then
+    ok "Bound to an existing Knowledge Box (NUCLIA_SERVICEACCOUNT + NUCLIA_KB_URL)."
   else
-    warn ".env is missing values for: ${MISSING_KEYS[*]}"
-    warn "  → Fill them in before firing a build. The KB token stays server-side (never in git)."
+    warn "Add the THREE one-time values to .env, then every demo is just a prompt:"
+    warn "    NUCLIA_NUA_KEY   — your NUA key (dashboard → account → NUA keys)"
+    warn "    NUCLIA_ACCOUNT   — your account id (the UUID; copy once from the dashboard)"
+    warn "    NUCLIA_ZONE      — your zone, e.g. aws-ap-southeast-2-1"
+    warn "  Everything else (KB, service-account token, ingest, agents) is provisioned for you."
     BLOCKERS=$((BLOCKERS + 1))
   fi
 else
-  warn "No .env found. Copy the template and add your Nuclia credentials:"
-  warn "    cp .env.example .env   # then paste your KB service-account token + KB URL"
+  warn "No .env found. Copy the template and add your three one-time values:"
+  warn "    cp .env.example .env   # then set NUCLIA_NUA_KEY, NUCLIA_ACCOUNT (account UUID), NUCLIA_ZONE"
   BLOCKERS=$((BLOCKERS + 1))
 fi
 

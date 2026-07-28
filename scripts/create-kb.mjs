@@ -70,7 +70,8 @@ async function main() {
   const token = env.NUCLIA_NUA_KEY || env.NUCLIA_ACCOUNT_TOKEN;
   const zone = env.NUCLIA_ZONE || 'aws-eu-1';
   if (!account || !token) {
-    fail('Set NUCLIA_ACCOUNT (slug/id) and NUCLIA_NUA_KEY (your NUA key) in .env first.\n' +
+    fail('Set NUCLIA_ACCOUNT (your account id — the UUID, copied once from the dashboard) and\n' +
+         '  NUCLIA_NUA_KEY (your NUA key) in .env first.\n' +
          '  These are what let the factory create and manage its own ARAG assets.');
   }
 

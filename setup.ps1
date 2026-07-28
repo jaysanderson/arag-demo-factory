@@ -59,23 +59,25 @@ try {
 
 # ── Nuclia credentials in .env ───────────────────────────────
 Write-Host ""
-Info "Checking Nuclia credentials..."
+Info "Checking Nuclia credentials (the one-time setup)..."
 if (Test-Path ".env") {
   $envText = Get-Content ".env" -Raw
-  $missing = @()
-  foreach ($key in @("NUCLIA_SERVICEACCOUNT","NUCLIA_KB_URL","NUCLIA_ZONE","NUCLIA_KB_ID")) {
-    if ($envText -notmatch "(?m)^$key=.+") { $missing += $key }
-  }
-  if ($missing.Count -eq 0) {
-    Ok ".env present with NUCLIA_SERVICEACCOUNT, NUCLIA_KB_URL, NUCLIA_ZONE, NUCLIA_KB_ID set"
+  if (($envText -match "(?m)^NUCLIA_NUA_KEY=.+") -and ($envText -match "(?m)^NUCLIA_ACCOUNT=.+") -and ($envText -match "(?m)^NUCLIA_ZONE=.+")) {
+    Ok "One-time setup complete: NUA key + account + zone are set."
+    Ok "Every demo is now a single prompt — Phase 1 provisions the KB automatically."
+  } elseif (($envText -match "(?m)^NUCLIA_SERVICEACCOUNT=.+") -and ($envText -match "(?m)^NUCLIA_KB_URL=.+")) {
+    Ok "Bound to an existing Knowledge Box (NUCLIA_SERVICEACCOUNT + NUCLIA_KB_URL)."
   } else {
-    Warn ".env is missing values for: $($missing -join ', ')"
-    Warn "  -> Fill them in before firing a build. The KB token stays server-side (never in git)."
+    Warn "Add the THREE one-time values to .env, then every demo is just a prompt:"
+    Warn "    NUCLIA_NUA_KEY   - your NUA key (dashboard -> account -> NUA keys)"
+    Warn "    NUCLIA_ACCOUNT   - your account id (the UUID; copy once from the dashboard)"
+    Warn "    NUCLIA_ZONE      - your zone, e.g. aws-ap-southeast-2-1"
+    Warn "  Everything else (KB, service-account token, ingest, agents) is provisioned for you."
     $blockers++
   }
 } else {
-  Warn "No .env found. Copy the template and add your Nuclia credentials:"
-  Warn "    Copy-Item .env.example .env   # then paste your KB service-account token + KB URL"
+  Warn "No .env found. Copy the template and add your three one-time values:"
+  Warn "    Copy-Item .env.example .env   # then set NUCLIA_NUA_KEY, NUCLIA_ACCOUNT (account UUID), NUCLIA_ZONE"
   $blockers++
 }
 
