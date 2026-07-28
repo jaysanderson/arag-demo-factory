@@ -101,12 +101,14 @@ async function main() {
   //    The minted token authenticates the data plane via `X-NUCLIA-SERVICEACCOUNT: Bearer`.
   let saToken = null;
   try {
-    // SCONTRIBUTOR (not SMEMBER): the same provisioned token must both INGEST the
-    // generated corpus during the build and serve the portal's read calls, so the
-    // factory is self-sufficient from one credential. (Verified: SMEMBER is refused
-    // on writes; the NUA key has no data-plane access at all.) Server-side only.
+    // SOWNER: one provisioned token does everything the build needs — INGEST the
+    // generated corpus, CREATE search configurations (an OWNER-role op, see the
+    // guide), and SERVE the portal's read calls — so the factory is self-sufficient
+    // from a single credential. (SMEMBER is refused on writes; SCONTRIBUTOR is
+    // refused on search_configurations; the NUA key has no data-plane access at
+    // all.) Server-side only, never reaches the browser.
     const sa = await req(`${zbase}/account/${account}/kb/${kbId}/service_accounts`, {
-      token, method: 'POST', body: { title: `factory-${slug}`, role: 'SCONTRIBUTOR' },
+      token, method: 'POST', body: { title: `factory-${slug}`, role: 'SOWNER' },
     });
     const saId = sa.ok && sa.json.id;
     if (saId) {
