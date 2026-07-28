@@ -8,7 +8,7 @@ import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Card, CardBody } from '@progress/kendo-react-layout';
 import { Input } from '@progress/kendo-react-inputs';
 import {
-  getResource, catalog, graph, ask,
+  getResource, catalog, ask,
   type Citation, type CatalogCard,
 } from '../lib/arag';
 import type { DemoConfig } from '../lib/config';
@@ -84,17 +84,6 @@ function deriveResource(data: any): Derived {
   };
 }
 
-/** Split a transcript body into speaker-labelled lines where present. */
-function parseTranscript(body: string): { speaker: string | null; text: string }[] {
-  return body
-    .split(/\n+/)
-    .map((line) => {
-      const m = line.match(/^\s*([A-Z][\w .'’&/-]{1,40}):\s+(.*)$/);
-      return m ? { speaker: m[1].trim(), text: m[2].trim() } : { speaker: null, text: line.trim() };
-    })
-    .filter((l) => l.text);
-}
-
 function fmtClock(totalMinutes: number | null, fraction = 1): string {
   if (totalMinutes == null) return '';
   const totalSec = Math.round(totalMinutes * 60 * fraction);
@@ -154,7 +143,6 @@ export function ResourceDetail({ config }: { config: DemoConfig }) {
 
 function MainColumn({
   resource,
-  id,
   navigate,
 }: {
   resource: Derived;
@@ -431,7 +419,6 @@ type RelatedItem = CatalogCard & { via: string };
 
 function UpNextRail({
   seedId,
-  seedTitle,
   labels,
   navigate,
 }: {
