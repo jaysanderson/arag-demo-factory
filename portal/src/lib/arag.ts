@@ -246,7 +246,7 @@ function normalizeCitations(raw: any, paragraphs: Map<string, ParagraphInfo>): C
     const found = paragraphs.get(key);
     const resourceId = found?.resourceId || String(key).split('/')[0];
     const spans: [number, number][] = Array.isArray(value)
-      ? value.filter((s: any) => Array.isArray(s))
+      ? (value.filter((s: any) => Array.isArray(s) && s.length >= 2) as [number, number][])
       : [];
 
     if (!byDocument.has(resourceId)) {
