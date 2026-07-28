@@ -116,7 +116,16 @@ delegated.
   (transcripts, media) get `media_type`/`duration` so those surfaces light up.
 - **Phase 3 — Retrieval & agent config.** Set the RAG strategy, prompt, and citation policy
   (see `docs/RETRIEVAL.md`). Grounding is mandatory: neighbouring-paragraph context on,
-  citations on. Enable any agent/workflow surfaces the capability set needs.
+  citations on. **Every demo also provisions these on its KB — do NOT skip them** (endpoints +
+  auth in `docs/ARAG-REFERENCE.md`, distilled from the practitioner's guide):
+  - **1+ saved search configurations** (`search_configurations/{name}` on the `dp` host) so the
+    demo ships tuned retrieval, and the portal defaults to one via `NUCLIA_SEARCH_CONFIG`
+    (`scripts/create-retrieval.mjs`, or via the `nuclia` MCP).
+  - **Core Data-Augmentation agents** (`POST /kb/{kb}/task/start`, NUA key): a **labeler** built
+    from the blueprint's labelsets (→ facets), **llm-graph** (→ graph + related), and
+    **synthetic-questions** (→ richer retrieval), `apply: ALL`. Read `GET /kb/{kb}/tasks` first for
+    each agent's exact config schema, then start them. These run against the SE's OWN KB — no
+    central/shared KB is ever required (the package is distributed; each SE brings their account).
 - **Phase 4 — Portal.** `@ui-developer` themes the portal and gives it life. Two ways to paint,
   both valid: (a) the **config shell** — set theme tokens + enabled surfaces in `demo.config.json`
   (the reliable quick sketch); or (b) **paint bespoke** — compose an original home + pages from
@@ -309,6 +318,7 @@ Factory tooling (removed from generated projects):
 | Corpus / ingest / verify | `scripts/` |
 | Portal shell (config-driven) | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
 | Canonical Nuclia API surface | `docs/ARAG-API.md` |
+| **Provisioning reference (read before reverse-engineering)** | **`docs/ARAG-REFERENCE.md`** — KB/SA, search configs, DA agents, hosts + auth, distilled from the 910-page guide |
 | Retrieval & grounding policy | `docs/RETRIEVAL.md` |
 | Live portfolio snapshot | `DEMOS.md` |
 | MCP config | `.mcp.json`, `opencode.json`, `.vscode/mcp.json`, `.cursor/mcp.json` |

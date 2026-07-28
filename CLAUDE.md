@@ -102,6 +102,7 @@ Portal (Vite + React + TS, config-driven, one shell)
 | Portal shell | `portal/` (`src/`, `server/index.mjs`, `demo.config.json`) |
 | Corpus / ingest / verify | `scripts/` |
 | Canonical Nuclia surface | `docs/ARAG-API.md` |
+| Provisioning reference (KB/SA, search configs, DA agents) | `docs/ARAG-REFERENCE.md` |
 | Retrieval & grounding policy | `docs/RETRIEVAL.md` |
 | Live portfolio snapshot | `DEMOS.md` |
 
