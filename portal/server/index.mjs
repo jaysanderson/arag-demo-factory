@@ -312,21 +312,39 @@ function journeyStops(raw, cited) {
       resourceId: rid,
       title: card.title,
       url: card.sourceUrl,
-      score: norm01(r.score ?? paras[0]?.score ?? 0),
       quote,
       labels,
       cited: cited.has(rid),
+      _raw: Number(r.score ?? paras[0]?.score ?? 0),
     });
   }
-  stops.sort((a, b) => b.score - a.score);
-  return stops.slice(0, 8);
+  // The answer's OWN citations are the real grounding — lead with them, then the
+  // rest of the retrieved context by strength.
+  stops.sort((a, b) => (Number(b.cited) - Number(a.cited)) || (b._raw - a._raw));
+  const top = stops.slice(0, 8);
+  // Confidence is shown in two bands so the display matches the ordering: the
+  // answer's actual sources (cited) read as strong and lead; the rest of the
+  // retrieved context reads moderate/weak and follows. Within each band the score
+  // is relative to that band's strongest, so the leader is highest and the trail
+  // descends — instead of the flat, tiny absolute scores /find returns.
+  const band = (items, lo, hi) => {
+    const max = Math.max(1e-6, ...items.map((s) => s._raw));
+    for (const s of items) s.score = lo + (hi - lo) * Math.max(0, Math.min(1, s._raw / max));
+  };
+  band(top.filter((s) => s.cited), 0.78, 0.97);
+  band(top.filter((s) => !s.cited), 0.35, 0.68);
+  for (const s of top) delete s._raw;
+  return top;
 }
 
 /** POST /api/journey — ranked grounding for the "journey through the context" walk. */
 app.post('/api/journey', async (req, res) => {
   const { query, filters, citedIds = [], pageSize = 8 } = req.body || {};
   if (!query || !String(query).trim()) return res.status(400).json({ error: 'query is required' });
-  const body = { query, page_size: pageSize, features: ['keyword', 'semantic'], show: ['basic', 'origin'] };
+  // Retrieve a bit wider than we display so the answer's cited records are
+  // captured even if /find ranks them below the top few; journeyStops leads with
+  // the cited ones and trims to 8.
+  const body = { query, page_size: Math.max(pageSize, 12), features: ['keyword', 'semantic', 'relations'], show: ['basic', 'origin'] };
   if (filters && filters.length) body.filters = filters;
   try {
     const raw = await jsonOf('/find', { method: 'POST', body });

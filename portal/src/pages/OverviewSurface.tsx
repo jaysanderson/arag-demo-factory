@@ -208,14 +208,15 @@ function StatusStrip() {
   const { loading, connected, documents, categories } = useStats();
   const docsAnim = useCountUp(documents, !loading);
   const catsAnim = useCountUp(categories, !loading);
-  const citedAnim = useCountUp(100, !loading);
 
   return (
     <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
       <Stat icon={<Radio size={15} />} label="Knowledge base" value={loading ? '…' : connected ? 'Connected' : 'Offline'} tone={connected ? 'live' : 'muted'} live />
       <Stat icon={<Database size={15} />} label="Documents" value={loading ? '…' : documents == null ? '—' : docsAnim.toLocaleString()} />
       <Stat icon={<Layers size={15} />} label="Topics" value={loading ? '…' : categories == null ? '—' : catsAnim.toLocaleString()} />
-      <Stat icon={<ShieldCheck size={15} />} label="Answers" value={loading ? '…' : `${citedAnim}% cited`} tone="brand" />
+      {/* Truthful design property (GroundedAnswer enforces cite-or-refuse) — NOT a
+          fabricated percentage. Never render an invented metric here. */}
+      <Stat icon={<ShieldCheck size={15} />} label="Answers" value={loading ? '…' : 'Grounded & cited'} tone="brand" />
     </div>
   );
 }

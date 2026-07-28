@@ -52,6 +52,10 @@ for (const file of SCAN_DIRS.flatMap(walk)) {
     // 2) fetch to an external host
     const f = line.match(/fetch\(\s*["'`]((https?:)?\/\/[^"'`]+)["'`]/);
     if (f) fails.push(`${at}  external data fetch  fetch("${f[1]}")  → all data must come through the KB / the portal's /api proxy`);
+    // 3) animated counter seeded with a hardcoded number = a fabricated metric
+    //    (a count-up must animate to a KB-DERIVED value, never a literal like 100).
+    const c = line.match(/\buseCountUp\(\s*(\d[\d_.]*)/);
+    if (c) fails.push(`${at}  hardcoded animated metric  useCountUp(${c[1]}…)  → count up to a value derived from the KB, not a literal`);
   });
 
   // soft: runs ask but never renders through GroundedAnswer
