@@ -137,6 +137,17 @@ else
   BLOCKERS=$((BLOCKERS + 1))
 fi
 
+# ── Kendo / Telerik license (WARN only — trial mode never blocks) ──
+echo ""
+info "Checking KendoReact license (removes the trial banner from demos)..."
+if has KENDO_UI_LICENSE || has TELERIK_LICENSE || [ -f telerik-license.txt ] || [ -f portal/telerik-license.txt ] || [ -f kendo-ui-license.txt ]; then
+  ok "Kendo license found — demos build with NO trial banner."
+else
+  warn "No Kendo license set — demos will show a KendoReact trial banner in front of the customer."
+  warn "    Paste your key into KENDO_UI_LICENSE in .env (or drop telerik-license.txt at the root)."
+  warn "    Get it from telerik.com → your account → Manage License Keys. (Warning, not a blocker.)"
+fi
+
 # ── Summary ──────────────────────────────────────────────────
 echo ""
 echo "=================================================="

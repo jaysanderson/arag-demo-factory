@@ -24,6 +24,21 @@ Step 1 — Prerequisites (Node 20+, Git, a Nuclia account + service-account toke
 Step 2 — Fire one prompt describing the demo you want (see Orchestration below).
 ```
 
+**Ask for the KendoReact license key at the start.** The portal is KendoReact; without a license
+every demo shows a "license key missing" trial banner in front of the customer. Progress owns Kendo,
+so the SE has a key. If none is configured (no `KENDO_UI_LICENSE` in `.env`, no `telerik-license.txt`
+at the factory/portal root), **ask for it up front**, alongside the Nuclia setup, and write it to
+`KENDO_UI_LICENSE` in `.env`. The build activates it automatically and **offline** (portal
+`prebuild`/`predev` → `scripts/kendo-license.mjs`, using the already-installed
+`@progress/kendo-licensing` — never the public npm registry). Absent a key the build still succeeds
+in trial mode, but a real demo must not show the banner.
+
+**No public npm — installs go through Progress HAR only.** The portal resolves packages through the
+Progress HAR registry (the `.npmrc`); `npm ci`/`npm install` in `portal/` must use it, never
+npmjs.org. Do not add a dependency that HAR can't serve. If a capability genuinely needs something
+HAR can't provide, find a non-npm way (vendor it, or use the platform/SDK differently) rather than
+reaching for the public registry.
+
 `create-app.js` transforms this factory directory **in place** into a named demo project —
 it composes the chosen blueprint × capabilities into `demo.config.json`, themes and wires
 the portal, writes MCP + tool configs, removes factory-only files, and initialises git.
@@ -146,7 +161,11 @@ delegated.
   each deep-linking a surface) in `demo.config.json`, and the walkthrough mounts itself — the config
   shell renders a "Guided tour" button and the App frame auto-mounts `<GuidedTourLauncher>` for any
   bespoke `Shell` (also exported from the palette to place in your own chrome). A build without a
-  `demoScript` / guided tour is a FAILURE.
+  `demoScript` / guided tour is a FAILURE. **The full KendoReact component palette — every component
+  you can compose with, what's installed vs. addable via HAR — is catalogued in
+  `docs/UI-KENDO-COMPONENTS.md`;** reach for the components that fit the domain (Data Grid / TreeList
+  for records, Scheduler / Gantt / TaskBoard for operations, Charts / Gauges for dashboards, AI Prompt
+  / Chat for the copilot, PDF Viewer / Upload for documents), always themed per demo and grounded.
 - **Phase 5 — Verify.** `@tester` runs the blueprint's `cornerstoneQueries` (must answer,
   cited) and `refusalProbes` (must refuse, not confabulate). Grounded + cited or it's a bug.
   **The groundedness lint runs automatically on every `npm run build`** (`scripts/lint-groundedness.mjs`,

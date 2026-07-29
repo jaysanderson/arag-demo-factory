@@ -5,6 +5,7 @@
   "type": "module",
   "description": "The ARAG Demo Factory portal shell — one config-driven Progress Agentic RAG research portal that renders itself from demo.config.json.",
   "scripts": {
+    "predev": "node scripts/kendo-license.mjs",
     "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"node --watch server/index.mjs\"",
     "dev:web": "vite",
     "dev:api": "node --watch server/index.mjs",
