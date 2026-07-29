@@ -103,6 +103,17 @@ ingest) → 3 Retrieval & agent config → 4 Portal (theme + wire surfaces) → 
 (cornerstone queries answer & cite; refusal probes refuse) → 6 Deliver (URL + demo script,
 optional Fly deploy).
 
+**Phase 3 — don't skip the Generator (structured extraction). It's the biggest multiplier on how
+impressive a demo can be.** Beyond graph/synthetic-questions/labeler, the `ask` DA task extracts
+**typed, validated structured JSON** from unstructured resources into a native **`key_value` field**
+that conforms to a **KV schema you register** (`POST /kb/{kb}/kv-schemas`; types
+`text|integer|float|boolean|date`). That turns *any* corpus into product-grade structured data — so
+the demo can have **real charts, KPI dashboards, sortable/filterable data grids, facets, comparison
+tables, timelines and maps**, all grounded/cited, nothing mocked. Whenever the corpus hides recurring
+facts, register a schema + run the Generator (`scripts/create-da-agents.mjs --generate '<json>'`),
+then build at least one chart, one rich result card, and one facet from it. See
+**`docs/DATA-AUGMENTATION.md`**.
+
 ## Architecture
 
 ```

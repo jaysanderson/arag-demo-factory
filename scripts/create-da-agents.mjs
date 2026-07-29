@@ -18,9 +18,23 @@
 // the demo's labelsets, so pass them with --labels '<json>' (an array of
 // {label,description}); it's skipped when none are given.
 //
+// THE GENERATOR (--generate) is the big one: it turns unstructured resources into
+// TYPED, STRUCTURED, QUERYABLE data — the raw material for real charts, dashboards,
+// data grids, facets and rich result cards, all grounded. It (1) registers a KV
+// schema on the KB (POST /kb/{kb}/kv-schemas) and (2) starts the `ask` task with
+// json+store_as_key_value+kv_schema_id so every resource gains a native key_value
+// field conforming to that schema. Field types: text|integer|float|boolean|date.
+// See docs/DATA-AUGMENTATION.md. Schema shapes are from the guide (Appendix A/F);
+// confirm against the live catalog with GET /kb/{kb}/tasks if a call 422s.
+//
 // Reads .env: NUCLIA_KB_URL, NUCLIA_SERVICEACCOUNT, NUCLIA_ZONE. Zero deps, Node 20+.
 //   node scripts/create-da-agents.mjs
 //   node scripts/create-da-agents.mjs --apply ALL --labels '[{"label":"Policy","description":"Policy docs"}]'
+//   node scripts/create-da-agents.mjs --generate '{"id":"vehicle_facts",
+//     "question":"Extract make, model, year, price, body type, stock status, listing date.",
+//     "fields":[{"key":"make","type":"text","required":true},{"key":"year","type":"integer"},
+//               {"key":"price","type":"float"},{"key":"in_stock","type":"boolean"},
+//               {"key":"listed_date","type":"date"}]}'
 // ─────────────────────────────────────────────────────────────────────────────
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -57,8 +71,41 @@ async function main() {
     return res.ok;
   };
 
+  // Register a KV schema on the KB so the Generator's JSON conforms to it and is
+  // stored as a native key_value field. POST /kb/{kb}/kv-schemas (WRITER).
+  const registerKvSchema = async (id, description, fields) => {
+    const res = await fetch(`${DP}/kv-schemas`, {
+      method: 'POST', headers,
+      body: JSON.stringify({ id, description: description || '', fields }),
+    });
+    if (res.ok) { console.log(`  ✓ kv-schema '${id}' registered (${fields.length} fields)`); return true; }
+    if (res.status === 409) { console.log(`  · kv-schema '${id}' already exists — reusing`); return true; }
+    const j = await res.json().catch(() => ({}));
+    console.log(`  ✗ kv-schema '${id}' — HTTP ${res.status} ${JSON.stringify(j).slice(0, 200)}`);
+    return false;
+  };
+
   console.log(`\n  Starting Data-Augmentation agents on the Knowledge Box (apply: ${apply})…`);
   let ok = 0;
+
+  // Generator (ask) — the structured-extraction superpower. Registers a KV schema,
+  // then runs `ask` with json + store_as_key_value so every resource gains a typed
+  // key_value field to chart/grid/facet/aggregate. See docs/DATA-AUGMENTATION.md.
+  let gen = null;
+  try { const g = arg('--generate', ''); if (g) gen = JSON.parse(g); } catch (e) { console.log(`  ✗ --generate JSON parse error: ${e.message}`); }
+  if (gen && gen.id && Array.isArray(gen.fields) && gen.fields.length) {
+    const schemaOk = await registerKvSchema(gen.id, gen.description, gen.fields);
+    if (schemaOk) {
+      ok += await start('ask', [{ ask: {
+        question: gen.question || `Extract the following fields for this resource: ${gen.fields.map((f) => f.key).join(', ')}.`,
+        destination: gen.destination || gen.id,
+        json: true,
+        store_as_key_value: true,
+        kv_schema_id: gen.id,
+        ...(gen.user_prompt ? { user_prompt: gen.user_prompt } : {}),
+      } }]);
+    }
+  }
   // Knowledge graph — generic entity types; the LLM extracts what fits the corpus.
   ok += await start('llm-graph', [{ graph: { ident: 'g1', entity_defs: [
     { label: 'Organization', description: 'Companies, teams, departments, and agencies' },

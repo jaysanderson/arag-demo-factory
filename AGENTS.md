@@ -151,8 +151,18 @@ delegated.
     are given). VERIFIED live and baked into the script: the tasks API (`POST /kb/{kb}/task/start`
     on the `dp` host) is authed with the **KB service-account (SOWNER) token — NOT the NUA key**
     (which returns 403); tasks run **`on: 1` (field)**; `operations` is a keyed container
-    (`{graph|label|qa|…}`). These run against the SE's OWN KB — no central/shared KB is ever
+    (`{graph|label|qa|ask|…}`). These run against the SE's OWN KB — no central/shared KB is ever
     required (the package is distributed; each SE brings their account).
+  - **The GENERATOR (structured extraction) — use it whenever the corpus hides structure. THIS IS A
+    GAME-CHANGER, not an optional extra.** The `ask` task can extract **typed, validated, structured
+    JSON** from unstructured resources into a native **`key_value` field** conforming to a **KV schema
+    you register** (`POST /kb/{kb}/kv-schemas`; field types `text|integer|float|boolean|date`). That
+    single capability turns *any* pile of documents into product-grade structured data — so a demo can
+    have **real charts, KPI dashboards, sortable/filterable data grids, faceted filtering, comparison
+    tables, timelines and maps**, all computed from the corpus and all grounded/cited, nothing mocked.
+    Run it with `scripts/create-da-agents.mjs --generate '<json>'` (registers the schema + starts the
+    Generator), then build at least one chart, one rich structured result card, and one facet from the
+    extracted fields. **Full how-to, the exact API, and the menu of valuable uses: `docs/DATA-AUGMENTATION.md`** — read it.
 - **Phase 4 — Portal.** `@ui-developer` **PAINTS A BESPOKE SHELL — this is the default and the
   point.** Author `portal/src/demo/composition.tsx` exporting a full `Shell`: your OWN navigation,
   layout, information architecture and routes, composed from **the palette** (`portal/src/palette/`,
