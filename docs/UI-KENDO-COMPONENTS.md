@@ -23,10 +23,12 @@ that vocabulary; in `opensource` mode do **not** import any `@progress/kendo-*` 
 
 ## KendoReact mode — the full suite (all installed)
 
-Every `@progress/kendo-react-*` package below is **installed** — import any component directly, no
-add step.
+**Every KendoReact package is installed** — all ~40 `@progress/kendo-react-*` packages plus their
+helpers (verified: Spreadsheet, Map, TaskBoard, Scheduler, Gantt, Editor, PDF Viewer, Upload, Gauges,
+PivotGrid, TreeList, Chat/AI, File Saver, … all resolve at build). Import any component directly, no
+add step. The table below is just the most-used starter set; the complete list follows.
 
-| Package | Components you get |
+| Package (starter set) | Components you get |
 |---|---|
 | `@progress/kendo-react-buttons` | Button, ButtonGroup, **Chip**, ChipList, DropDownButton, SplitButton, FloatingActionButton, SegmentedControl, Toolbar |
 | `@progress/kendo-react-inputs` | TextBox, TextArea, Input, NumericTextBox, MaskedTextBox, Checkbox, RadioButton(Group), Switch, Slider, RangeSlider, Rating, Signature, ColorPicker / ColorGradient / ColorPalette |
