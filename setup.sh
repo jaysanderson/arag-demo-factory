@@ -137,15 +137,22 @@ else
   BLOCKERS=$((BLOCKERS + 1))
 fi
 
-# ── Kendo / Telerik license (WARN only — trial mode never blocks) ──
+# ── UI mode + Kendo license (WARN only — never blocks) ──
 echo ""
-info "Checking KendoReact license (removes the trial banner from demos)..."
-if has KENDO_UI_LICENSE || has TELERIK_LICENSE || [ -f telerik-license.txt ] || [ -f portal/telerik-license.txt ] || [ -f kendo-ui-license.txt ]; then
-  ok "Kendo license found — demos build with NO trial banner."
+UI_MODE=$(grep -E "^UI_MODE=" .env 2>/dev/null | head -1 | cut -d= -f2 | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+if [ "$UI_MODE" = "opensource" ]; then
+  info "UI mode: open-source (Radix + Recharts + TanStack + Tailwind)."
+  ok "No KendoReact, no license needed — demos build with no trial banner."
 else
-  warn "No Kendo license set — demos will show a KendoReact trial banner in front of the customer."
-  warn "    Paste your key into KENDO_UI_LICENSE in .env (or drop telerik-license.txt at the root)."
-  warn "    Get it from telerik.com → your account → Manage License Keys. (Warning, not a blocker.)"
+  info "UI mode: KendoReact (default). Checking license (removes the trial banner)..."
+  if has KENDO_UI_LICENSE || has TELERIK_LICENSE || [ -f telerik-license.txt ] || [ -f portal/telerik-license.txt ] || [ -f kendo-ui-license.txt ]; then
+    ok "Kendo license found — demos build with NO trial banner."
+  else
+    warn "No Kendo license set — demos will show a KendoReact trial banner in front of the customer."
+    warn "    Paste your key into KENDO_UI_LICENSE in .env (or drop telerik-license.txt at the root),"
+    warn "    OR set UI_MODE=opensource in .env to build with open-source components instead."
+    warn "    Get a key from telerik.com → your account → Manage License Keys. (Warning, not a blocker.)"
+  fi
 fi
 
 # ── Summary ──────────────────────────────────────────────────

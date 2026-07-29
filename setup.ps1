@@ -81,16 +81,24 @@ if (Test-Path ".env") {
   $blockers++
 }
 
-# ── Kendo / Telerik license (WARN only — trial mode never blocks) ──
+# ── UI mode + Kendo license (WARN only — never blocks) ──
 Write-Host ""
-Info "Checking KendoReact license (removes the trial banner from demos)..."
 $envText2 = if (Test-Path ".env") { Get-Content ".env" -Raw } else { "" }
-if (($envText2 -match "(?m)^KENDO_UI_LICENSE=.+") -or ($envText2 -match "(?m)^TELERIK_LICENSE=.+") -or (Test-Path "telerik-license.txt") -or (Test-Path "portal/telerik-license.txt") -or (Test-Path "kendo-ui-license.txt")) {
-  Ok "Kendo license found - demos build with NO trial banner."
+$uiMode = ""
+if ($envText2 -match "(?m)^UI_MODE=(.+)$") { $uiMode = $Matches[1].Trim().ToLower() }
+if ($uiMode -eq "opensource") {
+  Info "UI mode: open-source (Radix + Recharts + TanStack + Tailwind)."
+  Ok "No KendoReact, no license needed - demos build with no trial banner."
 } else {
-  Warn "No Kendo license set - demos will show a KendoReact trial banner in front of the customer."
-  Warn "    Paste your key into KENDO_UI_LICENSE in .env (or drop telerik-license.txt at the root)."
-  Warn "    Get it from telerik.com -> your account -> Manage License Keys. (Warning, not a blocker.)"
+  Info "UI mode: KendoReact (default). Checking license (removes the trial banner)..."
+  if (($envText2 -match "(?m)^KENDO_UI_LICENSE=.+") -or ($envText2 -match "(?m)^TELERIK_LICENSE=.+") -or (Test-Path "telerik-license.txt") -or (Test-Path "portal/telerik-license.txt") -or (Test-Path "kendo-ui-license.txt")) {
+    Ok "Kendo license found - demos build with NO trial banner."
+  } else {
+    Warn "No Kendo license set - demos will show a KendoReact trial banner in front of the customer."
+    Warn "    Paste your key into KENDO_UI_LICENSE in .env (or drop telerik-license.txt at the root),"
+    Warn "    OR set UI_MODE=opensource in .env to build with open-source components instead."
+    Warn "    Get a key from telerik.com -> your account -> Manage License Keys. (Warning, not a blocker.)"
+  }
 }
 
 # ── Summary ──────────────────────────────────────────────────

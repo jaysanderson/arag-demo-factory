@@ -1,9 +1,8 @@
-import { Button } from '@progress/kendo-react-buttons';
-
-// An interactive pill. KendoReact `Chip`'s onClick does not reliably fire on a
-// DOM click (same failure class as `Card`), so anything a user must CLICK is a
-// Kendo `Button` styled as a pill instead — still a vendor control, but its
-// click handler is rock-solid. Display-only badges stay as `Chip`.
+// An interactive pill — a plain <button> (Kendo-free) so it works identically in
+// both UI modes and its click handler is rock-solid (KendoReact `Chip`'s onClick
+// does not reliably fire — the same failure class as `Card`). The `.pill` class
+// (index.css) makes the label WRAP and never exceed its container, so a long
+// probe/suggestion/filter value can't force horizontal overflow on a phone.
 export function Pill({
   text,
   onClick,
@@ -16,17 +15,15 @@ export function Pill({
   title?: string;
 }) {
   return (
-    <Button
+    <button
       type="button"
       onClick={onClick}
       title={title}
+      aria-pressed={selected}
       className="pill"
-      rounded="full"
-      size="small"
-      fillMode={selected ? 'solid' : 'outline'}
-      themeColor={selected ? 'primary' : 'base'}
+      data-selected={selected ? '' : undefined}
     >
       {text}
-    </Button>
+    </button>
   );
 }

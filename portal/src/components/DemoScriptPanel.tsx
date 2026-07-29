@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { PlayCircle } from 'lucide-react';
-import { Button } from '@progress/kendo-react-buttons';
-import { Dialog } from '@progress/kendo-react-dialogs';
+import { PlayCircle, X } from 'lucide-react';
+// Kendo-free (plain button + plain modal) — works in both UI modes.
 import type { DemoStep } from '../lib/config';
 
 // A subtle, SE-facing "Demo script" affordance. Reads config.demoScript and pops
@@ -13,18 +12,38 @@ export function DemoScriptPanel({ steps }: { steps: DemoStep[] }) {
 
   return (
     <>
-      <Button
-        fillMode="outline"
+      <button
+        type="button"
         onClick={() => setOpen(true)}
         title="Open the guided demo script"
-        startIcon={<PlayCircle size={15} />}
+        className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium text-ink-700 transition hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-ink-800"
+        style={{ borderColor: 'var(--hairline)' }}
       >
+        <PlayCircle size={15} />
         <span className="hidden md:inline">Demo script</span>
-      </Button>
+      </button>
 
       {open && (
-        <Dialog title="Demo script" onClose={() => setOpen(false)} width={440} height="80vh">
-          <div className="scroll-slim flex h-full flex-col overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-hidden />
+          <div
+            className="card-elevated relative flex max-h-[80vh] w-full max-w-[440px] flex-col rounded-2xl bg-white p-5 dark:bg-ink-900"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Demo script"
+          >
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-sm font-semibold text-ink-900 dark:text-ink-100">Demo script</span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-ink-500 hover:bg-ink-100 dark:hover:bg-ink-800"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          <div className="scroll-slim flex flex-col overflow-y-auto">
             <p className="mb-3 text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--brand)' }}>
               Guided walkthrough
             </p>
@@ -53,7 +72,8 @@ export function DemoScriptPanel({ steps }: { steps: DemoStep[] }) {
               SE-facing only — this panel is not part of the customer narrative.
             </p>
           </div>
-        </Dialog>
+          </div>
+        </div>
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Chip } from '@progress/kendo-react-buttons';
+// Kendo-free status pill (plain elements) — works in both UI modes.
 import { getHealth } from '../lib/arag';
 
 // KB-connected status chip. Reports connectivity only — NEVER the zone/region
@@ -49,13 +49,18 @@ export function StatusChip() {
     };
   }, []);
 
-  const themeColor = state === 'connected' ? 'success' : state === 'down' ? 'error' : 'base';
   const label =
     state === 'connected' ? 'Knowledge Box connected' : state === 'down' ? 'Knowledge Box unreachable' : 'Checking…';
+  const dot = state === 'connected' ? '#22c55e' : state === 'down' ? '#ef4444' : '#94a3b8';
+  const tone =
+    state === 'connected'
+      ? 'border-emerald-300 text-emerald-700 dark:border-emerald-800/70 dark:text-emerald-300'
+      : state === 'down'
+        ? 'border-red-300 text-red-700 dark:border-red-800/70 dark:text-red-300'
+        : 'border-ink-300 text-ink-500 dark:border-ink-700';
 
-  // Vendor KendoReact Chip, themed via the Kendo colour vars. A soft glow sits
-  // AROUND the chip (CSS only) when the KB is live so it reads as a status pill
-  // without hand-rolling the control itself.
+  // Plain status pill with a coloured dot. A soft glow sits AROUND it (CSS only)
+  // when the KB is live so it reads as a live indicator.
   return (
     <span className="relative inline-flex">
       {state === 'connected' && (
@@ -65,14 +70,12 @@ export function StatusChip() {
           aria-hidden
         />
       )}
-      <Chip
-        className={`relative ${state === 'checking' ? 'animate-pulse' : undefined}`}
-        text={label}
-        themeColor={themeColor}
-        fillMode="outline"
-        rounded="full"
-        size="small"
-      />
+      <span
+        className={`relative inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${tone} ${state === 'checking' ? 'animate-pulse' : ''}`}
+      >
+        <span className="h-1.5 w-1.5 rounded-full" style={{ background: dot }} aria-hidden />
+        {label}
+      </span>
     </span>
   );
 }

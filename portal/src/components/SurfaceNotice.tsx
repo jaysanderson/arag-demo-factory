@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Lightbulb } from 'lucide-react';
-import { Card } from '@progress/kendo-react-layout';
+// Kendo-free (plain `.card` div) — works in both UI modes.
 
 /**
  * A graceful "this surface needs enabling" state. Surfaces whose ARAG endpoint
@@ -17,7 +17,7 @@ export function SurfaceNotice({
   bullets?: string[];
 }) {
   return (
-    <Card className="overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="px-6 py-6" style={{ background: 'var(--brand-soft)' }}>
         <div className="flex items-center gap-2" style={{ color: 'var(--brand-strong)' }}>
           <Lightbulb size={18} />
@@ -41,6 +41,6 @@ export function SurfaceNotice({
           binding a Knowledge Box with the features it needs. The shell renders it automatically — no code change.
         </p>
       </div>
-    </Card>
+    </div>
   );
 }

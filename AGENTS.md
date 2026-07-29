@@ -24,14 +24,22 @@ Step 1 — Prerequisites (Node 20+, Git, a Nuclia account + service-account toke
 Step 2 — Fire one prompt describing the demo you want (see Orchestration below).
 ```
 
-**Ask for the KendoReact license key at the start.** The portal is KendoReact; without a license
-every demo shows a "license key missing" trial banner in front of the customer. Progress owns Kendo,
-so the SE has a key. If none is configured (no `KENDO_UI_LICENSE` in `.env`, no `telerik-license.txt`
-at the factory/portal root), **ask for it up front**, alongside the Nuclia setup, and write it to
-`KENDO_UI_LICENSE` in `.env`. The build activates it automatically and **offline** (portal
-`prebuild`/`predev` → `scripts/kendo-license.mjs`, using the already-installed
-`@progress/kendo-licensing` — never the public npm registry). Absent a key the build still succeeds
-in trial mode, but a real demo must not show the banner.
+**Ask which UI mode at the start (`UI_MODE`), and — for Kendo mode — the license key.** Every demo
+builds in one of two modes, captured once in `.env`:
+- **`kendo`** (default) — **KendoReact** (the full suite is installed). Needs a license or it shows a
+  "license key missing" trial banner in front of the customer. Progress owns Kendo, so the SE has a
+  key. If none is configured (no `KENDO_UI_LICENSE` in `.env`, no `telerik-license.txt` at the
+  factory/portal root), **ask for it up front**, alongside the Nuclia setup, and write it to
+  `KENDO_UI_LICENSE` in `.env`. The build activates it automatically and **offline** (portal
+  `prebuild`/`predev` → `scripts/kendo-license.mjs`, using the already-installed
+  `@progress/kendo-licensing` — never the public npm registry).
+- **`opensource`** — **Radix UI + Recharts + TanStack Table + Tailwind** (all installed). No Kendo, no
+  license, no banner.
+
+When `UI_MODE` isn't set, **ask the SE which they want**. Build entirely in that mode — never mix; in
+`opensource` mode do **not** import any `@progress/kendo-*` component. The grounding guarantees are
+identical in both (the palette pigments are library-agnostic). Component list + OSS equivalents:
+`docs/UI-KENDO-COMPONENTS.md`.
 
 **No public npm — installs go through Progress HAR only.** The portal resolves packages through the
 Progress HAR registry (the `.npmrc`); `npm ci`/`npm install` in `portal/` must use it, never

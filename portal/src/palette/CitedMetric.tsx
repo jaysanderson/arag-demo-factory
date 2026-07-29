@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
-import { Card, CardBody } from '@progress/kendo-react-layout';
+// Kendo-free by design: the guaranteed pigments render with plain elements +
+// Tailwind (the `.card` utility) so grounding holds identically in BOTH UI modes
+// — KendoReact and the open-source stack — and the trust layer never depends on a
+// commercial component library.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CitedMetric — the incorruptible metric pigment.
@@ -29,16 +32,14 @@ export function CitedMetric({
   muted?: boolean;
 }) {
   return (
-    <Card>
-      <CardBody className="p-4">
-        <p className={`font-display text-2xl font-semibold ${muted ? 'text-ink-400' : 'text-ink-900 dark:text-ink-50'}`}>
-          {value}
-        </p>
-        <p className="mt-0.5 text-xs text-ink-500">{label}</p>
-        <p className="mt-1 text-[10px] uppercase tracking-wide text-ink-400" title={source}>
-          from {source}
-        </p>
-      </CardBody>
-    </Card>
+    <div className="card p-4">
+      <p className={`font-display text-2xl font-semibold ${muted ? 'text-ink-400' : 'text-ink-900 dark:text-ink-50'}`}>
+        {value}
+      </p>
+      <p className="mt-0.5 text-xs text-ink-500">{label}</p>
+      <p className="mt-1 text-[10px] uppercase tracking-wide text-ink-400" title={source}>
+        from {source}
+      </p>
+    </div>
   );
 }

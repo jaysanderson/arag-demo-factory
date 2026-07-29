@@ -1,19 +1,30 @@
-# KendoReact — the component palette
+# The component palette — two UI modes
 
-The portal UI is **KendoReact** (Progress owns it; the SE has a license — see the license ask in
-`AGENTS.md`). This is the catalogue of components you compose demos from — the "colours" on the
-palette. Reach for the component that fits the domain; theme it per demo (`brand`/`accent`); and keep
-every value grounded in the Knowledge Box via the palette pigments (`<GroundedAnswer>`,
-`<CitedMetric source>`, `useAsk`/`useCatalog`/`useGraph`). Source: telerik.com/kendo-react-ui
-(all components).
+Every demo is built in one of **two UI modes** (`UI_MODE` in `.env`, captured once at setup). The
+grounding guarantees are **identical** in both — the palette pigments (`<GroundedAnswer>`,
+`<CitedMetric source>`, `<Pill>`, states, citations) are **library-agnostic** (plain React +
+Tailwind, no Kendo). Only the *component vocabulary* for everything else changes.
 
-> **No public npm.** Packages resolve through the **Progress HAR** registry (the `.npmrc`), never
-> npmjs.org. The set below marked *installed* is available right now. To use a component from a
-> package that isn't installed yet, add its `@progress/kendo-react-*` package **via HAR** (`npm ci`
-> in `portal/` through the HAR registry) — if HAR can't serve it, vendor it or find a non-npm path,
-> never the public registry. `ml-fasttrack` / FastTrack is **not** used (MarkLogic-bound, not on HAR).
+| `UI_MODE` | Build with | License |
+|---|---|---|
+| **`kendo`** (default) | **KendoReact** — the full suite (below), all installed | needs `KENDO_UI_LICENSE` (else a trial banner) |
+| **`opensource`** | **Radix UI + Recharts + TanStack Table + Tailwind** (+ `lucide-react`) | none — no Kendo, no banner |
 
-## Available now — installed packages (import immediately)
+Reach for the component that fits the domain; theme it per demo (`brand`/`accent`); keep every value
+grounded via the pigments. **Never mix modes in one demo** — check `UI_MODE` and build entirely in
+that vocabulary; in `opensource` mode do **not** import any `@progress/kendo-*` component.
+
+> **No public npm.** Everything resolves through the **Progress HAR** registry (the `.npmrc`), never
+> npmjs.org (HAR proxies public npm, so React/Radix/Recharts/TanStack all come through it; the
+> `min-release-age` policy means new versions are pinned to older, allowed ones in the lockfile).
+> `ml-fasttrack` / FastTrack is **not** used (MarkLogic-bound, not on HAR).
+
+---
+
+## KendoReact mode — the full suite (all installed)
+
+Every `@progress/kendo-react-*` package below is **installed** — import any component directly, no
+add step.
 
 | Package | Components you get |
 |---|---|
@@ -29,7 +40,7 @@ every value grounded in the Knowledge Box via the palette pigments (`<GroundedAn
 | `@progress/kendo-react-notification` | Notification |
 | `@progress/kendo-svg-icons`, `@progress/kendo-drawing` | SVG icon set; the drawing library (charts/gauges substrate) |
 
-## The full KendoReact catalogue (add the package via HAR to use)
+## Full KendoReact component list (all installed)
 
 - **AI interface:** AI Prompt, Inline AI Prompt, PromptBox, Chat, SmartPasteButton, Speech-to-Text Button — *natural fit for a grounded copilot surface*
 - **Buttons & actions:** Button, ButtonGroup, Chip, ChipList, DropDownButton, SplitButton, FloatingActionButton, SegmentedControl, Toolbar
@@ -56,6 +67,36 @@ every value grounded in the Knowledge Box via the palette pigments (`<GroundedAn
 - **Dashboards / KPIs** → Charts, Gauges, Sparkline, Badge, `<CitedMetric>` (never an un-sourced number)
 - **Documents** → PDF Viewer, Editor, Upload / External Drop Zone (ingest), Excel Export
 - **Knowledge graph** → a bespoke canvas (not Kendo) + `useGraph`; OrgChart/Sankey for lighter relations
+
+## Open-source mode (`UI_MODE=opensource`) — the stack + equivalents
+
+No Kendo, no license. Build with these (all installed via HAR) + plain React + Tailwind. The palette
+pigments work unchanged, so grounded/cited answers and sourced metrics are identical.
+
+| Need | Open-source component |
+|---|---|
+| Dialog / modal / drawer | `@radix-ui/react-dialog` |
+| Dropdown menu / context menu | `@radix-ui/react-dropdown-menu` |
+| Select / combobox | `@radix-ui/react-select` |
+| Popover / flyout | `@radix-ui/react-popover` |
+| Tooltip | `@radix-ui/react-tooltip` |
+| Tabs | `@radix-ui/react-tabs` |
+| Accordion / expansion panel | `@radix-ui/react-accordion` |
+| Switch / checkbox / slider | `@radix-ui/react-switch` · `-checkbox` · `-slider` |
+| Avatar | `@radix-ui/react-avatar` |
+| Scroll area | `@radix-ui/react-scroll-area` |
+| Nav menu | `@radix-ui/react-navigation-menu` |
+| Charts (bar/line/pie/area/scatter/radar…) | `recharts` |
+| Data grid / table (sort, filter, paginate, group) | `@tanstack/react-table` (render with Tailwind) |
+| Buttons, cards, chips, badges, inputs, layout | plain elements + Tailwind (see `.card` / `.btn` / `.pill` utilities in `index.css`) |
+| Icons | `lucide-react` (already used everywhere) |
+| Class helpers | `clsx`, `tailwind-merge` |
+| Knowledge graph | bespoke SVG/canvas + `useGraph` (same as Kendo mode) |
+
+Rules in this mode: **no `@progress/kendo-*` imports**; style with Tailwind + the demo's
+`brand`/`accent` CSS vars; still gate shell breakpoints in JS (`useIsDesktop()` from the palette);
+still verify `scrollWidth <= 390` on every route; still render every answer through `<GroundedAnswer>`
+and every number through `<CitedMetric source>`.
 
 ## KendoReact gotchas (silent-broken UI — full list in `UI-KENDO.md`)
 

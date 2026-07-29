@@ -1,13 +1,16 @@
 import { Inbox, ShieldAlert } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { Loader } from '@progress/kendo-react-indicators';
-import { Notification } from '@progress/kendo-react-notification';
-import { Card, CardBody } from '@progress/kendo-react-layout';
+// Kendo-free: shared state primitives render with plain elements + Tailwind so
+// they work identically in the KendoReact and open-source UI modes.
 
 export function Spinner({ label }: { label?: string }) {
   return (
     <div className="flex items-center gap-2 text-sm text-ink-500">
-      <Loader size="small" type="pulsing" themeColor="primary" />
+      <span
+        className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+        style={{ color: 'var(--brand)' }}
+        aria-hidden
+      />
       {label || 'Loading…'}
     </div>
   );
@@ -29,21 +32,20 @@ export function TypingDots() {
 
 export function ErrorBanner({ children }: { children: ReactNode }) {
   return (
-    <Notification type={{ style: 'error', icon: true }} className="w-full">
+    <div className="flex w-full items-start gap-2 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-red-900 dark:border-red-800/70 dark:bg-red-950/40 dark:text-red-200">
+      <ShieldAlert size={18} className="mt-0.5 shrink-0" />
       <span className="text-sm">{children}</span>
-    </Notification>
+    </div>
   );
 }
 
 export function EmptyState({ title, hint }: { title: string; hint?: ReactNode }) {
   return (
-    <Card>
-      <CardBody className="flex flex-col items-center gap-2 px-6 py-14 text-center">
-        <Inbox size={26} className="text-ink-400" />
-        <p className="font-medium text-ink-700 dark:text-ink-200">{title}</p>
-        {hint && <p className="max-w-md text-sm text-ink-500">{hint}</p>}
-      </CardBody>
-    </Card>
+    <div className="card flex flex-col items-center gap-2 px-6 py-14 text-center">
+      <Inbox size={26} className="text-ink-400" />
+      <p className="font-medium text-ink-700 dark:text-ink-200">{title}</p>
+      {hint && <p className="max-w-md text-sm text-ink-500">{hint}</p>}
+    </div>
   );
 }
 

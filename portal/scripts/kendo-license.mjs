@@ -22,9 +22,15 @@ const ROOT = join(PORTAL, '..');
 for (const envPath of [join(ROOT, '.env'), join(PORTAL, '.env')]) {
   if (!existsSync(envPath)) continue;
   for (const line of readFileSync(envPath, 'utf8').split('\n')) {
-    const m = line.match(/^\s*(KENDO_UI_LICENSE|TELERIK_LICENSE)\s*=\s*(.*)\s*$/);
+    const m = line.match(/^\s*(KENDO_UI_LICENSE|TELERIK_LICENSE|UI_MODE)\s*=\s*(.*)\s*$/);
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }
+}
+
+// Open-source UI mode uses no KendoReact — no license to activate.
+if ((process.env.UI_MODE || '').toLowerCase() === 'opensource') {
+  console.log('  [kendo] UI_MODE=opensource — KendoReact not used; no license needed.');
+  process.exit(0);
 }
 
 const hasEnv = !!(process.env.KENDO_UI_LICENSE || process.env.TELERIK_LICENSE);

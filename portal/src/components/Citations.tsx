@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ExternalLink, FileText, Quote } from 'lucide-react';
-import { Card, CardBody } from '@progress/kendo-react-layout';
+// Kendo-free: the citations panel (part of the grounding guarantee) uses plain
+// elements + the `.card` utility, identical in both UI modes.
 import type { Citation } from '../lib/arag';
 import { getResource } from '../lib/arag';
 
@@ -56,26 +57,23 @@ export function Citations({
           const clickable = !!onOpen;
           return (
             <li key={c.resourceId}>
-              <Card
-                className={`transition ${clickable ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md' : 'hover:shadow-md'}`}
+              <div
+                className={`card p-3 transition ${clickable ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md' : 'hover:shadow-md'}`}
+                {...(clickable
+                  ? {
+                      role: 'button',
+                      tabIndex: 0,
+                      onClick: () => onOpen!(c.resourceId),
+                      onKeyDown: (e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onOpen!(c.resourceId);
+                        }
+                      },
+                    }
+                  : {})}
+                title={title}
               >
-                <div
-                  {...(clickable
-                    ? {
-                        role: 'button',
-                        tabIndex: 0,
-                        onClick: () => onOpen!(c.resourceId),
-                        onKeyDown: (e: React.KeyboardEvent) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            onOpen!(c.resourceId);
-                          }
-                        },
-                      }
-                    : {})}
-                  title={title}
-                >
-                  <CardBody className="p-3">
                     <div className="flex items-start gap-2.5">
                       <span
                         className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold"
@@ -112,9 +110,7 @@ export function Citations({
                         </div>
                       </div>
                     </div>
-                  </CardBody>
-                </div>
-              </Card>
+              </div>
             </li>
           );
         })}
