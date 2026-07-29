@@ -50,6 +50,15 @@ freedom: the materials keep the demo truthful no matter how boldly you paint.
   `/graph`). See `docs/ARAG-API.md`.
 - **The demo IS the product, not a pitch.** The prospect must feel they've opened *their own* working tool and could be tremendously productive in it right now — never a Progress/sales-enablement brochure. So: the landing is a **working home** (a prominent ask bar + real starter questions from `probes.answerable` + live KB status + a quiet tool launcher), NOT a marketing hero. No "showcase" framing, no "one solution / N capability areas", no "how the demo flows", no capability-selling copy in the UI. Product chrome uses the product's own identity (title/brand), not "Agentic RAG platform"; vendor attribution is a quiet footer credit only. The `sells` field is **talk-track only — never rendered in the product** (the UI uses the functional `tagline`). Value is shown by *using* the tool, not claimed in copy. See `OverviewSurface.tsx`.
 - **UI components: KendoReact by default — but craft is what hits the bar.** Build portal surfaces with @progress/kendo-react-* on @progress/kendo-theme-default, **themed distinctively per demo** (the `brand`/`accent` CSS variables are yours to set — that is the "we provide the colours, you're the artist" contract). Kendo is the substrate; the *design* — layout, hierarchy, motion, a coherent identity — is what makes it stunning. Use a non-Kendo/bespoke component where it makes the demo materially better (graph canvas, the streaming Ask pane, the cinematic **"Journey through the context"** walk on the Ask surface). Tailwind is layout glue. FastTrack (ml-fasttrack) is NOT used — MarkLogic-bound, not on HAR. **The full KendoReact component palette you can compose with is catalogued in docs/UI-KENDO-COMPONENTS.md** (what's installed now vs. addable via HAR). See docs/UI-KENDO.md.
+- **Compose from the design system — this is what stops demos looking "vibe-coded".** The visual
+  baseline is **borrowed from Progress** (progress.com fonts, cool-slate ink ramp, crisp ~5px radii,
+  the type/spacing/elevation/motion tokens) — that gives *polish and consistency*; the prospect's
+  `--brand`/`--accent` (set per demo) give *uniqueness*. Build every surface from the tokens +
+  primitives (type scale, `ink-*` ramp, `brand`/`accent`, `.card`/`.btn`/`.field`/`.eyebrow`, the
+  palette layout + pigments) — **never** arbitrary values (`text-[13px]`, raw hex, one-off
+  radius/shadow); there's a token for it. Borrow Progress's *craft, not its branding* — customer
+  surfaces wear the prospect's identity, not Progress's. Full language + discipline:
+  **docs/DESIGN-SYSTEM.md**.
 - **Two UI modes — ask which at the start (`UI_MODE`).** Every demo builds in one of two modes,
   captured once in `.env`: **`kendo`** (default) uses **KendoReact** (the full suite is installed) and
   needs a license — if none is set (`KENDO_UI_LICENSE` in `.env` or a `telerik-license.txt` at the

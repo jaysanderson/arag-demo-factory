@@ -6,8 +6,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Fraunces', 'Georgia', 'serif'],
+        // Borrowed from Progress: ProgressText/ProgressDisplay first (proprietary,
+        // used in a real Progress environment), then open fallbacks with the same
+        // character — Roboto (body) + Archivo (geometric display, Metric-like).
+        sans: ['ProgressText', 'Roboto', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['ProgressDisplay', 'Metric', 'Archivo', 'Roboto', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
@@ -26,19 +29,21 @@ export default {
           strong: 'var(--accent-strong)',
           soft: 'var(--accent-soft)',
         },
-        // Warm neutral ("paper / stone") ramp — deliberately not cold blue-gray.
+        // Neutral ramp borrowed from Progress: a cool blue-slate keyed to
+        // Progress's body ink #383F55 (ink-700), not a warm stone — this is a big
+        // part of the "designed, not vibe-coded" baseline.
         ink: {
-          50: '#FAF9F7',
-          100: '#F3F1EC',
-          200: '#E7E3DB',
-          300: '#D4CEC3',
-          400: '#A39C8F',
-          500: '#6F6A60',
-          600: '#524E46',
-          700: '#3C3933',
-          800: '#2A2823',
-          900: '#1C1A16',
-          950: '#141210',
+          50: '#F5F6F9',
+          100: '#EAECF1',
+          200: '#D8DBE4',
+          300: '#BBC0CF',
+          400: '#8A91A6',
+          500: '#5E6579',
+          600: '#474D61',
+          700: '#383F55',
+          800: '#2A2F42',
+          900: '#1D2133',
+          950: '#141724',
         },
       },
       fontSize: {
@@ -51,14 +56,16 @@ export default {
       letterSpacing: {
         tightest: '-0.03em',
       },
+      // Tighter, crisper radii borrowed from Progress (their controls sit at ~5px)
+      // — reads as an enterprise product, not a bubbly startup template.
       borderRadius: {
-        sm: '4px',
-        DEFAULT: '6px',
-        md: '8px',
-        lg: '10px',
-        xl: '14px',
-        '2xl': '18px',
-        '3xl': '24px',
+        sm: '3px',
+        DEFAULT: '5px',
+        md: '6px',
+        lg: '8px',
+        xl: '10px',
+        '2xl': '14px',
+        '3xl': '18px',
       },
       boxShadow: {
         xs: '0 1px 2px rgba(28,26,22,0.05)',

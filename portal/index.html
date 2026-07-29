@@ -8,10 +8,15 @@
       name="description"
       content="A grounded, cited Progress Agentic RAG research portal — search, ask, and reason over a knowledge base."
     />
+    <!-- Design-system typography borrows Progress's own stack: ProgressText (body)
+         and ProgressDisplay/Metric (display). Those are proprietary Progress faces,
+         so we name them first (a real Progress environment renders them) and load
+         open fallbacks that carry the same character: Roboto (Progress's declared
+         body fallback) + Archivo (a geometric grotesk close to Metric). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Archivo:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <title>Agentic RAG Portal</title>

@@ -4,26 +4,30 @@
 
 @layer base {
   :root {
-    /* Sensible defaults; theme.ts overwrites --brand/--accent from demo.config. */
-    --brand: #14543f;
-    --brand-strong: #0f3829;
-    --brand-soft: #edf6f1;
-    --brand-softer: #f5faf7;
+    /* Progress-baseline defaults; theme.ts overwrites --brand/--accent per demo.
+       Borrowed from progress.com: AI blue as the primary, magenta as the accent
+       (their green is also on-brand — set it per demo). A real demo replaces
+       these with the prospect's own colours. */
+    --brand: #054bff;
+    --brand-strong: #032f9e;
+    --brand-soft: #e7edff;
+    --brand-softer: #f2f6ff;
     --brand-contrast: #ffffff;
-    --accent: #d9a441;
-    --accent-strong: #b0741a;
-    --accent-soft: #fbf3e6;
+    --accent: #eb0249;
+    --accent-strong: #b8003a;
+    --accent-soft: #fde6ee;
 
     /* Product chrome tokens — resolved for light here, dark below. Everything
        downstream (glass headers, hairlines, elevated surfaces) reads these so
-       one shell stays cohesive across light and dark demos. */
-    --app-bg: #faf9f7;
+       one shell stays cohesive across light and dark demos. Cool slate keyed to
+       Progress's ink (#383F55), not a warm stone. */
+    --app-bg: #f7f8fa;
     --surface-1: #ffffff;
-    --surface-2: #faf9f7;
-    --hairline: rgba(28, 26, 22, 0.09);
-    --hairline-strong: rgba(28, 26, 22, 0.14);
-    --glass: rgba(255, 255, 255, 0.72);
-    --glass-border: rgba(28, 26, 22, 0.08);
+    --surface-2: #f5f6f9;
+    --hairline: rgba(56, 63, 85, 0.12);
+    --hairline-strong: rgba(56, 63, 85, 0.18);
+    --glass: rgba(255, 255, 255, 0.74);
+    --glass-border: rgba(56, 63, 85, 0.1);
 
     color-scheme: light;
     /* Let Kendo inherit the portal's own font stack instead of its default. */
@@ -100,7 +104,7 @@
   /* Cards — the surface primitive, light/dark aware. Now reads the shared
      surface + hairline tokens so every card feels part of one product. */
   .card {
-    border-radius: 0.875rem;
+    border-radius: 0.625rem;
     border: 1px solid var(--hairline);
     background: var(--surface-1);
     @apply shadow-sm;
@@ -111,7 +115,7 @@
 
   /* An elevated, glassy card for hero-adjacent panels and the bento grid. */
   .card-elevated {
-    border-radius: 1.125rem;
+    border-radius: 0.875rem;
     border: 1px solid var(--hairline);
     background: var(--surface-1);
     @apply shadow-md;

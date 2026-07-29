@@ -175,6 +175,13 @@ delegated.
   (`useAsk`+`<GroundedAnswer>`, `<CitedMetric source>`, `<JourneyThroughContext>`, `useCatalog`
   facets, `useGraph`, `<ResourceDetail>` at `/r/:id`, …) so the guarantees hold by construction —
   never hand-hack an uncited answer or a hardcoded metric. Two demos must never share a layout.
+  **Compose from the DESIGN SYSTEM so it never looks "vibe-coded":** the visual baseline is borrowed
+  from Progress (progress.com fonts, cool-slate ink ramp, crisp ~5px radii, the type/spacing/
+  elevation/motion tokens) for polish + consistency; the prospect's `--brand`/`--accent` (set per
+  demo) give uniqueness. Build every surface from the tokens + primitives (type scale, `ink-*` ramp,
+  `brand`/`accent`, `.card`/`.btn`/`.field`/`.eyebrow`, the palette layout + pigments) — never arbitrary
+  values (`text-[13px]`, raw hex, one-off radius/shadow). Borrow Progress's craft, not its branding.
+  See `docs/DESIGN-SYSTEM.md`.
   **Every build ships a guided tour — always:** generate a `demoScript` (ordered narrated beats,
   each deep-linking a surface) in `demo.config.json`, and the walkthrough mounts itself — the config
   shell renders a "Guided tour" button and the App frame auto-mounts `<GuidedTourLauncher>` for any
