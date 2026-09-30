@@ -9,7 +9,7 @@ import { PageHeader } from '../components/PageHeader';
 // We never print the zone/host (Hard Rule 4) — the endpoint is shown as an env
 // placeholder the SE fills in from server-side config.
 const TOOLS = [
-  { icon: Search, name: 'search_documents', desc: 'Semantic search over the Knowledge Box; returns ranked passages with source ids.' },
+  { icon: Search, name: 'search_documents', desc: 'Semantic search over the content library; returns ranked passages with source ids.' },
   { icon: FileText, name: 'get_document', desc: 'Fetch a full resource by id, including its extracted text and metadata.' },
   { icon: Layers, name: 'batch_get_documents', desc: 'Resolve many resources at once — efficient context hydration for an agent.' },
 ];
@@ -37,7 +37,7 @@ export function McpSurface({ surface }: SurfaceProps) {
   return (
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="MCP Endpoint">
-        Your content becomes a tool any AI agent can call. The Knowledge Box exposes an MCP server, so an assistant can
+        Your content becomes a tool any AI agent can call. The content library exposes an MCP server, so an assistant can
         search and read your corpus directly — the Agent-Experience story.
       </PageHeader>
 

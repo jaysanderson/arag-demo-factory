@@ -50,7 +50,7 @@ export function StatusChip() {
   }, []);
 
   const label =
-    state === 'connected' ? 'Knowledge Box connected' : state === 'down' ? 'Knowledge Box unreachable' : 'Checking…';
+    state === 'connected' ? 'Content library connected' : state === 'down' ? 'Content library unreachable' : 'Checking…';
   const dot = state === 'connected' ? '#22c55e' : state === 'down' ? '#ef4444' : '#94a3b8';
   const tone =
     state === 'connected'

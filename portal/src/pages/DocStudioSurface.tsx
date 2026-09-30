@@ -235,7 +235,7 @@ export function DocStudioSurface({ surface }: SurfaceProps) {
         {items === null ? (
           <Spinner label="Loading corpus…" />
         ) : items.length === 0 ? (
-          <p className="text-sm text-ink-500">No documents available from the Knowledge Box.</p>
+          <p className="text-sm text-ink-500">No documents available from the content library.</p>
         ) : (
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((d) => {

@@ -73,7 +73,7 @@ export function AugmentSurface({ surface }: SurfaceProps) {
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="Augment">
         The enrichment side of ARAG. Pick a document and watch the augmentation agents run live —
-        the Knowledge Box classifies it into its own taxonomy, extracts its entities and
+        the content library classifies it into its own taxonomy, extracts its entities and
         relationships, and generates grounded Q&amp;A. This is how the corpus builds itself at ingest.
       </PageHeader>
 

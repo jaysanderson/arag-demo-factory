@@ -37,8 +37,8 @@ export function GroundedAnswer({ state, journey = true }: { state: AskState; jou
           <div className="mt-4">
             <UngroundedWarning>
               {refusalLike
-                ? 'The portal correctly declined: the Knowledge Box holds nothing that supports this question, so it did not invent an answer. That refusal is the behaviour to trust.'
-                : 'The Knowledge Box returned no citations for this answer. Do not rely on the text above — an uncited answer is treated as ungrounded here.'}
+                ? 'The portal correctly declined: the content library holds nothing that supports this question, so it did not invent an answer. That refusal is the behaviour to trust.'
+                : 'The content library returned no citations for this answer. Do not rely on the text above — an uncited answer is treated as ungrounded here.'}
             </UngroundedWarning>
           </div>
         )}

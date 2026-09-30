@@ -242,7 +242,7 @@ export function WorkflowsSurface({ surface, config }: SurfaceProps) {
       </ol>
 
       <p className="flex items-center gap-1.5 text-xs text-ink-400">
-        <GitBranch size={13} /> Runs the chain live against the grounded /ask path. A deployed build can bind a
+        <GitBranch size={13} /> Runs the chain live against the grounded answer call. A deployed build can bind a
         managed ARAG Retrieval Agent so the planning and branching run server-side — the same cited steps,
         orchestrated by the platform.
       </p>

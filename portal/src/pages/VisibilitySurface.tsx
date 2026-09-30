@@ -125,7 +125,7 @@ export function VisibilitySurface({ surface, config }: SurfaceProps) {
           </Button>
         }
       >
-        How answerable and how governed your Knowledge Box is. This sweep runs live probes through the grounded
+        How answerable and how governed your content library is. This sweep runs live probes through the grounded
         answer path — the ones it should answer (expect citations) and the ones it must refuse (expect a decline).
       </PageHeader>
 

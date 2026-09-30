@@ -118,7 +118,7 @@ export function SearchSurface({ surface }: SurfaceProps) {
     <div>
       <PageHeader icon={surface.icon} title="Search">
         Meaning-based retrieval over the whole corpus — type a concept, not a keyword.
-        {hasFacets && ' Narrow by type, topic, region and more; counts come live from the Knowledge Box.'}
+        {hasFacets && ' Narrow by type, topic, region and more; counts come live from the content library.'}
       </PageHeader>
 
       <Card>
@@ -240,7 +240,7 @@ function BrowseGrid({
   total?: number;
   onOpen: (id: string) => void;
 }) {
-  if (!items.length) return <EmptyState title="Nothing to browse yet" hint="Bind a Knowledge Box with ingested resources." />;
+  if (!items.length) return <EmptyState title="Nothing to browse yet" hint="Bind a content library with ingested resources." />;
   return (
     <>
       <p className="text-xs text-ink-500">{total ?? items.length} documents in the corpus</p>

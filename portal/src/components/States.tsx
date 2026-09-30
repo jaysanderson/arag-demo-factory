@@ -61,7 +61,7 @@ export function UngroundedWarning({ children }: { children?: ReactNode }) {
         <p className="font-semibold">No sources returned — treat as ungrounded.</p>
         <p className="mt-0.5 text-amber-800 dark:text-amber-300/90">
           {children ||
-            'The Knowledge Box did not cite any documents for this answer. A grounded portal declines rather than asserting the unsupported — do not rely on this text.'}
+            'The content library did not cite any documents for this answer. A grounded portal declines rather than asserting the unsupported — do not rely on this text.'}
         </p>
       </div>
     </div>

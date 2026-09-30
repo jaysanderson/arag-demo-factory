@@ -62,7 +62,7 @@ export function PersonalizeSurface({ surface }: SurfaceProps) {
   return (
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="For You">
-        A grounded, personalised feed. Pick an interest and the Knowledge Box reorders around it — one plugin instead of a
+        A grounded, personalised feed. Pick an interest and the content library reorders around it — one plugin instead of a
         separate search, recommender and chat stack.
       </PageHeader>
 

@@ -44,7 +44,7 @@ export function AskSurface({ surface, config }: SurfaceProps) {
   return (
     <div>
       <PageHeader icon={surface.icon} title="Ask">
-        Ask a question in plain language. Every answer is grounded in the Knowledge Box and shows the
+        Ask a question in plain language. Every answer is grounded in the content library and shows the
         documents it came from — {scoped ? 'scoped to your audience, and ' : ''}it declines when the corpus
         can't support an answer.
       </PageHeader>

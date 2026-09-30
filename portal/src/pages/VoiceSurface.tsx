@@ -93,7 +93,7 @@ export function VoiceSurface({ surface }: SurfaceProps) {
     <div className="space-y-6">
       <PageHeader icon={surface.icon} title="Voice">
         Speak to the assistant and hear a grounded answer back. Same governance as text — every spoken answer is
-        grounded in the Knowledge Box and shows its sources; it declines out loud when the corpus can't support one.
+        grounded in the content library and shows its sources; it declines out loud when the corpus can't support one.
       </PageHeader>
 
       <Card>

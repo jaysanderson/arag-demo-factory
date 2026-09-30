@@ -38,7 +38,7 @@ export function SurfaceNotice({
         )}
         <p className="rounded-lg border border-dashed border-ink-300 px-4 py-3 text-xs text-ink-500 dark:border-ink-700">
           Enable this surface by adding its capability to <code className="font-mono">demo.config.json</code> and
-          binding a Knowledge Box with the features it needs. The shell renders it automatically — no code change.
+          binding a content library with the features it needs. The shell renders it automatically — no code change.
         </p>
       </div>
     </div>
